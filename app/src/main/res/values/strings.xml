@@ -6,4 +6,7 @@
     <string name="Settings">Settings</string>
     <string name="SudokuBlitz">Sudoku Blitz</string>
     <string name="GameButton">Game</string>
+    <string name="title_activity_multiplayer_menu">Multiplayer Menu</string>
+    <string name="title_activity_join">Join</string>
+    <string name="title_activity_lobby">Lobby</string>
 </resources>

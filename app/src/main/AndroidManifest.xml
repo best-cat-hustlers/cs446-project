@@ -11,6 +11,23 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainSettingsActivity"></activity>
         <activity android:name=".GameSetupActivity" />
+        <activity android:name=".ResultsActivity"></activity>
+        <activity android:name=".GameActivity" />
+        <activity
+            android:name=".MultiplayerMenuActivity"
+            android:label="@string/title_activity_multiplayer_menu"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".JoinActivity"
+            android:label="@string/title_activity_join"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MultiplayerMenuActivity" />
+        <activity
+            android:name=".LobbyActivity"
+            android:label="@string/title_activity_lobby"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".JoinActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
