@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Sudoku Blitz</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="SinglePlayer">Single Player</string>
+    <string name="MultiPlayer">MultiPlayer</string>
+    <string name="Settings">Settings</string>
+    <string name="SudokuBlitz">Sudoku Blitz</string>
+    <string name="GameButton">Game</string>
 </resources>
