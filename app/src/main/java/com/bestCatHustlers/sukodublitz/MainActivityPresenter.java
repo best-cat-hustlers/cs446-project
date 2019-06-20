@@ -12,15 +12,20 @@ class MainActivityPresenter {
     }
 
     protected void goToSinglePlayer(View view) {
-        Intent intent = new Intent(mainActivity, GameSetupActivity.class);
+        Intent intent = new Intent(mainActivity, com.bestCatHustlers.sukodublitz.GameSetupActivity.class);
+
         mainActivity.startActivity(intent);
     }
+
     protected void goToMultiplayer(View view) {
-//        Intent intent = new Intent(mainActivity, MultiplayerMenuActivity.class);
-//        mainActivity.startActivity(intent);
+        Intent intent = new Intent(mainActivity, MultiplayerMenuActivity.class);
+
+        mainActivity.startActivity(intent);
     }
-    protected void gotoMainSettings(View view) {
-        Intent intent = new Intent(mainActivity, MainSettingsActivity.class);
+
+    protected void goToMainSettings(View view) {
+        Intent intent = new Intent(mainActivity, com.bestCatHustlers.sukodublitz.MainSettingsActivity.class);
+
         mainActivity.startActivity(intent);
     }
 }

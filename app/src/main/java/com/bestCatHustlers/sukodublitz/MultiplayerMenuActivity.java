@@ -12,6 +12,7 @@ public class MultiplayerMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_multiplayer_menu);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -21,13 +22,15 @@ public class MultiplayerMenuActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-//    public void openGameSetup(View view) {
-//        Intent intent = new Intent(this, GameSetupActivity.class);
-//        startActivity(intent);
-//    }
+    public void openGameSetup(View view) {
+        Intent intent = new Intent(this, GameSetupActivity.class);
+
+        startActivity(intent);
+    }
 
     public void openJoinActivity(View view) {
         Intent intent = new Intent(this, JoinActivity.class);
+
         startActivity(intent);
     }
 }
