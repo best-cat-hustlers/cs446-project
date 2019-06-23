@@ -24,6 +24,6 @@ public class Player
     // Modifies player's score by delta points
     public void modifyScore(int delta)
     {
-        this.id += delta;
+        this.score += delta;
     }
 }

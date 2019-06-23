@@ -41,6 +41,13 @@ public class BoardGame
         try
         {
             puzzle = puzzleGen.generatePuzzle();
+            for (int row = 0; row < PuzzleGenerator.GRID_SIZE; row++)
+            {
+                for (int col = 0; col < PuzzleGenerator.GRID_SIZE; col++)
+                {
+                    if (puzzle.puzzle[row][col] == 0) emptyCells++;
+                }
+            }
         }
         finally
         {
