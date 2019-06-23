@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.bestCatHustlers.sukodublitz.game.GameActivity;
+
 public class GameSetupActivity extends AppCompatActivity {
 
     @Override

@@ -20,8 +20,9 @@ public class GameBoardView extends View {
     public GameBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
 
-        thickLinePaint = new Paint();
+        constants = new Constants();
 
+        thickLinePaint = new Paint();
         thickLinePaint.setStyle(constants.thickLineStyle);
         thickLinePaint.setColor(constants.thickLineColor);
         thickLinePaint.setStrokeWidth(constants.thickLineWidth);
