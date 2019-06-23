@@ -1,14 +1,13 @@
 package com.bestCatHustlers.sukodublitz;
 
-// TODO: delete this import
-import android.util.Log;
-
 import java.util.Collections;
 import java.util.Arrays;
+import java.util.Random;
 
 // A class to generate sudoku puzzles and their solutions
 public class PuzzleGenerator
 {
+    private Random rand;
     private int[][] seeds;
     public static final int GRID_SIZE = 9;
 
@@ -24,6 +23,7 @@ public class PuzzleGenerator
                                 {0, 0, 9, 3, 0, 0, 0, 7, 4},
                                 {0, 4, 0, 0, 5, 0, 0, 3, 6},
                                 {7, 0, 3, 0, 1, 8, 0, 0, 0}};
+        rand = new Random();
     }
 
     public Puzzle generatePuzzle()
@@ -34,14 +34,10 @@ public class PuzzleGenerator
         // 3,359,232 different boards per seed are possible through this, assuming seeds are not
         // the equivalent to each other
         shuffle(seeds);
-        rotate(seeds);
+        rotate(seeds, 1);
         shuffle(seeds);
-        // TODO: Permute band, stack, and cells, randomize rotations
-        for (int i = 0; i < GRID_SIZE; i++)
-        {
-            Log.d("TEST", Arrays.toString(seeds[i]));
-        }
-        Log.d("TEST", "------------------------------------------------");
+        rotate(seeds, rand.nextInt(4));
+        // TODO: Permute band, stack, and cells
 
         int[][] solution = new int[GRID_SIZE][];
         for (int i = 0; i < GRID_SIZE; i++)
@@ -49,29 +45,36 @@ public class PuzzleGenerator
             solution[i] = seeds[i].clone();
         }
         backtrack(solution);
-
-        for (int i = 0; i < GRID_SIZE; i++)
-        {
-            Log.d("TEST", Arrays.toString(solution[i]));
-        }
         return new Puzzle(seeds, solution);
     }
 
-    // Rotate matrix 90 degrees clockwise
-    private void rotate(int[][] arr)
+    // Rotate matrix 90 degrees clockwise n times
+    private void rotate(int[][] arr, int n)
     {
-        // Transpose
-        for (int row = 0; row < GRID_SIZE; row++)
+        switch(n)
         {
-            for (int i = row; i < GRID_SIZE; i++)
-            {
-                int temp = arr[row][i];
-                arr[row][i] = arr[i][row];
-                arr[i][row] = temp;
-            }
+            case 0:
+                break;
+            case 1:
+                transpose(arr);
+                reverseRows(arr);
+                break;
+            case 2:
+                reverseRows(arr);
+                // Reverse cols by transposing, reversing rows, then transposing again
+                transpose(arr);
+                reverseRows(arr);
+                transpose(arr);
+                break;
+            case 3:
+                reverseRows(arr);
+                transpose(arr);
+                break;
         }
+    }
 
-        // Reverse rows
+    private void reverseRows(int[][] arr)
+    {
         for (int row = 0; row < GRID_SIZE; row++)
         {
             for (int i = 0; i < GRID_SIZE /2; i++)
@@ -80,6 +83,20 @@ public class PuzzleGenerator
                 int opposite = GRID_SIZE - 1 - i;
                 arr[row][i] = arr[row][opposite];
                 arr[row][opposite] = temp;
+            }
+        }
+    }
+
+    // Transpose
+    private void transpose(int[][] arr)
+    {
+        for (int row = 0; row < GRID_SIZE; row++)
+        {
+            for (int i = row; i < GRID_SIZE; i++)
+            {
+                int temp = arr[row][i];
+                arr[row][i] = arr[i][row];
+                arr[i][row] = temp;
             }
         }
     }
@@ -104,7 +121,7 @@ public class PuzzleGenerator
 
     // "Simple" backtracking sudoku solver with some additional rules.
     // Generates solution for sudoku puzzle. Assumes there is a solution
-    boolean backtrack(int[][] arr)
+    private boolean backtrack(int[][] arr)
     {
         // TODO: Refactor to make faster
         for (int row = 0; row < GRID_SIZE; row++)
@@ -115,7 +132,7 @@ public class PuzzleGenerator
                 {
                     for (int n = 1; n <= GRID_SIZE; n++)
                     {
-                        if (allowed(arr, row, col, n))
+                        if (isAllowed(arr, row, col, n))
                         {
                             arr[row][col] = n;
                             if (backtrack(arr))
@@ -138,7 +155,7 @@ public class PuzzleGenerator
 
     // Checks to see if val is contained in the corresponding sudoku grid at position
     // (row, col).
-    private boolean allowed(int[][] arr, int row, int col, int val)
+    private boolean isAllowed(int[][] arr, int row, int col, int val)
     {
         // Check grid
         // Find top left corner
