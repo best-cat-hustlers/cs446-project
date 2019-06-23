@@ -15,6 +15,7 @@ import android.view.View;
 public class GameBoardView extends View {
     private Paint thickLinePaint;
     private Paint thinLinePaint;
+
     private Constants constants;
 
     private float cellPixelSize = 0f;
@@ -30,6 +31,10 @@ public class GameBoardView extends View {
         final Paint.Style thinLineStyle = Paint.Style.STROKE;
         final int thinLineColor = Color.BLUE;
         final float thinLineWidth = 2f;
+
+        final int selectedCellColor = Color.GRAY;
+        final int relatedCellColor = Color.LTGRAY;
+        final int defaultCellColor = Color.WHITE;
 
         final float boardToDisplayRatio = 0.9f;
         final int boardSize = 9;
@@ -57,6 +62,7 @@ public class GameBoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        highlightCells(canvas);
         drawLines(canvas);
     }
 
@@ -85,7 +91,7 @@ public class GameBoardView extends View {
 
         canvas.drawRect(0f, 0f, width, height, thickLinePaint);
 
-        for (int i = 1; i<=constants.boardSize; ++i) {
+        for (int i = 1; i <= constants.boardSize; ++i) {
             Paint paint = (i % constants.boardSqrtSize == 0) ? thickLinePaint : thinLinePaint;
 
             // Draw a vertical line.
@@ -106,6 +112,36 @@ public class GameBoardView extends View {
         }
     }
 
+    private void highlightCells(Canvas canvas) {
+        if (selectedRow < 0 || selectedColumn < 0) return;
+
+        for (int row = 0; row < constants.boardSize; ++row) {
+            for (int column = 0; column < constants.boardSize; ++column) {
+                if (row == selectedRow && column == selectedColumn) {
+                    fillCell(canvas, row, column, constants.selectedCellColor);
+                } else  if (row == selectedRow || column == selectedColumn) {
+                    fillCell(canvas, row, column, constants.relatedCellColor);
+                } else {
+                    fillCell(canvas, row, column, constants.defaultCellColor);
+                }
+            }
+        }
+    }
+
+    private void fillCell(Canvas canvas, int row, int column, int color) {
+        Paint cellPaint = new Paint();
+
+        cellPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        cellPaint.setColor(color);
+
+        canvas.drawRect(
+                column * cellPixelSize,
+                row * cellPixelSize,
+                (column + 1) * cellPixelSize,
+                (row + 1) * cellPixelSize,
+                cellPaint);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -118,7 +154,13 @@ public class GameBoardView extends View {
     }
 
     private void handleTouchEvent(Float x, Float y) {
-        selectedRow = (int)Math.floor(y / cellPixelSize);
-        selectedColumn = (int)Math.floor(x / cellPixelSize);
+        final int nextRow = (int)Math.floor(y / cellPixelSize);
+        final int nextColumn = (int)Math.floor(x / cellPixelSize);
+        final boolean isAlreadySelected = (selectedRow == nextRow && selectedColumn == nextColumn);
+
+        selectedRow = isAlreadySelected ? -1 : nextRow;
+        selectedColumn = isAlreadySelected ? -1 : nextColumn;
+
+        invalidate();
     }
 }
