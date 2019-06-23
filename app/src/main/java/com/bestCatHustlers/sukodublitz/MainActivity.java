@@ -24,4 +24,10 @@ public class MainActivity extends AppCompatActivity{
     protected void clickSettings(View view) {
         mainPresenter.gotoMainSettings(view);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Need to somehow store the data (difficulty)
+    }
 }

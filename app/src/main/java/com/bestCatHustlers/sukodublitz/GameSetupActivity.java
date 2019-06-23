@@ -13,7 +13,7 @@ public class GameSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_setup);
     }
     protected void clickGame(View view) {
-//        Intent intent = new Intent(this, GameActivity.class);
-//        this.startActivity(intent);
+        Intent intent = new Intent(this, GameActivity.class);
+        this.startActivity(intent);
     }
 }

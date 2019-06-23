@@ -6,7 +6,8 @@ import android.view.View;
 
 
 class MainActivityPresenter {
-    AppCompatActivity mainActivity;
+    private static final int GET_DIFFICULTY = 0;
+    private AppCompatActivity mainActivity;
     public MainActivityPresenter(AppCompatActivity activity) {
         mainActivity = activity;
     }
@@ -16,11 +17,12 @@ class MainActivityPresenter {
         mainActivity.startActivity(intent);
     }
     protected void goToMultiplayer(View view) {
-//        Intent intent = new Intent(mainActivity, MultiplayerMenuActivity.class);
-//        mainActivity.startActivity(intent);
+        Intent intent = new Intent(mainActivity, MultiplayerMenuActivity.class);
+        mainActivity.startActivity(intent);
     }
     protected void gotoMainSettings(View view) {
         Intent intent = new Intent(mainActivity, MainSettingsActivity.class);
-        mainActivity.startActivity(intent);
+        mainActivity.startActivityForResult(intent, GET_DIFFICULTY);
+
     }
 }
