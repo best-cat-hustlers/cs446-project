@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class GameBoardView extends View {
@@ -16,6 +18,9 @@ public class GameBoardView extends View {
     private Constants constants;
 
     private float cellPixelSize = 0f;
+
+    private int selectedRow = -1;
+    private int selectedColumn = -1;
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
@@ -99,5 +104,21 @@ public class GameBoardView extends View {
                     i * cellPixelSize,
                     paint);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                handleTouchEvent(event.getX(), event.getY());
+                return true;
+        }
+
+        return false;
+    }
+
+    private void handleTouchEvent(Float x, Float y) {
+        selectedRow = (int)Math.floor(y / cellPixelSize);
+        selectedColumn = (int)Math.floor(x / cellPixelSize);
     }
 }
