@@ -1,10 +1,13 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 
 public class GameBoardView extends View {
@@ -23,6 +26,7 @@ public class GameBoardView extends View {
         final int thinLineColor = Color.BLUE;
         final float thinLineWidth = 2f;
 
+        final float boardToDisplayRatio = 0.9f;
         final int boardSize = 9;
         final int boardSqrtSize = 3;
     }
@@ -55,9 +59,17 @@ public class GameBoardView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int pixelSize = Math.min(widthMeasureSpec, heightMeasureSpec);
+        Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
 
-        setMeasuredDimension(pixelSize, pixelSize);
+        final int displayWidth = size.x;
+        final int displayHeight = size.y;
+        final int maximumSize = (int)Math.round
+                (Math.min(displayWidth, displayHeight)
+                * constants.boardToDisplayRatio);
+
+        setMeasuredDimension(maximumSize, maximumSize);
     }
 
     private void drawLines(Canvas canvas) {
@@ -76,14 +88,14 @@ public class GameBoardView extends View {
                     i * cellPixelSize,
                     0f,
                     i * cellPixelSize,
-                    height,
+                    constants.boardSize * cellPixelSize,
                     paint);
 
             // Draw a horizontal line.
             canvas.drawLine(
                     0f,
                     i * cellPixelSize,
-                    width,
+                    constants.boardSize * cellPixelSize,
                     i * cellPixelSize,
                     paint);
         }

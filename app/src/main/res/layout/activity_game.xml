@@ -8,9 +8,9 @@
 
     <com.bestCatHustlers.sukodublitz.game.GameBoardView
         android:id="@+id/boardLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/entryLayout"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
     <GridLayout
         android:id="@+id/entryLayout"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:rowCount="2"
         android:columnCount="1"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/boardLayout"
         android:layout_centerHorizontal="true">
 
         <TextView
