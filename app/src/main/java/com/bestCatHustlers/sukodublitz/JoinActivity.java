@@ -12,6 +12,7 @@ public class JoinActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_join);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -23,6 +24,7 @@ public class JoinActivity extends AppCompatActivity {
 
     public void openLobbyActivity(View view) {
         Intent intent = new Intent(this, LobbyActivity.class);
+
         startActivity(intent);
     }
 }
