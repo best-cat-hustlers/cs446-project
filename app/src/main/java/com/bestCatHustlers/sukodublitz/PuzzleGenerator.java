@@ -243,13 +243,16 @@ public class PuzzleGenerator implements Parcelable
 // Elements of puzzle and solution can be accessed with (row, col) indexing
 class Puzzle implements Parcelable
 {
+    public int[][] puzzle;
+    public int[][] solution;
+    public String[][] cellOwner;
+
     Puzzle(int[][] puzzle, int[][] solution)
     {
         this.puzzle = puzzle;
         this.solution = solution;
+        cellOwner = new String[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
     }
-    public int[][] puzzle;
-    public int[][] solution;
 
     // Parcelable methods
     @Override
@@ -278,6 +281,15 @@ class Puzzle implements Parcelable
             int subArrLength = solution[i].length;
             dest.writeInt(subArrLength);
             dest.writeIntArray(solution[i]);
+        }
+        // Pack cellOwner
+        int cellOwnerLen = cellOwner.length;
+        dest.writeInt(cellOwnerLen);
+        for (int i = 0; i < cellOwnerLen; i++)
+        {
+            int subArrLength = cellOwner[i].length;
+            dest.writeInt(subArrLength);
+            dest.writeStringArray(cellOwner[i]);
         }
     }
 
@@ -315,6 +327,16 @@ class Puzzle implements Parcelable
             int subArrLength = in.readInt();
             solution[i] = new int[subArrLength];
             in.readIntArray(solution[i]);
+        }
+
+        // Unpack cellOwner
+        int cellOwnerLen = in.readInt();
+        cellOwner = new String[cellOwnerLen][];
+        for (int i = 0; i < cellOwnerLen; i++)
+        {
+            int subArrLength = in.readInt();
+            cellOwner[i] = new String[subArrLength];
+            in.readStringArray(cellOwner[i]);
         }
     }
 }

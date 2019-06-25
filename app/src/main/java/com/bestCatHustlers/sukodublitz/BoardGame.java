@@ -87,6 +87,19 @@ public class BoardGame implements Parcelable
         }
     }
 
+    public String[][] getCellOwner()
+    {
+        try
+        {
+            lock.lock();
+            return puzzle.cellOwner;
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+
     public int[][] getSolution()
     {
         return puzzle.solution;
@@ -124,6 +137,7 @@ public class BoardGame implements Parcelable
             puzzle.puzzle[row][col] = val;
             emptyCells--;
             player.modifyScore(correctAnsDelta);
+            puzzle.cellOwner[row][col] = id;
         }
         finally
         {
@@ -178,7 +192,6 @@ public class BoardGame implements Parcelable
         dest.writeInt(emptyCells);
         dest.writeInt(correctAnsDelta);
         dest.writeInt(wrongAnsDelta);
-        // Don't need to write SCORE_DELTA since it is a final field defined outside of the constructor
     }
 
     // CREATOR field allows for generating instances of BoardGame from a Parcel
