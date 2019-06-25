@@ -12,13 +12,10 @@ public class GameSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_game_setup);
     }
-
     public void clickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-
         this.startActivity(intent);
     }
 }
