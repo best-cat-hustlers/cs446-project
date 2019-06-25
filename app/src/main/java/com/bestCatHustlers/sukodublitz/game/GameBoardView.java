@@ -102,6 +102,7 @@ public class GameBoardView extends View {
 
         highlightCells(canvas);
         drawLines(canvas);
+        printCells(canvas);
     }
 
     @Override
@@ -218,32 +219,32 @@ public class GameBoardView extends View {
                 (column + 1) * cellPixelSize,
                 (row + 1) * cellPixelSize,
                 cellPaint);
-
-        printCell(canvas, row, column);
     }
 
-    private void printCell(Canvas canvas, int row, int column) {
+    private void printCells(Canvas canvas) {
         if (delegate == null) return;
 
-        int value = delegate.valueForCell(row, column);
+        for (int row = 0; row < constants.boardSize; ++row) {
+            for (int column = 0; column < constants.boardSize; ++column) {
+                int value = delegate.valueForCell(row, column);
 
-        if (value < 1 || value > 9) {
-            return;
+                if (value < 1 || value > 9) continue;
+
+                String valueString = String.valueOf(value);
+                Rect textBounds = new Rect();
+
+                textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
+
+                float textWidth = textPaint.measureText(valueString);
+                float textHeight = textPaint.measureText(valueString);
+
+                canvas.drawText(
+                        valueString,
+                        (column * cellPixelSize) + (cellPixelSize / 2) - (textWidth / 2),
+                        (row * cellPixelSize) + (cellPixelSize) - (textHeight),
+                        textPaint);
+            }
         }
-
-        String valueString = String.valueOf(value);
-        Rect textBounds = new Rect();
-
-        textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
-
-        float textWidth = textPaint.measureText(valueString);
-        float textHeight = textPaint.measureText(valueString);
-
-        canvas.drawText(
-                valueString,
-                (column * cellPixelSize) + (cellPixelSize / 2) - (textWidth / 2),
-                (row * cellPixelSize) + (cellPixelSize) - (textHeight),
-                textPaint);
     }
 
     private void handleTouchEvent(Float x, Float y) {
