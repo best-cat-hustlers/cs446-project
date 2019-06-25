@@ -30,7 +30,7 @@ public class BoardGame implements Parcelable
         players = new HashMap<String, Player>();
         // No idea if we want more than 2 players int the future so I'll add players
         // like this for now
-        for (int i = 0; i < 2; i++)
+        for (int i = 1; i <= 2; i++)
         {
             String id = Integer.toString(i);
             players.put(id, new Player(id));
@@ -87,12 +87,12 @@ public class BoardGame implements Parcelable
         }
     }
 
-    public String[][] getCellOwner()
+    public String[][] getCellOwners()
     {
         try
         {
             lock.lock();
-            return puzzle.cellOwner;
+            return puzzle.cellOwners;
         }
         finally
         {
@@ -137,7 +137,7 @@ public class BoardGame implements Parcelable
             puzzle.puzzle[row][col] = val;
             emptyCells--;
             player.modifyScore(correctAnsDelta);
-            puzzle.cellOwner[row][col] = id;
+            puzzle.cellOwners[row][col] = id;
         }
         finally
         {

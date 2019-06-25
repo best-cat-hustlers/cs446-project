@@ -13,6 +13,8 @@ public class PuzzleGenerator implements Parcelable
     private Random rand;
     private int[][] seeds;
     public static final int GRID_SIZE = 9;
+    public static final String STARTER_CELL = "0";
+    public static final String EMPTY_CELL = "";
 
     PuzzleGenerator()
     {
@@ -245,13 +247,27 @@ class Puzzle implements Parcelable
 {
     public int[][] puzzle;
     public int[][] solution;
-    public String[][] cellOwner;
+    public String[][] cellOwners;
 
     Puzzle(int[][] puzzle, int[][] solution)
     {
         this.puzzle = puzzle;
         this.solution = solution;
-        cellOwner = new String[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
+        cellOwners = new String[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
+        for (int row = 0; row < PuzzleGenerator.GRID_SIZE; row++)
+        {
+            for (int col = 0; col < PuzzleGenerator.GRID_SIZE; col++)
+            {
+                if (this.puzzle[row][col] != 0)
+                {
+                    cellOwners[row][col] = PuzzleGenerator.STARTER_CELL;
+                }
+                else
+                {
+                    cellOwners[row][col] = PuzzleGenerator.EMPTY_CELL;
+                }
+            }
+        }
     }
 
     // Parcelable methods
@@ -282,14 +298,14 @@ class Puzzle implements Parcelable
             dest.writeInt(subArrLength);
             dest.writeIntArray(solution[i]);
         }
-        // Pack cellOwner
-        int cellOwnerLen = cellOwner.length;
+        // Pack cellOwners
+        int cellOwnerLen = cellOwners.length;
         dest.writeInt(cellOwnerLen);
         for (int i = 0; i < cellOwnerLen; i++)
         {
-            int subArrLength = cellOwner[i].length;
+            int subArrLength = cellOwners[i].length;
             dest.writeInt(subArrLength);
-            dest.writeStringArray(cellOwner[i]);
+            dest.writeStringArray(cellOwners[i]);
         }
     }
 
@@ -329,14 +345,14 @@ class Puzzle implements Parcelable
             in.readIntArray(solution[i]);
         }
 
-        // Unpack cellOwner
+        // Unpack cellOwners
         int cellOwnerLen = in.readInt();
-        cellOwner = new String[cellOwnerLen][];
+        cellOwners = new String[cellOwnerLen][];
         for (int i = 0; i < cellOwnerLen; i++)
         {
             int subArrLength = in.readInt();
-            cellOwner[i] = new String[subArrLength];
-            in.readStringArray(cellOwner[i]);
+            cellOwners[i] = new String[subArrLength];
+            in.readStringArray(cellOwners[i]);
         }
     }
 }
