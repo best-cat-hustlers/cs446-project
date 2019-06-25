@@ -2,12 +2,15 @@ package com.bestCatHustlers.sukodublitz;
 
 public interface MainSettingsContract {
     interface View {
-        void updateDifficulty(int d);
+        void updateSound(boolean on);
     }
     interface Presenter{
-        void changeDifficulty(int d);
+        void turnSound(boolean on);
+        boolean getSound();
+        void viewDestroy();
     }
     interface Model {
-        void setDifficulty(int d);
+        void setSound(boolean on);
+        boolean getSound();
     }
 }

@@ -1,12 +1,12 @@
 package com.bestCatHustlers.sukodublitz;
 
 class MainSettingsModel implements MainSettingsContract.Model  {
-    private int difficulty = 0;
+    private boolean sound = true;
     @Override
-    public void setDifficulty(int d) {
-        difficulty = d;
+    public void setSound(boolean on) {
+        sound = on;
     }
-    public int getDifficulty(){
-        return difficulty;
+    public boolean getSound(){
+        return sound;
     }
 }

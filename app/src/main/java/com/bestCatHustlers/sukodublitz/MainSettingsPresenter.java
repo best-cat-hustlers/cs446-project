@@ -8,8 +8,18 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
         m = model;
     }
     @Override
-    public void changeDifficulty(int d) {
-        m.setDifficulty(d);
-        v.updateDifficulty(d);
+    public void turnSound(boolean on) {
+        m.setSound(on);
+        v.updateSound(on);
+    }
+
+    @Override
+    public boolean getSound() {
+        return m.getSound();
+    }
+
+    @Override
+    public void viewDestroy() {
+        v = null;
     }
 }

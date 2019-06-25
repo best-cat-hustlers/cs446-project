@@ -6,7 +6,7 @@ import android.view.View;
 
 
 class MainActivityPresenter {
-    private static final int GET_DIFFICULTY = 0;
+    private static final int SOUND_ON_OFF = 0;
     private AppCompatActivity mainActivity;
     public MainActivityPresenter(AppCompatActivity activity) {
         mainActivity = activity;
@@ -22,7 +22,7 @@ class MainActivityPresenter {
     }
     protected void gotoMainSettings(View view) {
         Intent intent = new Intent(mainActivity, MainSettingsActivity.class);
-        mainActivity.startActivityForResult(intent, GET_DIFFICULTY);
+        mainActivity.startActivityForResult(intent, SOUND_ON_OFF);
 
     }
 }

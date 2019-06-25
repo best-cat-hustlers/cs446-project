@@ -15,10 +15,22 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
     }
 
     @Override
-    public void updateDifficulty(int d) {
-        // Show difficulty
+    public void updateSound(boolean on) {
+        // Show sound
+
+        // Back to parent activity
         Intent intent = new Intent();
-        intent.putExtra("Difficulty", d);
+        intent.putExtra("Sound", on);
         setResult(Activity.RESULT_OK, intent);
+    }
+    public void onSoundClick(){
+        boolean b = presenter.getSound();
+        presenter.turnSound(b);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.viewDestroy();
+        super.onDestroy();
     }
 }
