@@ -22,8 +22,8 @@ public class ResultsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openGameActivity(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+    public void openGameSetupActivity(View view) {
+        Intent intent = new Intent(this, GameSetupActivity.class);
 
         startActivity(intent);
     }
