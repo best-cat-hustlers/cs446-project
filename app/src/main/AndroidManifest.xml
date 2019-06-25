@@ -16,20 +16,17 @@
         <activity android:name=".ResultsActivity"></activity>
         <activity android:name=".game.GameActivity" />
         <activity
-            android:name=".MultiplayerMenuActivity"
+            android:name=".multiplayer.MultiplayerMenuActivity"
             android:label="@string/title_activity_multiplayer_menu"
-            android:theme="@style/AppTheme"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".JoinActivity"
+            android:name=".join.JoinActivity"
             android:label="@string/title_activity_join"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".MultiplayerMenuActivity" />
+            android:parentActivityName=".multiplayer.MultiplayerMenuActivity" />
         <activity
-            android:name=".LobbyActivity"
+            android:name=".lobby.LobbyActivity"
             android:label="@string/title_activity_lobby"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".JoinActivity" />
+            android:parentActivityName=".multiplayer.MultiplayerMenuActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
