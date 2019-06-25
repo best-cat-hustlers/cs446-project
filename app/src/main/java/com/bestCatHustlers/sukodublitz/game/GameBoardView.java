@@ -30,7 +30,7 @@ public class GameBoardView extends CardView {
     private int selectedRow = -1;
     private int selectedColumn = -1;
 
-    private int[][] board = new int[9][9];
+    private int[][] board = new int[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
