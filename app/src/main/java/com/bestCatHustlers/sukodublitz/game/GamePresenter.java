@@ -97,6 +97,24 @@ public class GamePresenter implements GameContract.Presenter {
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
         view.printBoard(model.getBoard());
+
+        if (isPuzzleSolved()) {
+            // TODO: Create message strings.
+            view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
+        }
+    }
+
+    // TODO: Use model to determine if puzzle is solved properly.
+    private boolean isPuzzleSolved() {
+        int[][] board = model.getBoard();
+
+        for (int row = 0; row < 9; ++row) {
+            for (int column = 0; column < 9; ++column) {
+                if (board[row][column] < 1) return false;
+            }
+        }
+
+        return true;
     }
 
     //endregion

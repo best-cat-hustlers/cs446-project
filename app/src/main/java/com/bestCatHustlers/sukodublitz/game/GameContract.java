@@ -7,6 +7,8 @@ public class GameContract {
         void selectNumber(int value);
 
         void printBoard(int[][] board);
+
+        void alertEndOfGame(String message);
     }
 
     interface Presenter {
