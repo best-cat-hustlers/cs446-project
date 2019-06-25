@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 
@@ -43,13 +44,13 @@ public class GameBoardView extends CardView {
 
         final Paint.Style textStyle = Paint.Style.FILL_AND_STROKE;
         final int textColor = Color.BLACK;
-        final float textSize = 72f;
+        final float textSizeToCellRatio = 0.5f;
 
         final int selectedCellColor = Color.GRAY;
         final int relatedCellColor = Color.LTGRAY;
         final int defaultCellColor = Color.WHITE;
 
-        final float boardToDisplayRatio = 0.9f;
+        final float boardToParentRatio = 0.9f; // You'll want this to show the drop shadow without clipping.
         final int boardSize = PuzzleGenerator.GRID_SIZE;
         final int boardSqrtSize = (int) Math.round(Math.sqrt((double) PuzzleGenerator.GRID_SIZE));
 
@@ -87,7 +88,6 @@ public class GameBoardView extends CardView {
         textPaint = new Paint();
         textPaint.setStyle(constants.textStyle);
         textPaint.setColor(constants.textColor);
-        textPaint.setTextSize(constants.textSize);
     }
 
     @Override
@@ -103,16 +103,9 @@ public class GameBoardView extends CardView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
+        int maximumSize = Math.min(getMeasuredWidth(), getMeasuredHeight());
 
-        final int displayWidth = size.x;
-        final int displayHeight = size.y;
-        final int maximumSize = (int)Math.round(
-                Math.min(displayWidth, displayHeight) * constants.boardToDisplayRatio);
-
-        setMeasuredDimension(maximumSize, maximumSize);
+        setMeasuredDimension((int) Math.round(maximumSize * constants.boardToParentRatio), maximumSize);
     }
 
     @Override
@@ -207,6 +200,8 @@ public class GameBoardView extends CardView {
     }
 
     private void printCells(Canvas canvas) {
+        textPaint.setTextSize(cellPixelSize * constants.textSizeToCellRatio);
+
         for (int row = 0; row < constants.boardSize; ++row) {
             for (int column = 0; column < constants.boardSize; ++column) {
                 int value = board[row][column];
@@ -219,12 +214,12 @@ public class GameBoardView extends CardView {
                 textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
 
                 float textWidth = textPaint.measureText(valueString);
-                float textHeight = textPaint.measureText(valueString);
+                float textHeight = textBounds.height();
 
                 canvas.drawText(
                         valueString,
                         (column * cellPixelSize) + (cellPixelSize / 2) - (textWidth / 2),
-                        (row * cellPixelSize) + (cellPixelSize) - (textHeight),
+                        (row * cellPixelSize) + (cellPixelSize / 2) + (textHeight / 2),
                         textPaint);
             }
         }
