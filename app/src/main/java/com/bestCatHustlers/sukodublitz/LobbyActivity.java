@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.bestCatHustlers.sukodublitz.game.GameActivity;
+
 public class LobbyActivity extends AppCompatActivity {
 
     @Override
