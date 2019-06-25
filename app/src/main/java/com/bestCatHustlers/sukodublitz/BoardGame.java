@@ -1,15 +1,22 @@
 package com.bestCatHustlers.sukodublitz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 import java.util.concurrent.locks.*;
 import java.util.Iterator;
 
-public class BoardGame
+// Class to model Sudoku Blitz game
+// WARNING: When parceling BoardGame to another activity via intents, the programmer is responsible
+// for ensuring that the lock isn't held by any thread. This is because the behaviour of Reentrant
+// locks after deserialization is to set the lock as unlocked, regardless of of previous state.
+public class BoardGame implements Parcelable
 {
     private HashMap<String, Player> players;
     private PuzzleGenerator puzzleGen;
     private Puzzle puzzle;
-    private Lock lock;
+    private ReentrantLock lock;
     private int emptyCells;
     private final int SCORE_DELTA = 10; // TODO: Put this somewhere better
 
@@ -25,6 +32,9 @@ public class BoardGame
             String id = Integer.toString(i);
             players.put(id, new Player(id));
         }
+        // This would be generateNewBoard() but Reentrant locks do not like to be called in the
+        // constructor. This is a non-issue since nothing can manipulate the object until after
+        // instantiation so there is no chance for a race condition
         puzzleGen = new PuzzleGenerator();
         puzzle = puzzleGen.generatePuzzle();
         for (int row = 0; row < PuzzleGenerator.GRID_SIZE; row++)
@@ -133,5 +143,63 @@ public class BoardGame
             }
         }
         return ret;
+    }
+
+    // Parcelable methods
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        // Pack players hashmap
+        int numPlayers = players.size();
+        dest.writeInt(numPlayers);
+        for(HashMap.Entry<String, Player> pair : players.entrySet())
+        {
+            dest.writeString(pair.getKey());
+            dest.writeParcelable(pair.getValue(), 0);
+        }
+
+        dest.writeParcelable(puzzleGen, 0);
+        dest.writeParcelable(puzzle, 0);
+        dest.writeSerializable (lock); // Re-entrant lock is serializable
+        dest.writeInt(emptyCells);
+        // Don't need to write SCORE_DELTA since it is a final field defined outside of the constructor
+    }
+
+    // CREATOR field allows for generating instances of BoardGame from a Parcel
+    public static final Parcelable.Creator<BoardGame> CREATOR = new Parcelable.Creator<BoardGame>()
+    {
+        @Override
+        public BoardGame createFromParcel(Parcel in)
+        {
+            return new BoardGame(in);
+        }
+
+        @Override
+        public BoardGame[] newArray(int size)
+        {
+            return new BoardGame[size];
+        }
+    };
+
+    private BoardGame(Parcel in) {
+        // Unpack players hashmap
+
+        players = new HashMap<String, Player>();
+        int numPlayers = in.readInt();
+        for (int i = 0; i < numPlayers; i++) {
+            String key = in.readString();
+            Player player = in.readParcelable(Player.class.getClassLoader());
+            players.put(key, player);
+        }
+        puzzleGen = in.readParcelable(PuzzleGenerator.class.getClassLoader());
+        puzzle = in.readParcelable(Puzzle.class.getClassLoader());
+        lock = (ReentrantLock) in.readSerializable();
+        emptyCells = in.readInt();
     }
 }
