@@ -10,6 +10,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_settings);
         presenter = new MainSettingsPresenter(this,new MainSettingsModel());
     }

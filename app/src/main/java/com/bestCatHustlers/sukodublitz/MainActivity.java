@@ -12,17 +12,21 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         mainPresenter = new MainActivityPresenter(this);
     }
-    protected void clickSinglePlayer(View view) {
+
+    public void clickSinglePlayer(View view) {
         mainPresenter.goToSinglePlayer(view);
     }
-    protected void clickMultiplayer(View view) {
+
+    public void clickMultiplayer(View view) {
         mainPresenter.goToMultiplayer(view);
     }
-    protected void clickSettings(View view) {
-        mainPresenter.gotoMainSettings(view);
+
+    public void clickSettings(View view) {
+        mainPresenter.goToMainSettings(view);
     }
 
     @Override

@@ -20,7 +20,7 @@ class MainActivityPresenter {
         Intent intent = new Intent(mainActivity, MultiplayerMenuActivity.class);
         mainActivity.startActivity(intent);
     }
-    protected void gotoMainSettings(View view) {
+    protected void goToMainSettings(View view) {
         Intent intent = new Intent(mainActivity, MainSettingsActivity.class);
         mainActivity.startActivityForResult(intent, SOUND_ON_OFF);
 
