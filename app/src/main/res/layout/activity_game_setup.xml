@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_red_blue"
@@ -40,18 +41,18 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/game_setup_card"
-        android:layout_width="299dp"
-        android:layout_height="169dp"
+        android:layout_width="294dp"
+        android:layout_height="193dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="?attr/colorButtonNormal"
+        android:background="#F2F2F2"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_game_setup">
+        app:layout_constraintTop_toBottomOf="@+id/title_game_setup"
+        app:layout_constraintVertical_bias="0.496">
 
         <Switch
             android:id="@+id/show_points_switch"
@@ -60,25 +61,27 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/show_points"
+            app:layout_constraintBottom_toTopOf="@+id/show_timer_switch"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.228" />
 
         <Switch
             android:id="@+id/show_timer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="120dp"
             android:text="@string/show_timer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/show_points_switch"
-            app:layout_constraintVertical_bias="0.12" />
+            app:layout_constraintHorizontal_bias="0.461"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Switch
             android:id="@+id/penalty_switch"
@@ -90,10 +93,75 @@
             android:text="@string/penalty_on"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.447"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/show_timer_switch"
-            app:layout_constraintVertical_bias="0.301" />
+            app:layout_constraintVertical_bias="0.117" />
+
+        <RadioGroup
+            android:id="@+id/AI_difficulty"
+            android:layout_width="278dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="8dp"
+            android:baselineAligned="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/penalty_switch"
+            app:layout_constraintVertical_bias="0.891"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/diff1"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/diff2"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/diff3"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/diff4"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/diff5"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="107dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/AI_difficulty"
+            android:textColor="@android:color/primary_text_light"
+            app:layout_constraintBottom_toTopOf="@+id/AI_difficulty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/penalty_switch" />
 
     </android.support.constraint.ConstraintLayout>
 
