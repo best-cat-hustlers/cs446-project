@@ -1,11 +1,14 @@
 package com.bestCatHustlers.sukodublitz;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Random;
 
 // A class to generate sudoku puzzles and their solutions
-public class PuzzleGenerator
+public class PuzzleGenerator implements Parcelable
 {
     private Random rand;
     private int[][] seeds;
@@ -183,11 +186,62 @@ public class PuzzleGenerator
         }
         return true;
     }
+
+    // Parcelable methods
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeSerializable(rand);
+        // Pack seeds
+        int seedsLen = seeds.length;
+        dest.writeInt(seedsLen);
+        for (int i = 0; i < seedsLen; i++)
+        {
+            int subArrLength = seeds[i].length;
+            dest.writeInt(subArrLength);
+            dest.writeIntArray(seeds[i]);
+        }
+    }
+
+    public static final Parcelable.Creator<PuzzleGenerator> CREATOR = new Parcelable.Creator<PuzzleGenerator>()
+    {
+        @Override
+        public PuzzleGenerator createFromParcel(Parcel in)
+        {
+            return new PuzzleGenerator(in);
+        }
+
+        @Override
+        public PuzzleGenerator[] newArray(int size)
+        {
+            return new PuzzleGenerator[size];
+        }
+    };
+
+    private PuzzleGenerator(Parcel in)
+    {
+        rand = (Random) in.readSerializable();
+        // Unpack seeds
+        int seedsLen = in.readInt();
+        seeds = new int[seedsLen][];
+        for (int i = 0; i < seedsLen; i++)
+        {
+            int subArrLength = in.readInt();
+            seeds[i] = new int[subArrLength];
+            in.readIntArray(seeds[i]);
+        }
+    }
 }
 
 // Struct for pairing puzzles with solutions
 // Elements of puzzle and solution can be accessed with (row, col) indexing
-class Puzzle
+class Puzzle implements Parcelable
 {
     Puzzle(int[][] puzzle, int[][] solution)
     {
@@ -196,4 +250,71 @@ class Puzzle
     }
     public int[][] puzzle;
     public int[][] solution;
+
+    // Parcelable methods
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        // Pack puzzle
+        int puzzleLen = puzzle.length;
+        dest.writeInt(puzzleLen);
+        for (int i = 0; i < puzzleLen; i++)
+        {
+            int subArrLength = puzzle[i].length;
+            dest.writeInt(subArrLength);
+            dest.writeIntArray(puzzle[i]);
+        }
+        // Pack solution
+        int solutionLen = solution.length;
+        dest.writeInt(solutionLen);
+        for (int i = 0; i < solutionLen; i++)
+        {
+            int subArrLength = solution[i].length;
+            dest.writeInt(subArrLength);
+            dest.writeIntArray(solution[i]);
+        }
+    }
+
+    public static final Parcelable.Creator<Puzzle> CREATOR = new Parcelable.Creator<Puzzle>()
+    {
+        @Override
+        public Puzzle createFromParcel(Parcel in)
+        {
+            return new Puzzle(in);
+        }
+
+        @Override
+        public Puzzle[] newArray(int size)
+        {
+            return new Puzzle[size];
+        }
+    };
+
+    private Puzzle(Parcel in)
+    {
+        // Unpack puzzle
+        int puzzleLen = in.readInt();
+        puzzle = new int[puzzleLen][];
+        for (int i = 0; i < puzzleLen; i++)
+        {
+            int subArrLength = in.readInt();
+            puzzle[i] = new int[subArrLength];
+            in.readIntArray(puzzle[i]);
+        }
+        // Unpack solution
+        int solutionLen = in.readInt();
+        solution = new int[solutionLen][];
+        for (int i = 0; i < solutionLen; i++)
+        {
+            int subArrLength = in.readInt();
+            solution[i] = new int[subArrLength];
+            in.readIntArray(solution[i]);
+        }
+    }
 }
