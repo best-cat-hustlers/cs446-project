@@ -1,6 +1,7 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.GameAI;
 
 public class GamePresenter implements GameContract.Presenter {
     //region Properties
@@ -32,12 +33,14 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void handleViewCreated() {
-        view.printBoard(model.getBoard());
+        view.printBoard(model.getBoard(), model.getCellOwners());
     }
 
     @Override
-    public int getCellOwnerFor(int row, int column) {
-        return 0;
+    public String getCellOwnerFor(int row, int column) {
+        String [][] cellOwners = model.getCellOwners();
+
+        return cellOwners[row][column];
     }
 
     @Override
@@ -96,7 +99,7 @@ public class GamePresenter implements GameContract.Presenter {
 
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
-        view.printBoard(model.getBoard());
+        view.printBoard(model.getBoard(), model.getCellOwners());
 
         if (isPuzzleSolved()) {
             // TODO: Create message strings.

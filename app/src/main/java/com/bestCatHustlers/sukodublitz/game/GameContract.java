@@ -6,7 +6,7 @@ public class GameContract {
 
         void selectNumber(int value);
 
-        void printBoard(int[][] board);
+        void printBoard(int[][] board, String[][] cellOwners);
 
         void alertEndOfGame(String message);
     }
@@ -14,7 +14,7 @@ public class GameContract {
     interface Presenter {
         void handleViewCreated();
 
-        int getCellOwnerFor(int row, int column);
+        String getCellOwnerFor(int row, int column);
 
         void handleCellClick(int row, int column);
 

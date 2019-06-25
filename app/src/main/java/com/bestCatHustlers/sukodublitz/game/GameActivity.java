@@ -104,8 +104,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void printBoard(int[][] board) {
-        boardView.printBoard(board);
+    public void printBoard(int[][] board, String[][] cellOwners) {
+        boardView.printBoard(board, cellOwners);
     }
 
     @Override
