@@ -12,7 +12,10 @@
         android:id="@+id/results_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="12dp"
         android:onClick="openResultsActivity"
         android:text="Results" />
 
@@ -26,10 +29,8 @@
         app:cardBackgroundColor="@android:color/transparent"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        app:cardCornerRadius="20dp"
-        app:contentPadding="-8dp"
+        app:cardCornerRadius="11dp"
         app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
         android:clipChildren="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -43,31 +44,112 @@
             android:columnCount="3"
             android:layout_centerHorizontal="true">
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="1"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="2"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="3"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="4"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="5"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="6"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="7"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="8"/>
 
-            <Button
+            <TextView
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
                 android:text="9"/>
 
         </GridLayout>
