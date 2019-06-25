@@ -13,6 +13,20 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GameBoardView extends View {
+    class Cell {
+        public int row;
+        public int column;
+
+        public Cell(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+    }
+
+    //region Properties
+
+    public GameBoardView.Delegate delegate;
+
     private Paint thickLinePaint;
     private Paint thinLinePaint;
 
@@ -40,6 +54,18 @@ public class GameBoardView extends View {
         final int boardSize = 9;
         final int boardSqrtSize = 3;
     }
+
+    //endregion
+
+    //region GameBoardView.Delegate
+
+    interface Delegate {
+        void gameBoardViewDidClick(int row, int column);
+    }
+
+    //endregion
+
+    //region LifeCycle
 
     public GameBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -82,6 +108,49 @@ public class GameBoardView extends View {
 
         setMeasuredDimension(maximumSize, maximumSize);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                handleTouchEvent(event.getX(), event.getY());
+                return true;
+        }
+
+        return false;
+    }
+
+    //endregion
+
+    //region Public
+
+    public Cell getSelectedCell() {
+        if (selectedRow >= 0 && selectedColumn >= 0) {
+            Cell cell = new Cell(selectedRow, selectedColumn);
+
+            return cell;
+        } else {
+            return null;
+        }
+    }
+
+    public void setSelectedCell(int row, int column) {
+        selectedRow = row;
+        selectedColumn = column;
+
+        invalidate();
+    }
+
+    public void deselectCells() {
+        selectedRow = -1;
+        selectedColumn = -1;
+
+        invalidate();
+    }
+
+    //endregion
+
+    //region Private
 
     private void drawLines(Canvas canvas) {
         final float width = (float)getWidth();
@@ -142,25 +211,14 @@ public class GameBoardView extends View {
                 cellPaint);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                handleTouchEvent(event.getX(), event.getY());
-                return true;
-        }
-
-        return false;
-    }
-
     private void handleTouchEvent(Float x, Float y) {
-        final int nextRow = (int)Math.floor(y / cellPixelSize);
-        final int nextColumn = (int)Math.floor(x / cellPixelSize);
-        final boolean isAlreadySelected = (selectedRow == nextRow && selectedColumn == nextColumn);
+        if (delegate != null) {
+            int row = (int) Math.floor(y / cellPixelSize);
+            int column = (int) Math.floor(x / cellPixelSize);
 
-        selectedRow = isAlreadySelected ? -1 : nextRow;
-        selectedColumn = isAlreadySelected ? -1 : nextColumn;
-
-        invalidate();
+            delegate.gameBoardViewDidClick(row, column);
+        }
     }
+
+    //endregion
 }
