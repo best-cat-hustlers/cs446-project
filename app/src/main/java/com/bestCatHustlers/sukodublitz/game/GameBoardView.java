@@ -14,16 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GameBoardView extends View {
-    class Cell {
-        public int row;
-        public int column;
-
-        public Cell(int row, int column) {
-            this.row = row;
-            this.column = column;
-        }
-    }
-
     //region Properties
 
     public GameBoardView.Delegate delegate;
@@ -38,6 +28,8 @@ public class GameBoardView extends View {
 
     private int selectedRow = -1;
     private int selectedColumn = -1;
+
+    private int[][] board = new int[9][9];
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
@@ -66,8 +58,6 @@ public class GameBoardView extends View {
     //region GameBoardView.Delegate
 
     interface Delegate {
-        int valueForCell(int row, int column);
-
         void gameBoardViewDidClick(int row, int column);
     }
 
@@ -136,26 +126,15 @@ public class GameBoardView extends View {
 
     //region Public
 
-    public Cell getSelectedCell() {
-        if (selectedRow >= 0 && selectedColumn >= 0) {
-            Cell cell = new Cell(selectedRow, selectedColumn);
-
-            return cell;
-        } else {
-            return null;
-        }
-    }
-
-    public void setSelectedCell(int row, int column) {
+    public void selectCell(int row, int column) {
         selectedRow = row;
         selectedColumn = column;
 
         invalidate();
     }
 
-    public void deselectCells() {
-        selectedRow = -1;
-        selectedColumn = -1;
+    public void printBoard(int[][] board) {
+        this.board = board;
 
         invalidate();
     }
@@ -222,11 +201,9 @@ public class GameBoardView extends View {
     }
 
     private void printCells(Canvas canvas) {
-        if (delegate == null) return;
-
         for (int row = 0; row < constants.boardSize; ++row) {
             for (int column = 0; column < constants.boardSize; ++column) {
-                int value = delegate.valueForCell(row, column);
+                int value = board[row][column];
 
                 if (value < 1 || value > 9) continue;
 

@@ -2,17 +2,13 @@ package com.bestCatHustlers.sukodublitz.game;
 
 public class GameContract {
     interface View {
-        GameBoardView.Cell getSelectedCell();
-
         void selectCell(int row, int column);
 
-        void deselectCells();
-
-        void setScore(int score, String playerID);
+        void printBoard(int[][] board);
     }
 
     interface Presenter {
-        int getCellValueFor(int row, int column);
+        void handleViewCreated();
 
         int getCellOwnerFor(int row, int column);
 

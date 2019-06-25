@@ -31,7 +31,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         // TODO: Get model from intent extras.
         presenter = new GamePresenter(this, null);
 
-        boardView.invalidate();
+        presenter.handleViewCreated();
     }
 
     public void openResultsActivity(View view) {
@@ -46,33 +46,18 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
 
     @Override
-    public GameBoardView.Cell getSelectedCell() {
-        return boardView.getSelectedCell();
-    }
-
-    @Override
     public void selectCell(int row, int column) {
-        boardView.setSelectedCell(row, column);
+        boardView.selectCell(row, column);
     }
 
     @Override
-    public void deselectCells() {
-        boardView.deselectCells();
-    }
-
-    @Override
-    public void setScore(int score, String playerID) {
-        Log.d("GAME_ACTIVITY", "setScore| score:" + score + " playerID:" + playerID);
+    public void printBoard(int[][] board) {
+        boardView.printBoard(board);
     }
 
     //endregion
 
     //region BoardGameView.Delegate
-
-    @Override
-    public int valueForCell(int row, int column) {
-        return presenter.getCellValueFor(row, column);
-    }
 
     @Override
     public void gameBoardViewDidClick(int row, int column) {

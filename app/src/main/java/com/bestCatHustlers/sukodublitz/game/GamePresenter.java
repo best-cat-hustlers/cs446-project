@@ -8,6 +8,9 @@ public class GamePresenter implements GameContract.Presenter {
     private GameContract.View view;
     private BoardGame model;
 
+    private int selectedRow = -1;
+    private int selectedColumn = -1;
+
     //endregion
 
     //region LifeCycle
@@ -26,11 +29,10 @@ public class GamePresenter implements GameContract.Presenter {
 
     //region Contract
 
-    @Override
-    public int getCellValueFor(int row, int column) {
-        int[][] board = model.getBoard();
 
-        return board[row][column];
+    @Override
+    public void handleViewCreated() {
+        view.printBoard(model.getBoard());
     }
 
     @Override
@@ -40,8 +42,17 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void handleCellClick(int row, int column) {
-        // TODO: Check if cell should be selected or not.
-        view.selectCell(row, column);
+        if (model.getBoard()[row][column] > 0) return;
+
+        if (row == selectedRow && column == selectedColumn) {
+            selectedRow = -1;
+            selectedColumn = -1;
+        } else {
+            selectedRow = row;
+            selectedColumn = column;
+        }
+
+        view.selectCell(selectedRow, selectedColumn);
     }
 
     @Override
