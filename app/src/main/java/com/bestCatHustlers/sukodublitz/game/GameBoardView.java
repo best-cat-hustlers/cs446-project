@@ -103,9 +103,9 @@ public class GameBoardView extends CardView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int maximumSize = Math.min(getMeasuredWidth(), getMeasuredHeight());
+        int maximumSize = (int) Math.round(Math.min(getMeasuredWidth(), getMeasuredHeight()) * constants.boardToParentRatio);
 
-        setMeasuredDimension((int) Math.round(maximumSize * constants.boardToParentRatio), maximumSize);
+        setMeasuredDimension(maximumSize, maximumSize);
     }
 
     @Override
