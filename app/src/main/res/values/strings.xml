@@ -10,4 +10,8 @@
     <string name="title_activity_join">Join</string>
     <string name="title_activity_lobby">Lobby</string>
     <string name="SoundSwitch">Sound</string>
+    <string name="game_setup">Game Setup</string>
+    <string name="show_points">Show points</string>
+    <string name="show_timer">Show timer</string>
+    <string name="penalty_on">Penalty on</string>
 </resources>
