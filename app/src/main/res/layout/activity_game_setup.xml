@@ -106,19 +106,21 @@
             android:layout_marginTop="17dp"
             android:layout_marginBottom="8dp"
             android:baselineAligned="false"
+            android:onClick="clickDifficulty"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/penalty_switch"
-            app:layout_constraintVertical_bias="0.891"
-            android:orientation="horizontal">
+            app:layout_constraintVertical_bias="0.891">
 
             <Button
                 android:id="@+id/diff1"
                 android:layout_width="23dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="clickDifficulty"
                 android:text="1" />
 
             <Button
@@ -126,6 +128,7 @@
                 android:layout_width="23dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="clickDifficulty"
                 android:text="2" />
 
             <Button
@@ -133,6 +136,7 @@
                 android:layout_width="23dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="clickDifficulty"
                 android:text="3" />
 
             <Button
@@ -140,6 +144,7 @@
                 android:layout_width="23dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="clickDifficulty"
                 android:text="4" />
 
             <Button
@@ -147,7 +152,9 @@
                 android:layout_width="23dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="clickDifficulty"
                 android:text="5" />
+
         </RadioGroup>
 
         <TextView
