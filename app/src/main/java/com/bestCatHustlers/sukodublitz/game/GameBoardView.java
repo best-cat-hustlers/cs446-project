@@ -50,7 +50,7 @@ public class GameBoardView extends View {
 
         final Paint.Style textStyle = Paint.Style.FILL_AND_STROKE;
         final int textColor = Color.BLACK;
-        final float textSize = 64f;
+        final float textSize = 72f;
 
         final int selectedCellColor = Color.GRAY;
         final int relatedCellColor = Color.LTGRAY;
@@ -114,9 +114,8 @@ public class GameBoardView extends View {
 
         final int displayWidth = size.x;
         final int displayHeight = size.y;
-        final int maximumSize = (int)Math.round
-                (Math.min(displayWidth, displayHeight)
-                * constants.boardToDisplayRatio);
+        final int maximumSize = (int)Math.round(
+                Math.min(displayWidth, displayHeight) * constants.boardToDisplayRatio);
 
         setMeasuredDimension(maximumSize, maximumSize);
     }
@@ -194,8 +193,6 @@ public class GameBoardView extends View {
     }
 
     private void highlightCells(Canvas canvas) {
-        if (selectedRow < 0 || selectedColumn < 0) return;
-
         for (int row = 0; row < constants.boardSize; ++row) {
             for (int column = 0; column < constants.boardSize; ++column) {
                 if (row == selectedRow && column == selectedColumn) {
@@ -245,7 +242,7 @@ public class GameBoardView extends View {
         canvas.drawText(
                 valueString,
                 (column * cellPixelSize) + (cellPixelSize / 2) - (textWidth / 2),
-                (row * cellPixelSize) + (cellPixelSize / 1.5f),
+                (row * cellPixelSize) + (cellPixelSize) - (textHeight),
                 textPaint);
     }
 

@@ -16,9 +16,9 @@ public class GamePresenter implements GameContract.Presenter {
         this.view = view;
         this.model = model;
 
-
         // TODO: Remove this test model once it can be passed in properly via intent.
         BoardGame testModel = new BoardGame();
+        testModel.generateNewBoard();
         this.model = testModel;
     }
 
@@ -28,10 +28,9 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public int getCellValueFor(int row, int column) {
-        return 1;
-//        int[][] board = model.getBoard();
-//
-//        return board[row][column];
+        int[][] board = model.getBoard();
+
+        return board[row][column];
     }
 
     @Override

@@ -40,6 +40,7 @@ public class BoardGame
     {
         try
         {
+            lock.lock();
             puzzle = puzzleGen.generatePuzzle();
             for (int row = 0; row < PuzzleGenerator.GRID_SIZE; row++)
             {
