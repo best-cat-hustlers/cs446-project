@@ -29,7 +29,6 @@ public class GamePresenter implements GameContract.Presenter {
 
     //region Contract
 
-
     @Override
     public void handleViewCreated() {
         view.printBoard(model.getBoard());
