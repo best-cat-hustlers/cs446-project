@@ -7,13 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
-import android.view.View;
 
-public class GameBoardView extends View {
+public class GameBoardView extends CardView {
     //region Properties
 
     public GameBoardView.Delegate delegate;
@@ -33,11 +33,11 @@ public class GameBoardView extends View {
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
-        final int thickLineColor = Color.RED;
+        final int thickLineColor = Color.DKGRAY;
         final float thickLineWidth = 4f;
 
         final Paint.Style thinLineStyle = Paint.Style.STROKE;
-        final int thinLineColor = Color.BLUE;
+        final int thinLineColor = Color.GRAY;
         final float thinLineWidth = 2f;
 
         final Paint.Style textStyle = Paint.Style.FILL_AND_STROKE;
@@ -51,6 +51,9 @@ public class GameBoardView extends View {
         final float boardToDisplayRatio = 0.9f;
         final int boardSize = 9;
         final int boardSqrtSize = 3;
+
+        final float cardElevation = 15f;
+        final float cardRadiusFactor =0.25f;
     }
 
     //endregion
@@ -145,13 +148,15 @@ public class GameBoardView extends View {
 
     private void drawLines(Canvas canvas) {
         final float width = (float)getWidth();
-        final float height = (float)getHeight();
 
         cellPixelSize = width / constants.boardSize;
 
-        canvas.drawRect(0f, 0f, width, height, thickLinePaint);
+        float cornerRadius = cellPixelSize * constants.cardRadiusFactor;
 
-        for (int i = 1; i <= constants.boardSize; ++i) {
+        setRadius(cornerRadius);
+        setCardElevation(constants.cardElevation);
+
+        for (int i = 1; i < constants.boardSize; ++i) {
             Paint paint = (i % constants.boardSqrtSize == 0) ? thickLinePaint : thinLinePaint;
 
             // Draw a vertical line.
