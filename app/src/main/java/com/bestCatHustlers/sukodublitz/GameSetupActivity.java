@@ -25,8 +25,15 @@ public class GameSetupActivity extends AppCompatActivity {
 
     }
     private void changeHighlightDifficulty(int id) {
-        String [] allDifficulties = {"diff1", "diff2", "diff3", "diff4", "diff5"};
-
+        int [] difficulties = {R.id.diff1, R.id.diff2, R.id.diff3, R.id.diff4, R.id.diff5};
+        for (int i = 0; i < difficulties.length; i++){
+            Button b = findViewById(difficulties[i]);
+            if (id == difficulties[i]){
+                b.setBackgroundColor(getResources().getColor(R.color.secondaryColor));
+            } else {
+                b.setBackgroundResource(0);
+            }
+        }
 
     }
 }
