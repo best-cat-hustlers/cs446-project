@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
 
+import com.bestCatHustlers.sukodublitz.PuzzleGenerator;
+
 public class GameBoardView extends CardView {
     //region Properties
 
@@ -48,8 +50,8 @@ public class GameBoardView extends CardView {
         final int defaultCellColor = Color.WHITE;
 
         final float boardToDisplayRatio = 0.9f;
-        final int boardSize = 9;
-        final int boardSqrtSize = 3;
+        final int boardSize = PuzzleGenerator.GRID_SIZE;
+        final int boardSqrtSize = (int) Math.round(Math.sqrt((double) PuzzleGenerator.GRID_SIZE));
 
         final float cardElevation = 15f;
         final float cardRadiusFactor =0.25f;
