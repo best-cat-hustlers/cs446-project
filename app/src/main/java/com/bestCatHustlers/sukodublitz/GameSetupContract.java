@@ -1,6 +1,6 @@
 package com.bestCatHustlers.sukodublitz;
 
-class GameSetupContract {
+interface GameSetupContract {
     interface View {
 
     }
