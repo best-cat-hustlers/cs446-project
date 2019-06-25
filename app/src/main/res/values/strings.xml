@@ -12,10 +12,10 @@
     <string name="title_multiplayer">Multiplayer</string>
     <string name="multiplayer_menu_host">Host</string>
     <string name="multiplayer_menu_join">Join</string>
-    <string name="SoundSwitch">Sound</string>
     <string name="game_setup">Game Setup</string>
     <string name="show_points">Show points</string>
     <string name="show_timer">Show timer</string>
     <string name="penalty_on">Penalty on</string>
     <string name="AI_difficulty">AI Difficulty</string>
+    <string name="SoundSwitch">Sound</string>
 </resources>

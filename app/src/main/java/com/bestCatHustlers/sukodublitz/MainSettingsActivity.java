@@ -26,10 +26,6 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         intent.putExtra("Sound", on);
         setResult(Activity.RESULT_OK, intent);
     }
-    public void onSoundClick(){
-        boolean b = presenter.getSound();
-        presenter.turnSound(b);
-    }
 
     @Override
     protected void onDestroy() {
@@ -37,7 +33,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         super.onDestroy();
     }
 
-    public void onCheck(View view) {
+    public void onSoundCheck(View view) {
         Switch soundSwitch = (Switch) view;
         presenter.turnSound(soundSwitch.isChecked());
 
