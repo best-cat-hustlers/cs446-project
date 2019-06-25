@@ -10,4 +10,7 @@
     <string name="title_activity_join">Join</string>
     <string name="title_activity_lobby">Lobby</string>
     <string name="SoundSwitch">Sound</string>
+    <string name="title_multiplayer">Multiplayer</string>
+    <string name="multiplayer_menu_host">Host</string>
+    <string name="multiplayer_menu_join">Join</string>
 </resources>
