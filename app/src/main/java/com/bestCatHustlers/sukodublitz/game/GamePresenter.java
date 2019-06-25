@@ -52,6 +52,13 @@ public class GamePresenter implements GameContract.Presenter {
             selectedColumn = column;
         }
 
+        if (shouldEnterSolution()) {
+            enterSelectedSolution();
+
+            selectedRow = -1;
+            selectedColumn = -1;
+        }
+
         view.selectCell(selectedRow, selectedColumn);
     }
 
@@ -63,7 +70,33 @@ public class GamePresenter implements GameContract.Presenter {
             selectedNumber = number;
         }
 
+        if (shouldEnterSolution()) {
+            enterSelectedSolution();
+
+            selectedNumber = 0;
+            selectedRow = -1;
+            selectedColumn = -1;
+
+            view.selectCell(selectedRow, selectedColumn);
+        }
+
         view.selectNumber(selectedNumber);
+    }
+
+    //endregion
+
+    //region Private
+
+    private boolean shouldEnterSolution() {
+        return (selectedNumber > 0 && selectedRow >= 0 && selectedColumn >= 0);
+    }
+
+    private void enterSelectedSolution() {
+        if (!shouldEnterSolution()) return;
+
+        // TODO: Get player ID properly.
+        model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+        view.printBoard(model.getBoard());
     }
 
     //endregion

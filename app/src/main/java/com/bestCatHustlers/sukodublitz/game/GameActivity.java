@@ -20,7 +20,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private Constants constants;
 
     private class Constants {
-        final float numberEntrySelectedAlpha = 0.7f;
+        final float numberEntrySelectedAlpha = 0.6f;
         final float numberEntryDefaultAlpha = 0.9f;
     }
 
