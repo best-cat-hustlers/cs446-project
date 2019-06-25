@@ -13,7 +13,7 @@ public class BoardGame
     private int emptyCells;
     private final int SCORE_DELTA = 10; // TODO: Put this somewhere better
 
-    BoardGame()
+    public BoardGame()
     {
         emptyCells = 0;
         lock = new ReentrantLock();

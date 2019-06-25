@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -29,6 +30,7 @@ public class GameBoardView extends View {
 
     private Paint thickLinePaint;
     private Paint thinLinePaint;
+    private Paint textPaint;
 
     private Constants constants;
 
@@ -46,6 +48,10 @@ public class GameBoardView extends View {
         final int thinLineColor = Color.BLUE;
         final float thinLineWidth = 2f;
 
+        final Paint.Style textStyle = Paint.Style.FILL_AND_STROKE;
+        final int textColor = Color.BLACK;
+        final float textSize = 64f;
+
         final int selectedCellColor = Color.GRAY;
         final int relatedCellColor = Color.LTGRAY;
         final int defaultCellColor = Color.WHITE;
@@ -60,6 +66,8 @@ public class GameBoardView extends View {
     //region GameBoardView.Delegate
 
     interface Delegate {
+        int valueForCell(int row, int column);
+
         void gameBoardViewDidClick(int row, int column);
     }
 
@@ -82,6 +90,10 @@ public class GameBoardView extends View {
         thinLinePaint.setColor(constants.thinLineColor);
         thinLinePaint.setStrokeWidth(constants.thinLineWidth);
 
+        textPaint = new Paint();
+        textPaint.setStyle(constants.textStyle);
+        textPaint.setColor(constants.textColor);
+        textPaint.setTextSize(constants.textSize);
     }
 
     @Override
@@ -209,6 +221,32 @@ public class GameBoardView extends View {
                 (column + 1) * cellPixelSize,
                 (row + 1) * cellPixelSize,
                 cellPaint);
+
+        printCell(canvas, row, column);
+    }
+
+    private void printCell(Canvas canvas, int row, int column) {
+        if (delegate == null) return;
+
+        int value = delegate.valueForCell(row, column);
+
+        if (value < 1 || value > 9) {
+            return;
+        }
+
+        String valueString = String.valueOf(value);
+        Rect textBounds = new Rect();
+
+        textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
+
+        float textWidth = textPaint.measureText(valueString);
+        float textHeight = textPaint.measureText(valueString);
+
+        canvas.drawText(
+                valueString,
+                (column * cellPixelSize) + (cellPixelSize / 2) - (textWidth / 2),
+                (row * cellPixelSize) + (cellPixelSize / 1.5f),
+                textPaint);
     }
 
     private void handleTouchEvent(Float x, Float y) {

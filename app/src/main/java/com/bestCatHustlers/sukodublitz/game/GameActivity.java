@@ -29,6 +29,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         // TODO: Get model from intent extras.
         presenter = new GamePresenter(this, null);
+
+        boardView.invalidate();
     }
 
     public void openResultsActivity(View view) {
@@ -65,6 +67,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     //endregion
 
     //region BoardGameView.Delegate
+
+
+    @Override
+    public int valueForCell(int row, int column) {
+        return presenter.getCellValueFor(row, column);
+    }
 
     @Override
     public void gameBoardViewDidClick(int row, int column) {
