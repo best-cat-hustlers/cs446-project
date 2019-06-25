@@ -14,7 +14,7 @@ public class GameSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
     }
-    protected void clickGame(View view) {
+    public void clickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         this.startActivity(intent);
     }
