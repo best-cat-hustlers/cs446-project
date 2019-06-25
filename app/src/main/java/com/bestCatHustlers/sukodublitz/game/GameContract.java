@@ -4,6 +4,8 @@ public class GameContract {
     interface View {
         void selectCell(int row, int column);
 
+        void selectNumber(int value);
+
         void printBoard(int[][] board);
     }
 

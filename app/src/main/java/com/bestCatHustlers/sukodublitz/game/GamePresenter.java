@@ -10,6 +10,7 @@ public class GamePresenter implements GameContract.Presenter {
 
     private int selectedRow = -1;
     private int selectedColumn = -1;
+    private int selectedNumber = 0;
 
     //endregion
 
@@ -56,7 +57,13 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void handleNumberClick(int number) {
-        // TODO: Add view behaviour for selecting number entry interface.
+        if (selectedNumber == number) {
+            selectedNumber = 0;
+        } else {
+            selectedNumber = number;
+        }
+
+        view.selectNumber(selectedNumber);
     }
 
     //endregion
