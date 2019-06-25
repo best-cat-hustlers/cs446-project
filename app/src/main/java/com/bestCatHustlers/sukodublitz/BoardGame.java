@@ -18,11 +18,14 @@ public class BoardGame implements Parcelable
     private Puzzle puzzle;
     private ReentrantLock lock;
     private int emptyCells;
-    private final int SCORE_DELTA = 10; // TODO: Put this somewhere better
+    private int correctAnsDelta;
+    private int wrongAnsDelta;
 
     public BoardGame()
     {
         emptyCells = 0;
+        correctAnsDelta = 10;
+        wrongAnsDelta = -10;
         lock = new ReentrantLock();
         players = new HashMap<String, Player>();
         // No idea if we want more than 2 players int the future so I'll add players
@@ -102,6 +105,10 @@ public class BoardGame implements Parcelable
         }
     }
 
+    public void setCorrectAnsDelta(int delta) { correctAnsDelta = delta; }
+
+    public void setWrongAnsDelta(int delta) { wrongAnsDelta = delta; }
+
     public void fillSquare(int row, int col, int val, String id)
     {
         try
@@ -111,12 +118,12 @@ public class BoardGame implements Parcelable
             if (puzzle.puzzle[row][col] != 0 || player == null) return;
             if (puzzle.solution[row][col] != val)
             {
-                player.modifyScore(-SCORE_DELTA); // TODO: Figure out scoring mechanism
+                player.modifyScore(wrongAnsDelta);
                 return;
             }
             puzzle.puzzle[row][col] = val;
             emptyCells--;
-            player.modifyScore(SCORE_DELTA); // TODO: Figure out scoring mechanism
+            player.modifyScore(correctAnsDelta);
         }
         finally
         {
@@ -169,6 +176,8 @@ public class BoardGame implements Parcelable
         dest.writeParcelable(puzzle, 0);
         dest.writeSerializable (lock); // Re-entrant lock is serializable
         dest.writeInt(emptyCells);
+        dest.writeInt(correctAnsDelta);
+        dest.writeInt(wrongAnsDelta);
         // Don't need to write SCORE_DELTA since it is a final field defined outside of the constructor
     }
 
@@ -202,5 +211,7 @@ public class BoardGame implements Parcelable
         puzzle = in.readParcelable(Puzzle.class.getClassLoader());
         lock = (ReentrantLock) in.readSerializable();
         emptyCells = in.readInt();
+        correctAnsDelta = in.readInt();
+        wrongAnsDelta = in.readInt();
     }
 }
