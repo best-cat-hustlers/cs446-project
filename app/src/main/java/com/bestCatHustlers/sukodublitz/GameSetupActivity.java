@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
@@ -16,6 +15,11 @@ public class GameSetupActivity extends AppCompatActivity {
     RadioButton button3;
     RadioButton button4;
     RadioButton button5;
+
+    private boolean showPoints;
+    private boolean showTimer;
+    private boolean penalty;
+    private int difficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +35,21 @@ public class GameSetupActivity extends AppCompatActivity {
         // Default radio button difficulty to 1
         button1.toggle();
         onChangeAIDifficulty(button1);
+        // Default settings
+        showPoints = true;
+        showTimer = true;
+        penalty = true;
+        difficulty = 1;
     }
 
     public void clickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         this.startActivity(intent);
     }
+    
+    public void onCheckShowPoints(View view){}
+    public void onCheckShowTimer(View view){}
+    public void onCheckPenalty(View view){}
 
     public void resetRadioButtonTextColor() {
         button1.setTextColor(getResources().getColor(R.color.secondaryColor));
@@ -57,18 +70,23 @@ public class GameSetupActivity extends AppCompatActivity {
             case R.id.difficulty1:
                 if (checked)
                     // set some global variable, then send to model when start game is clicked
+                    difficulty = 1;
                     break;
             case R.id.difficulty2:
                 if (checked)
+                    difficulty = 2;
                     break;
             case R.id.difficulty3:
                 if (checked)
+                    difficulty = 3;
                     break;
             case R.id.difficulty4:
                 if (checked)
+                    difficulty = 4;
                     break;
             case R.id.difficulty5:
                 if (checked)
+                    difficulty = 5;
                     break;
         }
     }
