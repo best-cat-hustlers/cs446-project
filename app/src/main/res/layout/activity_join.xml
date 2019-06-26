@@ -11,12 +11,15 @@
     <Button
         android:id="@+id/back_button"
         android:onClick="onBackPressed"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="26dp"
         style="@style/button_round_back" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/title_font"
+        android:layout_marginTop="40dp"
         android:text="@string/multiplayer_menu_join"
         android:layout_gravity="center"/>
 
