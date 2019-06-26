@@ -3,6 +3,8 @@ package com.bestCatHustlers.sukodublitz.game;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,10 @@ import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
+
+    private MediaPlayer lowPop;
+    private MediaPlayer middlePop;
+    private MediaPlayer highPop;
 
     private TextView playerScore1TextView;
     private TextView playerScore2TextView;
@@ -44,6 +50,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         Bundle extras = getIntent().getExtras();
 
         setContentView(R.layout.activity_game);
+
+        setupSounds();
 
         playerScore1TextView = findViewById(R.id.playerScore1TextView);
         playerScore2TextView = findViewById(R.id.playerScore2TextView);
@@ -115,6 +123,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void selectCell(int row, int column) {
         boardView.selectCell(row, column);
+
+        middlePop.start();
     }
 
     @Override
@@ -132,6 +142,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 numberEntryButtons[i].setAlpha(alpha);
             }
         }
+
+        lowPop.start();
     }
 
     @Override
@@ -204,6 +216,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void gameBoardViewDidClick(int row, int column) {
         presenter.handleCellClick(row, column);
+    }
+
+    //endregion
+
+    //region Private
+
+    private void setupSounds() {
+        lowPop = MediaPlayer.create(this, R.raw.pop_low);
+        middlePop = MediaPlayer.create(this, R.raw.pop_middle);
+        highPop = MediaPlayer.create(this, R.raw.pop_high);
     }
 
     //endregion
