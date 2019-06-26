@@ -1,4 +1,4 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.join;
 
 import android.content.Intent;
 import android.os.Bundle;
