@@ -5,11 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.bestCatHustlers.sukodublitz.PuzzleGenerator;
+import com.bestCatHustlers.sukodublitz.R;
 
 public class GameBoardView extends CardView {
     //region Properties
@@ -28,6 +30,7 @@ public class GameBoardView extends CardView {
     private int selectedColumn = -1;
 
     private int[][] board = new int[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
+    private String[][] cellOwners = new String[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
@@ -39,7 +42,9 @@ public class GameBoardView extends CardView {
         final float thinLineWidth = 2f;
 
         final Paint.Style textStyle = Paint.Style.FILL_AND_STROKE;
-        final int textColor = Color.BLACK;
+        final int defaultTextColor = Color.BLACK;
+        final int player1TextColor = getResources().getColor(R.color.primaryDarkColor);
+        final int player2TextColor = getResources().getColor(R.color.secondaryDarkColor);
         final float textSizeToCellRatio = 0.5f;
 
         final int selectedCellColor = Color.GRAY;
@@ -83,7 +88,7 @@ public class GameBoardView extends CardView {
 
         textPaint = new Paint();
         textPaint.setStyle(constants.textStyle);
-        textPaint.setColor(constants.textColor);
+
     }
 
     @Override
@@ -99,9 +104,9 @@ public class GameBoardView extends CardView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int maximumSize = Math.min(getMeasuredWidth(), getMeasuredHeight());
+        int maximumSize = (int) Math.round(Math.min(getMeasuredWidth(), getMeasuredHeight()) * constants.boardToParentRatio);
 
-        setMeasuredDimension((int) Math.round(maximumSize * constants.boardToParentRatio), maximumSize);
+        setMeasuredDimension(maximumSize, maximumSize);
     }
 
     @Override
@@ -126,8 +131,9 @@ public class GameBoardView extends CardView {
         invalidate();
     }
 
-    public void printBoard(int[][] board) {
+    public void printBoard(int[][] board, String[][] cellOwners) {
         this.board = board;
+        this.cellOwners = cellOwners;
 
         invalidate();
     }
@@ -201,6 +207,7 @@ public class GameBoardView extends CardView {
         for (int row = 0; row < constants.boardSize; ++row) {
             for (int column = 0; column < constants.boardSize; ++column) {
                 int value = board[row][column];
+                int textColor = getTextColor(cellOwners[row][column]);
 
                 if (value < 1 || value > 9) continue;
 
@@ -208,6 +215,7 @@ public class GameBoardView extends CardView {
                 Rect textBounds = new Rect();
 
                 textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
+                textPaint.setColor(textColor);
 
                 float textWidth = textPaint.measureText(valueString);
                 float textHeight = textBounds.height();
@@ -228,6 +236,19 @@ public class GameBoardView extends CardView {
 
             delegate.gameBoardViewDidClick(row, column);
         }
+    }
+
+    // TODO: Get cell owner strings get something like an enum (presenter can decide on the enum).
+    private int getTextColor(String cellOwner) {
+        switch (cellOwner) {
+            case "1":
+                return constants.player1TextColor;
+
+            case "2":
+                return constants.player2TextColor;
+        }
+
+        return constants.defaultTextColor;
     }
 
     //endregion

@@ -1,19 +1,27 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.content.Intent;
+
 public class GameContract {
     interface View {
         void selectCell(int row, int column);
 
-        void printBoard(int[][] board);
+        void selectNumber(int value);
+
+        void printBoard(int[][] board, String[][] cellOwners);
+
+        void alertEndOfGame(String message);
     }
 
     interface Presenter {
         void handleViewCreated();
 
-        int getCellOwnerFor(int row, int column);
+        String getCellOwnerFor(int row, int column);
 
         void handleCellClick(int row, int column);
 
         void handleNumberClick(int number);
+
+        void prepareOpenResultsActivity(Intent intent);
     }
 }

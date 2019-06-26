@@ -1,6 +1,9 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.content.Intent;
+
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.GameAI;
 
 public class GamePresenter implements GameContract.Presenter {
     //region Properties
@@ -10,6 +13,7 @@ public class GamePresenter implements GameContract.Presenter {
 
     private int selectedRow = -1;
     private int selectedColumn = -1;
+    private int selectedNumber = 0;
 
     //endregion
 
@@ -31,12 +35,14 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void handleViewCreated() {
-        view.printBoard(model.getBoard());
+        view.printBoard(model.getBoard(), model.getCellOwners());
     }
 
     @Override
-    public int getCellOwnerFor(int row, int column) {
-        return 0;
+    public String getCellOwnerFor(int row, int column) {
+        String [][] cellOwners = model.getCellOwners();
+
+        return cellOwners[row][column];
     }
 
     @Override
@@ -51,12 +57,75 @@ public class GamePresenter implements GameContract.Presenter {
             selectedColumn = column;
         }
 
+        if (shouldEnterSolution()) {
+            enterSelectedSolution();
+
+            selectedRow = -1;
+            selectedColumn = -1;
+        }
+
         view.selectCell(selectedRow, selectedColumn);
     }
 
     @Override
     public void handleNumberClick(int number) {
-        // TODO: Add view behaviour for selecting number entry interface.
+        if (selectedNumber == number) {
+            selectedNumber = 0;
+        } else {
+            selectedNumber = number;
+        }
+
+        if (shouldEnterSolution()) {
+            enterSelectedSolution();
+
+            selectedNumber = 0;
+            selectedRow = -1;
+            selectedColumn = -1;
+
+            view.selectCell(selectedRow, selectedColumn);
+        }
+
+        view.selectNumber(selectedNumber);
+    }
+
+    @Override
+    public void prepareOpenResultsActivity(Intent intent) {
+        // TODO: Add this to global constants.
+        intent.putExtra("BoardGame", model);
+    }
+
+    //endregion
+
+    //region Private
+
+    private boolean shouldEnterSolution() {
+        return (selectedNumber > 0 && selectedRow >= 0 && selectedColumn >= 0);
+    }
+
+    private void enterSelectedSolution() {
+        if (!shouldEnterSolution()) return;
+
+        // TODO: Get player ID properly.
+        model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+        view.printBoard(model.getBoard(), model.getCellOwners());
+
+        if (isPuzzleSolved()) {
+            // TODO: Create message strings.
+            view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
+        }
+    }
+
+    // TODO: Use model to determine if puzzle is solved properly.
+    private boolean isPuzzleSolved() {
+        int[][] board = model.getBoard();
+
+        for (int row = 0; row < 9; ++row) {
+            for (int column = 0; column < 9; ++column) {
+                if (board[row][column] < 1) return false;
+            }
+        }
+
+        return true;
     }
 
     //endregion
