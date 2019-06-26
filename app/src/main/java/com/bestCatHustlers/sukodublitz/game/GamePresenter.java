@@ -1,5 +1,7 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.content.Intent;
+
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 
@@ -84,6 +86,12 @@ public class GamePresenter implements GameContract.Presenter {
         }
 
         view.selectNumber(selectedNumber);
+    }
+
+    @Override
+    public void prepareOpenResultsActivity(Intent intent) {
+        // TODO: Add this to global constants.
+        intent.putExtra("BoardGame", model);
     }
 
     //endregion

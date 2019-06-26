@@ -1,5 +1,7 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.content.Intent;
+
 public class GameContract {
     interface View {
         void selectCell(int row, int column);
@@ -19,5 +21,7 @@ public class GameContract {
         void handleCellClick(int row, int column);
 
         void handleNumberClick(int number);
+
+        void prepareOpenResultsActivity(Intent intent);
     }
 }

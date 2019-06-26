@@ -64,6 +64,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     public void openResultsActivity(View view) {
         Intent intent = new Intent(this, ResultsActivity.class);
 
+        presenter.prepareOpenResultsActivity(intent);
+
         startActivity(intent);
     }
 
@@ -119,10 +121,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
-                        Context baseContext = getBaseContext();
-                        Intent intent = new Intent(baseContext, ResultsActivity.class);
-
-                        baseContext.startActivity(intent);
+                        openResultsActivity(null);
                     }
                 });
 
