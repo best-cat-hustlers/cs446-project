@@ -53,7 +53,7 @@
         <item name="android:drawableTop"></item>
         <item name="android:layout_marginTop">26dp</item>
         <item name="android:layout_marginStart">26dp</item>
-        <item name="android:background">@drawable/button_round_back</item>
+        <item name="android:background">@drawable/button_round</item>
     </style>
     <style name="title_font">
         <item name="android:textColor">@color/black</item>
