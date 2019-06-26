@@ -7,19 +7,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_red_blue"
     tools:context=".GameSetupActivity">
+
     <Button
         android:id="@+id/back_button"
         style="@style/button_round_back"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="51dp"
-        android:layout_marginBottom="621dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="26dp"
         android:onClick="onBackPressed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
