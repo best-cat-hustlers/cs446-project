@@ -8,17 +8,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
+import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
 
-    private GameContract.Presenter presenter;
+    private TextView playerScore1TextView;
+    private TextView playerScore2TextView;
+    private Chronometer chronometer;
     private GameBoardView boardView;
     private TextView[] numberEntryButtons;
+
+    private GameContract.Presenter presenter;
 
     private Constants constants;
 
@@ -38,6 +44,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         Bundle extras = getIntent().getExtras();
 
         setContentView(R.layout.activity_game);
+
+        playerScore1TextView = findViewById(R.id.playerScore1TextView);
+        playerScore2TextView = findViewById(R.id.playerScore2TextView);
+
+        chronometer = findViewById(R.id.chronometer);
+        chronometer.start();
 
         numberEntryButtons = new TextView[9];
         numberEntryButtons[0] = findViewById(R.id.numberEntry1);
@@ -61,6 +73,24 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         presenter.handleViewCreated();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    public void onBackPressed(View view) {
+        presenter.handleOnBackPressed();
+    }
+
     public void openResultsActivity(View view) {
         Intent intent = new Intent(this, ResultsActivity.class);
 
@@ -81,7 +111,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     //endregion
 
     //region Contract
-
 
     @Override
     public void selectCell(int row, int column) {
@@ -106,14 +135,53 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
+    public void printScores(int playerScore1, int playerScore2) {
+        // TODO: Set to strings file.
+        playerScore1TextView.setText("Player Blue: " + playerScore1);
+        playerScore2TextView.setText("Player Red: " + playerScore2);
+    }
+
+    @Override
     public void printBoard(int[][] board, String[][] cellOwners) {
         boardView.printBoard(board, cellOwners);
+    }
+
+    @Override
+    public void alertBackToMenu() {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+
+        // TODO: Set to strings file.
+        alert.setTitle("LEAVE GAME");
+        alert.setMessage("Are you sure you wish to leave this game? All progress will be lost.");
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "STAY",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       dialogInterface.dismiss();
+                    }
+                });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "LEAVE",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+
+                        Context baseContext = getBaseContext();
+                        Intent intent = new Intent(baseContext, MainActivity.class);
+
+                        baseContext.startActivity(intent);
+                    }
+                });
+
+        alert.show();
     }
 
     @Override
     public void alertEndOfGame(String message) {
         AlertDialog alert = new AlertDialog.Builder(this).create();
 
+        // TODO: Set to strings file.
         alert.setTitle("GAME OVER");
         alert.setMessage(message);
         alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -125,6 +193,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                     }
                 });
 
+        chronometer.stop();
         alert.show();
     }
 
