@@ -1,7 +1,5 @@
 package com.bestCatHustlers.sukodublitz;
 
-import android.os.Message;
-
 import com.bestCatHustlers.sukodublitz.game.GamePresenter;
 
 import java.util.Random;
@@ -58,7 +56,7 @@ public class GameAI implements Runnable
                 }
                 if (row == -1 && col == -1) continue; // If no square can be found wait and try again
                 game.fillSquare(row, col, solution[row][col], id); // Just fill the square with
-                sendMessage();
+                sendMessageToHandler();
             }
             // Interrupting thread is better than stopping since it halts at a deterministic point
             catch(InterruptedException e)
@@ -70,7 +68,7 @@ public class GameAI implements Runnable
         }
     }
 
-    private void sendMessage()
+    private void sendMessageToHandler()
     {
         // TODO: Re-enable when GamePresenter implements Handler
         // Need to pass in an integer as the "contents" to the message so just put in 0
