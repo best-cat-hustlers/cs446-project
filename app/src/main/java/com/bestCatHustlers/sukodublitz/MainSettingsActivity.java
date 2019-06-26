@@ -41,4 +41,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
     public void onMusicCheck(View view) {
 
     }
+    public void onBackPressed(View view){
+        super.onBackPressed();
+    }
 }
