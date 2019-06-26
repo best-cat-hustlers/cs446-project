@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MultiplayerMenuActivity">
+    android:background="@drawable/background_gradient_red_blue"
+    tools:context=".multiplayer.MultiplayerMenuActivity">
 
     <Button
         android:id="@+id/back_button"
+        android:onClick="onBackPressed"
         style="@style/button_round_back" />
 
     <TextView
@@ -15,15 +17,14 @@
         android:layout_height="wrap_content"
         style="@style/title_font"
         android:text="@string/title_multiplayer"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp" />
+        android:layout_gravity="center" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
         android:onClick="openGameSetup"
         android:text="@string/multiplayer_menu_host" />
 
@@ -32,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:onClick="openJoinActivity"
         android:text="@string/multiplayer_menu_join" />
 
