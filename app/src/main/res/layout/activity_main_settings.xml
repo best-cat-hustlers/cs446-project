@@ -16,6 +16,7 @@
         android:layout_marginTop="108dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="567dp"
+        android:gravity="center_horizontal"
         android:text="@string/Settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,35 +24,100 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="316dp"
+        android:layout_height="204dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="#F2F2F2"
-        app:cardCornerRadius="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <TextView
+            android:id="@+id/team_name"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:fontFamily="Avenir Next"
+            android:gravity="center_horizontal"
+            android:text="@string/team_name"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/team_titles"
+                android:layout_width="193dp"
+                android:layout_height="144dp"
+                android:fontFamily="Avenir Next"
+                android:gravity="start"
+                android:lineSpacingExtra="20dp"
+                android:text="@string/titles"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/team_people_names"
+                android:layout_width="169dp"
+                android:layout_height="140dp"
+                android:fontFamily="Avenir Next"
+                android:lineSpacingExtra="20dp"
+                android:text="@string/team_people_names"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="#F2F2F2"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_main_setting">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="201dp">
+            android:layout_height="match_parent">
 
             <Switch
                 android:id="@+id/sound"
                 android:layout_width="135dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
                 android:onClick="onSoundCheck"
                 android:text="@string/SoundSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Switch
+                android:id="@+id/Music"
+                android:layout_width="135dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="onMusicCheck"
+                android:text="@string/MusicSwitch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sound" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

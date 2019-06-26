@@ -38,4 +38,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         presenter.turnSound(soundSwitch.isChecked());
 
     }
+    public void onMusicCheck(View view) {
+
+    }
 }
