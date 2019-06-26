@@ -22,7 +22,7 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         setContentView(R.layout.activity_results);
         
         BoardGame board = getIntent().getExtras().getParcelable("BoardGame");
-        boardView = findViewById(R.id.boardLayout);
+        boardView = findViewById(R.id.result_boardLayout);
         presenter = new ResultsPresenter(this, board);
         presenter.handleViewCreated();
     }
