@@ -9,7 +9,6 @@
     <string name="title_activity_multiplayer_menu">Multiplayer Menu</string>
     <string name="title_activity_join">Join</string>
     <string name="title_activity_lobby">Lobby</string>
-    <string name="SoundSwitch">Sound</string>
     <string name="title_multiplayer">Multiplayer</string>
     <string name="multiplayer_menu_host">Host</string>
     <string name="multiplayer_menu_join">Join</string>
@@ -18,4 +17,11 @@
     <string name="lobby_wait_for_guest">Waiting for player to join…</string>
     <string name="lobby_player_joined">Player joined!</string>
     <string name="lobby_wait_for_host">Waiting for host player to start…</string>
+    <string name="game_setup">Game Setup</string>
+    <string name="show_points">Show points</string>
+    <string name="show_timer">Show timer</string>
+    <string name="penalty_on">Penalty on</string>
+    <string name="AI_difficulty">AI Difficulty</string>
+    <string name="SoundSwitch">Sound</string>
+
 </resources>
