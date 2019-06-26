@@ -113,12 +113,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     //region Contract
 
-
-    @Override
-    public int getTimeElapsed() {
-        return (int) (SystemClock.elapsedRealtime() - chronometer.getBase());
-    }
-
     @Override
     public void selectCell(final int row, final int column) {
         runOnUiThread(new Runnable() {

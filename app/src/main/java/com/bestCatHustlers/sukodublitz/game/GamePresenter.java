@@ -1,14 +1,11 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
-import android.widget.TextView;
+import android.os.SystemClock;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.Player;
-import com.bestCatHustlers.sukodublitz.R;
-
-import java.util.logging.Handler;
 
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
@@ -25,6 +22,9 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private int selectedRow = -1;
     private int selectedColumn = -1;
     private int selectedNumber = 0;
+
+    private long startTime = 0;
+    private long endTime = 0;
 
     //endregion
 
@@ -52,6 +52,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
+
+        startTime = SystemClock.elapsedRealtime();
 
         startAI(1000);
     }
@@ -106,9 +108,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void prepareOpenResultsActivity(Intent intent) {
-        // TODO: Add this to global constants.
+        int timeElapsed = (int) (endTime - startTime);
+
         intent.putExtra(EXTRAS_KEY_BOARD_GAME, model);
-        intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, view.getTimeElapsed());
+        intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
     }
 
     //endregion
@@ -174,6 +177,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         }
 
         if (isPuzzleSolved()) {
+            endTime = SystemClock.elapsedRealtime();
+
             // TODO: Create message strings.
             view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
         }

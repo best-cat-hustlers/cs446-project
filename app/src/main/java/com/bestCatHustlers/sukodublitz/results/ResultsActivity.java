@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
@@ -21,9 +20,9 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         
-        BoardGame board = getIntent().getExtras().getParcelable("BoardGame");
         boardView = findViewById(R.id.result_boardLayout);
-        presenter = new ResultsPresenter(this, board);
+
+        presenter = new ResultsPresenter(this, getIntent().getExtras());
         presenter.handleViewCreated();
     }
 
@@ -37,6 +36,16 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         Intent intent = new Intent(this, GameSetupActivity.class);
 
         startActivity(intent);
+    }
+
+    //region Contract
+
+
+    @Override
+    public void printTimeElapsed(String time) {
+        TextView textTimeNumber = findViewById(R.id.textTimeNumber);
+
+        textTimeNumber.setText(time);
     }
 
     @Override
@@ -61,4 +70,6 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         TextView winner = findViewById(R.id.textWinner);
         winner.setText(String.format("Player %s Wins!", id));
     }
+
+    //endregion
 }

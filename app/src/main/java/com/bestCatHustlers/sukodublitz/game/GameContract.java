@@ -4,8 +4,6 @@ import android.content.Intent;
 
 public class GameContract {
     interface View {
-        int getTimeElapsed();
-
         void selectCell(int row, int column);
 
         void selectNumber(int value);
