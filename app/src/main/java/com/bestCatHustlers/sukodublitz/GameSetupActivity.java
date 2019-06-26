@@ -34,6 +34,8 @@ public class GameSetupActivity extends AppCompatActivity {
                 b.setBackgroundResource(0);
             }
         }
-
+    }
+    public void onBackPressed(View view){
+        super.onBackPressed();
     }
 }
