@@ -9,7 +9,7 @@
     <color name="buttonPrimaryColor">#f2f2f2</color>
     <color name="buttonOpacityColor">#ccf2f2f2</color>
     <color name="buttonSecondaryColor">#BDBDBD</color>
-
+    <color name="radioButtonColor">#c8c8c8</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
 </resources>
