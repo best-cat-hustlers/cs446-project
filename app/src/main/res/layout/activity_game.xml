@@ -19,9 +19,9 @@
             android:onClick="onBackPressed"
             style="@style/button_round_back" />
 
-        <TextView
-            android:id="@+id/timerTextView"
-            android:text="Time: 04:31"
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:format="Time: %s"
             android:textSize="18dp"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"

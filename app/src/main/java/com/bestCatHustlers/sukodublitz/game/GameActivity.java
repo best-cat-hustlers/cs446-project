@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.bestCatHustlers.sukodublitz.MainActivity;
@@ -19,7 +20,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     private TextView playerScore1TextView;
     private TextView playerScore2TextView;
-    private TextView timerTextView;
+    private Chronometer chronometer;
     private GameBoardView boardView;
     private TextView[] numberEntryButtons;
 
@@ -47,7 +48,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         playerScore1TextView = findViewById(R.id.playerScore1TextView);
         playerScore2TextView = findViewById(R.id.playerScore2TextView);
 
-        timerTextView = findViewById(R.id.timerTextView);
+        chronometer = findViewById(R.id.chronometer);
+        chronometer.start();
 
         numberEntryButtons = new TextView[9];
         numberEntryButtons[0] = findViewById(R.id.numberEntry1);
@@ -191,6 +193,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                     }
                 });
 
+        chronometer.stop();
         alert.show();
     }
 
