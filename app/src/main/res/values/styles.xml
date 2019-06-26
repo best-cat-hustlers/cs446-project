@@ -50,7 +50,6 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">50dp</item>
         <item name="android:paddingTop">7dp</item>
-        <item name="android:background">@drawable/button_round_digit</item>
     </style>
     <style name="title_font">
         <item name="android:textColor">@color/black</item>

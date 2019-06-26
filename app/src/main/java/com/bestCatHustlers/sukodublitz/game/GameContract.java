@@ -8,7 +8,11 @@ public class GameContract {
 
         void selectNumber(int value);
 
+        void printScores(int playerScore1, int playerScore2);
+
         void printBoard(int[][] board, String[][] cellOwners);
+
+        void alertBackToMenu();
 
         void alertEndOfGame(String message);
     }
@@ -16,11 +20,11 @@ public class GameContract {
     interface Presenter {
         void handleViewCreated();
 
-        String getCellOwnerFor(int row, int column);
-
         void handleCellClick(int row, int column);
 
         void handleNumberClick(int number);
+
+        void handleOnBackPressed();
 
         void prepareOpenResultsActivity(Intent intent);
     }
