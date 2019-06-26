@@ -1,7 +1,6 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
-import android.widget.TextView;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.Player;
@@ -62,6 +61,8 @@ public class GamePresenter implements GameContract.Presenter {
 
             selectedRow = -1;
             selectedColumn = -1;
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectCell(selectedRow, selectedColumn);
@@ -83,6 +84,8 @@ public class GamePresenter implements GameContract.Presenter {
             selectedColumn = -1;
 
             view.selectCell(selectedRow, selectedColumn);
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectNumber(selectedNumber);
@@ -118,6 +121,8 @@ public class GamePresenter implements GameContract.Presenter {
 
         view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
+
+        view.playSound(R.raw.pop_middle);
 
         if (isPuzzleSolved()) {
             // TODO: Create message strings.

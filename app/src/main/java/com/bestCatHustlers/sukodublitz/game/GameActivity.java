@@ -20,10 +20,6 @@ import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
 
-    private MediaPlayer lowPop;
-    private MediaPlayer middlePop;
-    private MediaPlayer highPop;
-
     private TextView playerScore1TextView;
     private TextView playerScore2TextView;
     private Chronometer chronometer;
@@ -50,8 +46,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         Bundle extras = getIntent().getExtras();
 
         setContentView(R.layout.activity_game);
-
-        setupSounds();
 
         playerScore1TextView = findViewById(R.id.playerScore1TextView);
         playerScore2TextView = findViewById(R.id.playerScore2TextView);
@@ -123,8 +117,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void selectCell(int row, int column) {
         boardView.selectCell(row, column);
-
-        middlePop.start();
     }
 
     @Override
@@ -142,8 +134,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 numberEntryButtons[i].setAlpha(alpha);
             }
         }
-
-        lowPop.start();
     }
 
     @Override
@@ -209,6 +199,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         alert.show();
     }
 
+    @Override
+    public void playSound(int soundID) {
+        MediaPlayer soundPlayer = MediaPlayer.create(this, soundID);
+
+        soundPlayer.start();
+    }
+
     //endregion
 
     //region BoardGameView.Delegate
@@ -216,16 +213,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     public void gameBoardViewDidClick(int row, int column) {
         presenter.handleCellClick(row, column);
-    }
-
-    //endregion
-
-    //region Private
-
-    private void setupSounds() {
-        lowPop = MediaPlayer.create(this, R.raw.pop_low);
-        middlePop = MediaPlayer.create(this, R.raw.pop_middle);
-        highPop = MediaPlayer.create(this, R.raw.pop_high);
     }
 
     //endregion
