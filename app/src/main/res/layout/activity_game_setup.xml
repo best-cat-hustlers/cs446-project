@@ -7,7 +7,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_red_blue"
     tools:context=".GameSetupActivity">
-
+    <Button
+        android:id="@+id/back_button"
+        style="@style/button_round_back"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginBottom="621dp"
+        android:onClick="onBackPressed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
@@ -110,8 +122,8 @@
 
             <RadioGroup
                 android:id="@+id/AI_difficulty"
-                android:layout_width="278dp"
-                android:layout_height="31dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="17dp"
                 android:layout_marginBottom="8dp"
@@ -127,40 +139,40 @@
 
                 <Button
                     android:id="@+id/diff1"
-                    android:layout_width="23dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
                     android:layout_weight="1"
                     android:onClick="clickDifficulty"
                     android:text="1" />
 
                 <Button
                     android:id="@+id/diff2"
-                    android:layout_width="23dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
                     android:layout_weight="1"
                     android:onClick="clickDifficulty"
                     android:text="2" />
 
                 <Button
                     android:id="@+id/diff3"
-                    android:layout_width="23dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
                     android:layout_weight="1"
                     android:onClick="clickDifficulty"
                     android:text="3" />
 
                 <Button
                     android:id="@+id/diff4"
-                    android:layout_width="23dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
                     android:layout_weight="1"
                     android:onClick="clickDifficulty"
                     android:text="4" />
 
                 <Button
                     android:id="@+id/diff5"
-                    android:layout_width="23dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
                     android:layout_weight="1"
                     android:onClick="clickDifficulty"
                     android:text="5" />
