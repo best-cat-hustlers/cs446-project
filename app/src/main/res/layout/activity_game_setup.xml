@@ -48,7 +48,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="#F2F2F2"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,10 +76,9 @@
                 android:text="@string/show_points"
                 app:layout_constraintBottom_toTopOf="@+id/show_timer_switch"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.228" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <Switch
                 android:id="@+id/show_timer_switch"
