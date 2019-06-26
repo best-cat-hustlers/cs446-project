@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.bestCatHustlers.sukodublitz.R;
-import com.bestCatHustlers.sukodublitz.ResultsActivity;
+import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     private GameContract.Presenter presenter;

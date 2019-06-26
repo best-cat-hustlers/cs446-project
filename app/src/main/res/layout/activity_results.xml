@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_red_blue"
-    tools:context=".ResultsActivity">
+    tools:context=".results.ResultsActivity">
 
     <Button
         android:id="@+id/game_button"
@@ -28,7 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_round_back"
-        android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
+        android:drawableLeft="@drawable/ic_chevron_left_black"
         android:onClick="openMainActivity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
