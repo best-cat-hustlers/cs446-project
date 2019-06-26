@@ -4,7 +4,7 @@ public class ResultsContract
 {
     interface View
     {
-        void printBoard(int[][] board);
+        void printBoard(int[][] board, String[][] cellOwners);
         void printScores(int playerRedScore, int playerBlueScore);
         void printWinner(String id);
     }
