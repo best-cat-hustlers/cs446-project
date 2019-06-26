@@ -16,9 +16,11 @@
 
         <Button
             android:alpha="0.9"
+            android:onClick="onBackPressed"
             style="@style/button_round_back" />
 
         <TextView
+            android:id="@+id/timerTextView"
             android:text="Time: 04:31"
             android:textSize="18dp"
             android:layout_centerInParent="true"
@@ -48,6 +50,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/playerScore1TextView"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
                 android:text="Player Blue: 100"
@@ -58,6 +61,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/playerScore2TextView"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
                 android:text="Player Red: 350"

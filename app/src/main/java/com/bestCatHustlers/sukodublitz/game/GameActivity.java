@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 
@@ -75,6 +76,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         }
     }
 
+    public void onBackPressed(View view) {
+        presenter.handleOnBackPressed();
+    }
+
     public void openResultsActivity(View view) {
         Intent intent = new Intent(this, ResultsActivity.class);
 
@@ -95,7 +100,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     //endregion
 
     //region Contract
-
 
     @Override
     public void selectCell(int row, int column) {
@@ -125,9 +129,41 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
+    public void alertBackToMenu() {
+        AlertDialog alert = new AlertDialog.Builder(this).create();
+
+        // TODO: Set to strings file.
+        alert.setTitle("LEAVE GAME");
+        alert.setMessage("Are you sure you wish to leave this game? All progress will be lost.");
+        alert.setButton(AlertDialog.BUTTON_NEUTRAL, "STAY",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       dialogInterface.dismiss();
+                    }
+                });
+
+        alert.setButton(AlertDialog.BUTTON_NEGATIVE, "LEAVE",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+
+                        Context baseContext = getBaseContext();
+                        Intent intent = new Intent(baseContext, MainActivity.class);
+
+                        baseContext.startActivity(intent);
+                    }
+                });
+
+        alert.show();
+    }
+
+    @Override
     public void alertEndOfGame(String message) {
         AlertDialog alert = new AlertDialog.Builder(this).create();
 
+        // TODO: Set to strings file.
         alert.setTitle("GAME OVER");
         alert.setMessage(message);
         alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

@@ -39,13 +39,6 @@ public class GamePresenter implements GameContract.Presenter {
     }
 
     @Override
-    public String getCellOwnerFor(int row, int column) {
-        String [][] cellOwners = model.getCellOwners();
-
-        return cellOwners[row][column];
-    }
-
-    @Override
     public void handleCellClick(int row, int column) {
         if (model.getBoard()[row][column] > 0) return;
 
@@ -86,6 +79,11 @@ public class GamePresenter implements GameContract.Presenter {
         }
 
         view.selectNumber(selectedNumber);
+    }
+
+    @Override
+    public void handleOnBackPressed() {
+        view.alertBackToMenu();
     }
 
     @Override

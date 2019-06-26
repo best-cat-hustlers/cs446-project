@@ -10,17 +10,19 @@ public class GameContract {
 
         void printBoard(int[][] board, String[][] cellOwners);
 
+        void alertBackToMenu();
+
         void alertEndOfGame(String message);
     }
 
     interface Presenter {
         void handleViewCreated();
 
-        String getCellOwnerFor(int row, int column);
-
         void handleCellClick(int row, int column);
 
         void handleNumberClick(int number);
+
+        void handleOnBackPressed();
 
         void prepareOpenResultsActivity(Intent intent);
     }
