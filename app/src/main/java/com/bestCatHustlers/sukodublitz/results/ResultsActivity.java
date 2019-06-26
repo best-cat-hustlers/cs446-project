@@ -20,10 +20,8 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-
-        // TODO: Re-enable when you can get the BoardGame
-//        BoardGame board = getIntent().getExtras().getParcelable("BoardGame");
-        BoardGame board = new BoardGame();
+        
+        BoardGame board = getIntent().getExtras().getParcelable("BoardGame");
         boardView = findViewById(R.id.boardLayout);
         presenter = new ResultsPresenter(this, board);
         presenter.handleViewCreated();
@@ -42,9 +40,9 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printBoard(int[][] board)
+    public void printBoard(int[][] board, String[][] cellOwners)
     {
-        boardView.printBoard(board);
+        boardView.printBoard(board, cellOwners);
     }
 
     @Override
