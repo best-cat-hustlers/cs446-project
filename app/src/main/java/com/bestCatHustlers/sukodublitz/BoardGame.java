@@ -147,7 +147,9 @@ public class BoardGame implements Parcelable
 
     public Player getWinner()
     {
-        if (getEmptyCells() != 0) return null;
+        // TODO: Temporarily disable as long as you can move to the results screen without finishing
+        // the board
+//        if (getEmptyCells() != 0) return null;
 
         Player ret = null;
         Iterator it = players.entrySet().iterator();

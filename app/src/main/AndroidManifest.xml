@@ -13,7 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainSettingsActivity"></activity>
         <activity android:name=".GameSetupActivity" />
-        <activity android:name=".ResultsActivity"></activity>
+        <activity android:name=".results.ResultsActivity"></activity>
         <activity android:name=".game.GameActivity" />
         <activity
             android:name=".multiplayer.MultiplayerMenuActivity"
