@@ -23,7 +23,6 @@ public class GameAI implements Runnable
     private BoardGame game;
     private String id;
     private GamePresenter presenter;
-    public final int UPDATE_BOARD = 1234;
 
     GameAI(GamePresenter presenter, BoardGame game, int delayMs, String id)
     {
@@ -74,6 +73,7 @@ public class GameAI implements Runnable
     private void sendMessage()
     {
         // TODO: Re-enable when GamePresenter implements Handler
-        // presenter.getHandler().sendEmptyMessage(UPDATE_BOARD);
+        // Need to pass in an integer as the "contents" to the message so just put in 0
+        // presenter.getHandler().sendEmptyMessage(0);
     }
 }
