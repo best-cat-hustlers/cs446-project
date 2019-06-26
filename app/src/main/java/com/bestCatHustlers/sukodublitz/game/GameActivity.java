@@ -120,8 +120,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void selectCell(int row, int column) {
-        boardView.selectCell(row, column);
+    public void selectCell(final int row, final int column) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boardView.selectCell(row, column);
+            }
+        });
     }
 
     @Override

@@ -120,7 +120,6 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         handleSolutionEntered();
     }
 
-
     //endregion
 
     //region Private
@@ -165,6 +164,14 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
+
+        // If another player has entered a solution in the cell currently selected, force deselection.
+        if (selectedRow >= 0 && selectedColumn >= 0 && model.getBoard()[selectedRow][selectedColumn] > 0) {
+            selectedRow = -1;
+            selectedColumn = -1;
+
+            view.selectCell(selectedRow, selectedColumn);
+        }
 
         if (isPuzzleSolved()) {
             // TODO: Create message strings.
