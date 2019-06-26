@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
     <size android:height="36dp"
         android:width="36dp" />
-    <solid android:color="@color/buttonPrimaryColor"/>
+    <solid android:color="@color/radioButtonColor"/>
 </shape>

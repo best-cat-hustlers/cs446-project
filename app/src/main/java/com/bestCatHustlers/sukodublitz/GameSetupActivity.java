@@ -11,12 +11,26 @@ import com.bestCatHustlers.sukodublitz.game.GameActivity;
 
 public class GameSetupActivity extends AppCompatActivity {
 
+    RadioButton button1;
+    RadioButton button2;
+    RadioButton button3;
+    RadioButton button4;
+    RadioButton button5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
+
+        button1 = findViewById(R.id.difficulty1);
+        button2 = findViewById(R.id.difficulty2);
+        button3 = findViewById(R.id.difficulty3);
+        button4 = findViewById(R.id.difficulty4);
+        button5 = findViewById(R.id.difficulty5);
+
         // Default radio button difficulty to 1
-        ((RadioButton) findViewById(R.id.difficulty1)).toggle();
+        button1.toggle();
+        onChangeAIDifficulty(button1);
     }
 
     public void clickGame(View view) {
@@ -24,8 +38,20 @@ public class GameSetupActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    public void resetRadioButtonTextColor() {
+        button1.setTextColor(getResources().getColor(R.color.secondaryColor));
+        button2.setTextColor(getResources().getColor(R.color.secondaryColor));
+        button3.setTextColor(getResources().getColor(R.color.secondaryColor));
+        button4.setTextColor(getResources().getColor(R.color.secondaryColor));
+        button5.setTextColor(getResources().getColor(R.color.secondaryColor));
+    }
+
     public void onChangeAIDifficulty(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
+        RadioButton selectedRadioButton = (RadioButton) view;
+        boolean checked = selectedRadioButton.isChecked();
+
+        resetRadioButtonTextColor();
+        selectedRadioButton.setTextColor(getResources().getColor(R.color.white));
 
         switch(view.getId()) {
             case R.id.difficulty1:
