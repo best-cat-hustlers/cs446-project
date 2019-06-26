@@ -1,9 +1,11 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
+import android.widget.TextView;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
-import com.bestCatHustlers.sukodublitz.GameAI;
+import com.bestCatHustlers.sukodublitz.Player;
+import com.bestCatHustlers.sukodublitz.R;
 
 public class GamePresenter implements GameContract.Presenter {
     //region Properties
@@ -35,6 +37,11 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void handleViewCreated() {
+        // TODO: Get player ID properly.
+        Player player1 = model.getPlayer("1");
+        Player player2 = model.getPlayer("2");
+
+        view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
     }
 
@@ -105,6 +112,11 @@ public class GamePresenter implements GameContract.Presenter {
 
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+
+        Player player1 = model.getPlayer("1");
+        Player player2 = model.getPlayer("2");
+
+        view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         if (isPuzzleSolved()) {

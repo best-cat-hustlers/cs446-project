@@ -8,6 +8,8 @@ public class GameContract {
 
         void selectNumber(int value);
 
+        void printScores(int playerScore1, int playerScore2);
+
         void printBoard(int[][] board, String[][] cellOwners);
 
         void alertBackToMenu();

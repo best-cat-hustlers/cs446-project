@@ -17,9 +17,13 @@ import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
 
-    private GameContract.Presenter presenter;
+    private TextView playerScore1TextView;
+    private TextView playerScore2TextView;
+    private TextView timerTextView;
     private GameBoardView boardView;
     private TextView[] numberEntryButtons;
+
+    private GameContract.Presenter presenter;
 
     private Constants constants;
 
@@ -39,6 +43,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         Bundle extras = getIntent().getExtras();
 
         setContentView(R.layout.activity_game);
+
+        playerScore1TextView = findViewById(R.id.playerScore1TextView);
+        playerScore2TextView = findViewById(R.id.playerScore2TextView);
+
+        timerTextView = findViewById(R.id.timerTextView);
 
         numberEntryButtons = new TextView[9];
         numberEntryButtons[0] = findViewById(R.id.numberEntry1);
@@ -121,6 +130,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 numberEntryButtons[i].setAlpha(alpha);
             }
         }
+    }
+
+    @Override
+    public void printScores(int playerScore1, int playerScore2) {
+        // TODO: Set to strings file.
+        playerScore1TextView.setText("Player Blue: " + playerScore1);
+        playerScore2TextView.setText("Player Red " + playerScore2);
     }
 
     @Override
