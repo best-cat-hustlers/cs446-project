@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
 
@@ -18,8 +19,8 @@ public class GameSetupActivity extends AppCompatActivity {
 
     private boolean showPoints;
     private boolean showTimer;
-    private boolean penalty;
-    private int difficulty;
+    private boolean penaltyOn;
+    private int aiDifficulty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +33,37 @@ public class GameSetupActivity extends AppCompatActivity {
         button4 = findViewById(R.id.difficulty4);
         button5 = findViewById(R.id.difficulty5);
 
-        // Default radio button difficulty to 1
+        // Default radio button aiDifficulty to 1
         button1.toggle();
         onChangeAIDifficulty(button1);
         // Default settings
         showPoints = true;
         showTimer = true;
-        penalty = true;
-        difficulty = 1;
+        penaltyOn = true;
+        aiDifficulty = 1;
     }
 
     public void clickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("showPoints", showPoints);
+        intent.putExtra("showTimer", showTimer);
+        intent.putExtra("penaltyOn", penaltyOn);
+        intent.putExtra("aiDifficulty", aiDifficulty);
         this.startActivity(intent);
     }
-    
-    public void onCheckShowPoints(View view){}
-    public void onCheckShowTimer(View view){}
-    public void onCheckPenalty(View view){}
+
+    public void onCheckShowPoints(View view){
+        Switch sw = (Switch) view;
+        showPoints = sw.isChecked();
+    }
+    public void onCheckShowTimer(View view){
+        Switch sw = (Switch) view;
+        showTimer = sw.isChecked();
+    }
+    public void onCheckPenalty(View view){
+        Switch sw = (Switch) view;
+        penaltyOn = sw.isChecked();
+    }
 
     public void resetRadioButtonTextColor() {
         button1.setTextColor(getResources().getColor(R.color.secondaryColor));
@@ -70,23 +84,23 @@ public class GameSetupActivity extends AppCompatActivity {
             case R.id.difficulty1:
                 if (checked)
                     // set some global variable, then send to model when start game is clicked
-                    difficulty = 1;
+                    aiDifficulty = 1;
                     break;
             case R.id.difficulty2:
                 if (checked)
-                    difficulty = 2;
+                    aiDifficulty = 2;
                     break;
             case R.id.difficulty3:
                 if (checked)
-                    difficulty = 3;
+                    aiDifficulty = 3;
                     break;
             case R.id.difficulty4:
                 if (checked)
-                    difficulty = 4;
+                    aiDifficulty = 4;
                     break;
             case R.id.difficulty5:
                 if (checked)
-                    difficulty = 5;
+                    aiDifficulty = 5;
                     break;
         }
     }
