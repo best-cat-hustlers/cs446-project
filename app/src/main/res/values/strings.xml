@@ -23,5 +23,9 @@
     <string name="penalty_on">Penalty on</string>
     <string name="AI_difficulty">AI Difficulty</string>
     <string name="SoundSwitch">Sound</string>
+    <string name="MusicSwitch">Music</string>
+    <string name="team_name"><u>Best Cat Hustlers</u></string>
+    <string name="titles">Lead iOS Engineer\nLead AI Engineer\nLead Android Engineer\nLead Design Engineer</string>
+    <string name="team_people_names">Xavier Chong\nAlexander Kim\nJiaxi Zhang\nSteven Yang</string>
 
 </resources>
