@@ -1,5 +1,9 @@
 package com.bestCatHustlers.sukodublitz;
 
+import android.os.Message;
+
+import com.bestCatHustlers.sukodublitz.game.GamePresenter;
+
 import java.util.Random;
 
 /*
@@ -18,12 +22,16 @@ public class GameAI implements Runnable
     private int delayMs;
     private BoardGame game;
     private String id;
-    GameAI(BoardGame game, int delayMs, String id)
+    private GamePresenter presenter;
+    public final int UPDATE_BOARD = 1234;
+
+    GameAI(GamePresenter presenter, BoardGame game, int delayMs, String id)
     {
         this.game = game;
         this.delayMs = delayMs;
         this.id = id;
         rand = new Random();
+        this.presenter = presenter;
     }
 
     // TODO: Obviously this is a very simply AI, figure out heuristics for more advanced AI
@@ -51,6 +59,7 @@ public class GameAI implements Runnable
                 }
                 if (row == -1 && col == -1) continue; // If no square can be found wait and try again
                 game.fillSquare(row, col, solution[row][col], id); // Just fill the square with
+                sendMessage();
             }
             // Interrupting thread is better than stopping since it halts at a deterministic point
             catch(InterruptedException e)
@@ -60,5 +69,11 @@ public class GameAI implements Runnable
                 break;
             }
         }
+    }
+
+    private void sendMessage()
+    {
+        // TODO: Re-enable when GamePresenter implements Handler
+        // presenter.getHandler().sendEmptyMessage(UPDATE_BOARD);
     }
 }
