@@ -15,20 +15,24 @@ t.interrupt()
  */
 public class GameAI implements Runnable
 {
+    public Delegate delegate;
+
     private Random rand;
     private int[][] board;
     private int delayMs;
     private BoardGame game;
     private String id;
-    private GamePresenter presenter;
 
-    GameAI(GamePresenter presenter, BoardGame game, int delayMs, String id)
+    public interface Delegate {
+        void gameAiDidEnterSolution();
+    }
+
+    public GameAI(BoardGame game, int delayMs, String id)
     {
         this.game = game;
         this.delayMs = delayMs;
         this.id = id;
         rand = new Random();
-        this.presenter = presenter;
     }
 
     // TODO: Obviously this is a very simply AI, figure out heuristics for more advanced AI
@@ -56,7 +60,7 @@ public class GameAI implements Runnable
                 }
                 if (row == -1 && col == -1) continue; // If no square can be found wait and try again
                 game.fillSquare(row, col, solution[row][col], id); // Just fill the square with
-                sendMessageToHandler();
+                delegate.gameAiDidEnterSolution();
             }
             // Interrupting thread is better than stopping since it halts at a deterministic point
             catch(InterruptedException e)
@@ -66,12 +70,5 @@ public class GameAI implements Runnable
                 break;
             }
         }
-    }
-
-    private void sendMessageToHandler()
-    {
-        // TODO: Re-enable when GamePresenter implements Handler
-        // Need to pass in an integer as the "contents" to the message so just put in 0
-        // presenter.getHandler().sendEmptyMessage(0);
     }
 }

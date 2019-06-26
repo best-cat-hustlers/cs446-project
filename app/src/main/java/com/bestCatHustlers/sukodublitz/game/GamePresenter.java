@@ -1,21 +1,30 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
-import android.widget.TextView;
+import android.os.SystemClock;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.Player;
-import com.bestCatHustlers.sukodublitz.R;
 
-public class GamePresenter implements GameContract.Presenter {
+public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
+
+    public static final String EXTRAS_KEY_BOARD_GAME = "BoardGame";
+    public static final String EXTRAS_KEY_TIME_ELAPSED = "time_elapsed";
 
     private GameContract.View view;
     private BoardGame model;
 
+    private GameAI ai;
+    private Thread aiThread;
+
     private int selectedRow = -1;
     private int selectedColumn = -1;
     private int selectedNumber = 0;
+
+    private long startTime = 0;
+    private long endTime = 0;
 
     //endregion
 
@@ -43,6 +52,10 @@ public class GamePresenter implements GameContract.Presenter {
 
         view.printScores(player1.getScore(), player2.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
+
+        startTime = SystemClock.elapsedRealtime();
+
+        startAI(1000);
     }
 
     @Override
@@ -95,13 +108,32 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void prepareOpenResultsActivity(Intent intent) {
-        // TODO: Add this to global constants.
-        intent.putExtra("BoardGame", model);
+        int timeElapsed = (int) (endTime - startTime);
+
+        intent.putExtra(EXTRAS_KEY_BOARD_GAME, model);
+        intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
+    }
+
+    //endregion
+
+    //region GameAI.Delegate
+
+    @Override
+    public void gameAiDidEnterSolution() {
+        handleSolutionEntered();
     }
 
     //endregion
 
     //region Private
+
+    private void startAI(int delay) {
+        ai = new GameAI(model, delay, "2");
+        ai.delegate = this;
+        aiThread = new Thread(ai);
+
+        aiThread.start();
+    }
 
     private boolean shouldEnterSolution() {
         return (selectedNumber > 0 && selectedRow >= 0 && selectedColumn >= 0);
@@ -113,16 +145,7 @@ public class GamePresenter implements GameContract.Presenter {
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
 
-        Player player1 = model.getPlayer("1");
-        Player player2 = model.getPlayer("2");
-
-        view.printScores(player1.getScore(), player2.getScore());
-        view.printBoard(model.getBoard(), model.getCellOwners());
-
-        if (isPuzzleSolved()) {
-            // TODO: Create message strings.
-            view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
-        }
+        handleSolutionEntered();
     }
 
     // TODO: Use model to determine if puzzle is solved properly.
@@ -136,6 +159,29 @@ public class GamePresenter implements GameContract.Presenter {
         }
 
         return true;
+    }
+
+    private void handleSolutionEntered() {
+        Player player1 = model.getPlayer("1");
+        Player player2 = model.getPlayer("2");
+
+        view.printScores(player1.getScore(), player2.getScore());
+        view.printBoard(model.getBoard(), model.getCellOwners());
+
+        // If another player has entered a solution in the cell currently selected, force deselection.
+        if (selectedRow >= 0 && selectedColumn >= 0 && model.getBoard()[selectedRow][selectedColumn] > 0) {
+            selectedRow = -1;
+            selectedColumn = -1;
+
+            view.selectCell(selectedRow, selectedColumn);
+        }
+
+        if (isPuzzleSolved()) {
+            endTime = SystemClock.elapsedRealtime();
+
+            // TODO: Create message strings.
+            view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
+        }
     }
 
     //endregion
