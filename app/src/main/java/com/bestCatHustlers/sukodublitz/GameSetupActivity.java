@@ -17,10 +17,11 @@ public class GameSetupActivity extends AppCompatActivity {
     RadioButton button4;
     RadioButton button5;
 
-    private boolean showPoints;
-    private boolean showTimer;
-    private boolean penaltyOn;
-    private int aiDifficulty;
+    // Default settings
+    private boolean showPoints = true;
+    private boolean showTimer = true;
+    private boolean penaltyOn = true;
+    private int aiDifficulty = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +37,7 @@ public class GameSetupActivity extends AppCompatActivity {
         // Default radio button aiDifficulty to 1
         button1.toggle();
         onChangeAIDifficulty(button1);
-        // Default settings
-        showPoints = true;
-        showTimer = true;
-        penaltyOn = true;
-        aiDifficulty = 1;
+
     }
 
     public void clickGame(View view) {

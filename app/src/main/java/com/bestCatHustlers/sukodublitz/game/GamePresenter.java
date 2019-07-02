@@ -1,6 +1,7 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.SystemClock;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
@@ -30,9 +31,15 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     //region LifeCycle
 
-    public GamePresenter(GameContract.View view, BoardGame model) {
+    public GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
-        this.model = model;
+        // TODO: Now just getting some values
+        if (extras != null) {
+            boolean showPoints = extras.getBoolean("showPoints");
+            boolean showTimer = extras.getBoolean("showTimer");
+            boolean penaltyOn = extras.getBoolean("penaltyOn");
+            int aiDifficulty = extras.getInt("aiDifficulty");
+        }
 
         // TODO: Remove this test model once it can be passed in properly via intent.
         BoardGame testModel = new BoardGame();

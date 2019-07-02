@@ -67,14 +67,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         boardView.delegate = this;
 
         // TODO: Get model from intent extras.
-        presenter = new GamePresenter(this, null);
-        // TODO: Now just getting some values
-        if (extras != null) {
-            boolean showPoints = extras.getBoolean("showPoints");
-            boolean showTimer = extras.getBoolean("showTimer");
-            boolean penaltyOn = extras.getBoolean("penaltyOn");
-            int aiDifficulty = extras.getInt("aiDifficulty");
-        }
+        presenter = new GamePresenter(this, getIntent().getExtras());
 
         presenter.handleViewCreated();
     }
