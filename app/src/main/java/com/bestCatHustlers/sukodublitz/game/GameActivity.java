@@ -65,8 +65,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         boardView = (GameBoardView) findViewById(R.id.boardLayout);
         boardView.delegate = this;
-
-        // TODO: Get model from intent extras.
+        
         presenter = new GamePresenter(this, getIntent().getExtras());
 
         presenter.handleViewCreated();

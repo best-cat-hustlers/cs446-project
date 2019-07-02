@@ -33,7 +33,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     public GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
-        // TODO: Now just getting some values
+        // TODO: Need to deal with these values
         if (extras != null) {
             boolean showPoints = extras.getBoolean("showPoints");
             boolean showTimer = extras.getBoolean("showTimer");
