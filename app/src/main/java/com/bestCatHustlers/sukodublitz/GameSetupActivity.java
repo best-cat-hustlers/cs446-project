@@ -11,6 +11,10 @@ import com.bestCatHustlers.sukodublitz.game.GameActivity;
 
 public class GameSetupActivity extends AppCompatActivity {
 
+    public static final String SHOW_POINTS = "showPoints";
+    public static final String SHOW_TIMER = "showTimer";
+    public static final String PENALTY_ON = "penaltyOn";
+    public static final String AI_DIFFICULTY = "aiDifficulty";
     RadioButton button1;
     RadioButton button2;
     RadioButton button3;
@@ -42,10 +46,10 @@ public class GameSetupActivity extends AppCompatActivity {
 
     public void clickGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("showPoints", showPoints);
-        intent.putExtra("showTimer", showTimer);
-        intent.putExtra("penaltyOn", penaltyOn);
-        intent.putExtra("aiDifficulty", aiDifficulty);
+        intent.putExtra(SHOW_POINTS, showPoints);
+        intent.putExtra(SHOW_TIMER, showTimer);
+        intent.putExtra(PENALTY_ON, penaltyOn);
+        intent.putExtra(AI_DIFFICULTY, aiDifficulty);
         this.startActivity(intent);
     }
 

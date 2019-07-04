@@ -6,6 +6,7 @@ import android.os.SystemClock;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
+import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
@@ -35,10 +36,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         this.view = view;
         // TODO: Need to deal with these values
         if (extras != null) {
-            boolean showPoints = extras.getBoolean("showPoints");
-            boolean showTimer = extras.getBoolean("showTimer");
-            boolean penaltyOn = extras.getBoolean("penaltyOn");
-            int aiDifficulty = extras.getInt("aiDifficulty");
+            boolean showPoints = extras.getBoolean(GameSetupActivity.SHOW_POINTS);
+            boolean showTimer = extras.getBoolean(GameSetupActivity.SHOW_TIMER);
+            boolean penaltyOn = extras.getBoolean(GameSetupActivity.PENALTY_ON);
+            int aiDifficulty = extras.getInt(GameSetupActivity.AI_DIFFICULTY);
         }
 
         // TODO: Remove this test model once it can be passed in properly via intent.
