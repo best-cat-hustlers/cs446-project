@@ -36,10 +36,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         this.view = view;
         // TODO: Need to deal with these values
         if (extras != null) {
-            boolean showPoints = extras.getBoolean(GameSetupActivity.SHOW_POINTS);
-            boolean showTimer = extras.getBoolean(GameSetupActivity.SHOW_TIMER);
-            boolean penaltyOn = extras.getBoolean(GameSetupActivity.PENALTY_ON);
-            int aiDifficulty = extras.getInt(GameSetupActivity.AI_DIFFICULTY);
+            boolean showPoints = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
+            boolean showTimer = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
+            boolean penaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
+            int aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
         }
 
         // TODO: Remove this test model once it can be passed in properly via intent.
