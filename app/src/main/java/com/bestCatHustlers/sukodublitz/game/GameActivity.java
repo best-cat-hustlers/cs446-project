@@ -3,11 +3,9 @@ package com.bestCatHustlers.sukodublitz.game;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.SystemClock;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -67,9 +65,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         boardView = (GameBoardView) findViewById(R.id.boardLayout);
         boardView.delegate = this;
-
-        // TODO: Get model from intent extras.
-        presenter = new GamePresenter(this, null);
+        
+        presenter = new GamePresenter(this, getIntent().getExtras());
 
         presenter.handleViewCreated();
     }
