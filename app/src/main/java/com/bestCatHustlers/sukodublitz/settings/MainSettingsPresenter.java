@@ -1,35 +1,35 @@
 package com.bestCatHustlers.sukodublitz.settings;
 
 class MainSettingsPresenter implements MainSettingsContract.Presenter {
-    private MainSettingsContract.View v;
-    private MainSettingsModel m;
+    private MainSettingsContract.View view;
+    private MainSettingsModel model;
     MainSettingsPresenter(MainSettingsContract.View view, MainSettingsModel model) {
-        v = view;
-        m = model;
+        this.view = view;
+        this.model = model;
     }
     @Override
     public void setSoundEnabled(boolean newValue) {
-        m.setSoundEnabled(newValue);
+        model.setSoundEnabled(newValue);
 
     }
 
     @Override
     public boolean isSoundEnabled() {
-        return m.isSoundEnabled();
+        return model.isSoundEnabled();
     }
 
     @Override
     public void setMusicEnabled(boolean newValue) {
-        m.setMusicEnabled(newValue);
+        model.setMusicEnabled(newValue);
     }
 
     @Override
     public boolean isMusicEnabled() {
-        return m.isMusicEnabled();
+        return model.isMusicEnabled();
     }
 
     @Override
     public void viewDestroy() {
-        v = null;
+        view = null;
     }
 }
