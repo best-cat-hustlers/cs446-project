@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
 
 public class GameSetupActivity extends AppCompatActivity {
 
@@ -32,15 +34,29 @@ public class GameSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
 
-        button1 = findViewById(R.id.difficulty1);
-        button2 = findViewById(R.id.difficulty2);
-        button3 = findViewById(R.id.difficulty3);
-        button4 = findViewById(R.id.difficulty4);
-        button5 = findViewById(R.id.difficulty5);
+        // Determine if it's in multiplayer mode
+        boolean isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuActivity.EXTRAS_KEY_IS_MULTI, false);
 
-        // Default radio button aiDifficulty to 1
-        button1.toggle();
-        onChangeAIDifficulty(button1);
+        if (isMultiplayer) {
+            // Hide AI difficulty options
+            View aiGroupView = findViewById(R.id.AI_difficulty);
+            View aiTitle = findViewById(R.id.textView);
+            aiGroupView.setVisibility(View.GONE);
+            aiTitle.setVisibility(View.INVISIBLE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) aiTitle.getLayoutParams();
+            params.bottomMargin *=4;
+        } else {
+            // Single player mode
+            button1 = findViewById(R.id.difficulty1);
+            button2 = findViewById(R.id.difficulty2);
+            button3 = findViewById(R.id.difficulty3);
+            button4 = findViewById(R.id.difficulty4);
+            button5 = findViewById(R.id.difficulty5);
+
+            // Default radio button aiDifficulty to 1
+            button1.toggle();
+            onChangeAIDifficulty(button1);
+        }
 
     }
 
