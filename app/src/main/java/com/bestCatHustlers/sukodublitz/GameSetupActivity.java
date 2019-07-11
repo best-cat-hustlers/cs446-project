@@ -18,11 +18,11 @@ public class GameSetupActivity extends AppCompatActivity {
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
     public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
     public static final int topToBottomMarginRatio = 4;
-    RadioButton button1;
-    RadioButton button2;
-    RadioButton button3;
-    RadioButton button4;
-    RadioButton button5;
+    RadioButton aiDifficulty1Button;
+    RadioButton aiDifficulty2Button;
+    RadioButton aiDifficulty3Button;
+    RadioButton aiDifficulty4Button;
+    RadioButton aiDifficulty5Button;
 
     // Default settings
     private boolean showPoints = true;
@@ -49,15 +49,15 @@ public class GameSetupActivity extends AppCompatActivity {
             params.bottomMargin = params.topMargin * topToBottomMarginRatio;
         } else {
             // Single player mode
-            button1 = findViewById(R.id.difficulty1);
-            button2 = findViewById(R.id.difficulty2);
-            button3 = findViewById(R.id.difficulty3);
-            button4 = findViewById(R.id.difficulty4);
-            button5 = findViewById(R.id.difficulty5);
+            aiDifficulty1Button = findViewById(R.id.difficulty1);
+            aiDifficulty2Button = findViewById(R.id.difficulty2);
+            aiDifficulty3Button = findViewById(R.id.difficulty3);
+            aiDifficulty4Button = findViewById(R.id.difficulty4);
+            aiDifficulty5Button = findViewById(R.id.difficulty5);
 
             // Default radio button aiDifficulty to 1
-            button1.toggle();
-            onChangeAIDifficulty(button1);
+            aiDifficulty1Button.toggle();
+            onChangeAIDifficulty(aiDifficulty1Button);
         }
 
     }
@@ -85,11 +85,11 @@ public class GameSetupActivity extends AppCompatActivity {
     }
 
     public void resetRadioButtonTextColor() {
-        button1.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button2.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button3.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button4.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button5.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty1Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty2Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty3Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty4Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty5Button.setTextColor(getResources().getColor(R.color.secondaryColor));
     }
 
     public void onChangeAIDifficulty(View view) {
