@@ -5,9 +5,9 @@ public interface MainSettingsContract {
 
     }
     interface Presenter{
-        void turnSound(boolean on);
+        void turnSound(boolean newValue);
         boolean getSound();
-        void turnMusic(boolean on);
+        void turnMusic(boolean newValue);
         boolean getMusic();
         void viewDestroy();
     }

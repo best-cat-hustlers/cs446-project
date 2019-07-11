@@ -19,12 +19,12 @@ class MainSettingsModel extends Observable implements GlobalSettingsInterface {
         this.musicEnabled = musicEnabled;
     }
 
-    void setSoundEnabled(boolean on) {
-        soundEnabled = on;
+    void setSoundEnabled(boolean newValue) {
+        soundEnabled = newValue;
     }
 
-    void setMusicEnabled(boolean on) {
-        musicEnabled = on;
+    void setMusicEnabled(boolean newValue) {
+        musicEnabled = newValue;
     }
 
     public boolean getSoundEnabled(){

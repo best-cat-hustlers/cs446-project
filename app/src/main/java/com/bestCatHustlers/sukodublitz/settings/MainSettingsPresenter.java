@@ -8,8 +8,8 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
         m = model;
     }
     @Override
-    public void turnSound(boolean on) {
-        m.setSoundEnabled(on);
+    public void turnSound(boolean newValue) {
+        m.setSoundEnabled(newValue);
 
     }
 
@@ -19,8 +19,8 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
     }
 
     @Override
-    public void turnMusic(boolean on) {
-        m.setMusicEnabled(on);
+    public void turnMusic(boolean newValue) {
+        m.setMusicEnabled(newValue);
     }
 
     @Override
