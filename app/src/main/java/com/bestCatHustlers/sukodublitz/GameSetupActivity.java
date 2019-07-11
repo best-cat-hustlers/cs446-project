@@ -41,10 +41,11 @@ public class GameSetupActivity extends AppCompatActivity {
             // Hide AI difficulty options
             View aiGroupView = findViewById(R.id.AI_difficulty);
             View aiTitle = findViewById(R.id.textView);
+            View bottomView = findViewById(R.id.penalty_switch);
             aiGroupView.setVisibility(View.GONE);
-            aiTitle.setVisibility(View.INVISIBLE);
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) aiTitle.getLayoutParams();
-            params.bottomMargin *=4;
+            aiTitle.setVisibility(View.GONE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomView.getLayoutParams();
+            params.bottomMargin = params.topMargin * 4;
         } else {
             // Single player mode
             button1 = findViewById(R.id.difficulty1);
