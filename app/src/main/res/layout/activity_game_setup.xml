@@ -49,7 +49,7 @@
         android:id="@+id/card_setup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="26dp"
         android:layout_marginStart="26dp"
         android:layout_marginEnd="26dp"
         app:cardCornerRadius="8dp"
@@ -80,7 +80,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                 />
 
             <Switch
                 android:id="@+id/show_timer_switch"
@@ -113,7 +113,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/show_timer_switch"
-                app:layout_constraintVertical_bias="0.097" />
+                 />
 
             <TextView
                 android:id="@+id/textView"
@@ -128,7 +128,7 @@
                 app:layout_constraintHorizontal_bias="0.226"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/penalty_switch"
-                app:layout_constraintVertical_bias="0.0" />
+                 />
 
             <RadioGroup
                 android:id="@+id/AI_difficulty"
@@ -142,7 +142,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/penalty_switch"
-                app:layout_constraintVertical_bias="0.5">
+                >
 
                 <RadioButton
                     android:id="@+id/difficulty1"
