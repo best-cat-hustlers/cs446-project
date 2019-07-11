@@ -72,6 +72,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        presenter.handleViewDestroyed();
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -184,6 +191,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                         Intent intent = new Intent(baseContext, MainActivity.class);
 
                         baseContext.startActivity(intent);
+
+                        finish();
                     }
                 });
 
@@ -208,6 +217,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                                 dialog.dismiss();
 
                                 openResultsActivity(null);
+
+                                finish();
                             }
                         });
 

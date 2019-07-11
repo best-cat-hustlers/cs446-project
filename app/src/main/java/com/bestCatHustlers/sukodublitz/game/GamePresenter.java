@@ -67,6 +67,11 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
+    public void handleViewDestroyed() {
+        aiThread.interrupt();
+    }
+
+    @Override
     public void handleCellClick(int row, int column) {
         if (model.getBoard()[row][column] > 0) return;
 
