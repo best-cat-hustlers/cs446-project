@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">Sudoku Blitz</string>
     <string name="title_activity_game">GameActivity</string>
+    <string name="SinglePlayer">Single Player</string>
+    <string name="Multiplayer">Multiplayer</string>
+    <string name="Settings">Settings</string>
+    <string name="SudokuBlitz">Sudoku Blitz</string>
+    <string name="GameButton">Game</string>
+    <string name="title_activity_multiplayer_menu">Multiplayer Menu</string>
+    <string name="title_activity_join">Join</string>
+    <string name="title_activity_lobby">Lobby</string>
+    <string name="title_multiplayer">Multiplayer</string>
+    <string name="multiplayer_menu_host">Host</string>
+    <string name="multiplayer_menu_join">Join</string>
+    <string name="lobby_start_game">Start game</string>
+    <string name="join_searching">Searching…</string>
+    <string name="lobby_wait_for_guest">Waiting for player to join…</string>
+    <string name="lobby_player_joined">Player joined!</string>
+    <string name="lobby_wait_for_host">Waiting for host player to start…</string>
+    <string name="game_setup">Game Setup</string>
+    <string name="show_points">Show points</string>
+    <string name="show_timer">Show timer</string>
+    <string name="penalty_on">Penalty on</string>
+    <string name="AI_difficulty">AI Difficulty</string>
+    <string name="SoundSwitch">Sound</string>
+    <string name="MusicSwitch">Music</string>
+    <string name="team_name"><u>Best Cat Hustlers</u></string>
+    <string name="titles">Lead Android Dev\nAlso Lead Android Dev\nLead Android.\nBest Android Dev</string>
+    <string name="team_people_names">Xavier Chong\nSteven Yang\nAlexander Kim\nJiaxi Zhang</string>
+
 </resources>

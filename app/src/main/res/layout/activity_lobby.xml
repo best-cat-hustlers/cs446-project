@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient_red_blue"
+    tools:context=".lobby.LobbyActivity">
+
+    <Button
+        android:id="@+id/back_button"
+        android:onClick="onBackPressed"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="26dp"
+        style="@style/button_round_back" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/title_font"
+        android:layout_marginTop="40dp"
+        android:text="@string/title_activity_lobby"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/secondary_text_font"
+        android:text="@string/lobby_wait_for_guest"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/button_long_special"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
+        android:text="@string/lobby_start_game" />
+
+</LinearLayout>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/background_gradient_red_blue">
+
+    <RelativeLayout
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:alpha="0.9"
+            android:onClick="onBackPressed"
+            style="@style/button_round_back" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:format="Time: %s"
+            android:textSize="18dp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--TODO: Open settings menu with this button. For now, opens results for debugging purposes.-->
+        <Button
+            android:id="@+id/settingsButton"
+            style="@style/button_round_settings"
+            android:alpha="0.9"
+            android:layout_alignParentRight="true"
+            android:onClick="openResultsActivity" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
+        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/playerScore1TextView"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:text="Player Blue: 100"
+                android:textSize="20dp"
+                android:textColor="@color/primaryDarkColor"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/playerScore2TextView"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
+                android:text="Player Red: 350"
+                android:textSize="20dp"
+                android:textColor="@color/secondaryDarkColor"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <com.bestCatHustlers.sukodublitz.game.GameBoardView
+        android:id="@+id/boardLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <android.support.v7.widget.CardView
+        app:cardBackgroundColor="@android:color/transparent"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="11dp"
+        app:cardElevation="0dp"
+        android:clipChildren="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <GridLayout
+            android:id="@+id/entryLayout"
+            android:padding="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="3"
+            android:columnCount="3"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/numberEntry1"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="1"/>
+
+            <TextView
+                android:id="@+id/numberEntry2"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="2"/>
+
+            <TextView
+                android:id="@+id/numberEntry3"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="3"/>
+
+            <TextView
+                android:id="@+id/numberEntry4"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="4"/>
+
+            <TextView
+                android:id="@+id/numberEntry5"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_margin="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="5"/>
+
+            <TextView
+                android:id="@+id/numberEntry6"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="6"/>
+
+            <TextView
+                android:id="@+id/numberEntry7"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="7"/>
+
+            <TextView
+                android:id="@+id/numberEntry8"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="8"/>
+
+            <TextView
+                android:id="@+id/numberEntry9"
+                android:onClick="onClickNumberEntry"
+                android:background="@color/white"
+                android:alpha="0.9"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:width="44dp"
+                android:height="44dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="24dp"
+                android:text="9"/>
+
+        </GridLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
