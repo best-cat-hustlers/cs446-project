@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsActivity;
+
 public class MainActivity extends AppCompatActivity{
     MainActivityPresenter mainPresenter;
     @Override

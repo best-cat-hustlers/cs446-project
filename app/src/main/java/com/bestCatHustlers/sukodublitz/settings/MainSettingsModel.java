@@ -1,9 +1,11 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.settings;
 import android.content.SharedPreferences;
+
+import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 
 import java.util.Observable;
 
-class MainSettingsModel extends Observable implements MainSettingsContract.Model, GlobalSettingsInterface   {
+class MainSettingsModel extends Observable implements GlobalSettingsInterface {
     private boolean sound;
     private boolean music;
     // Create static instance of this mModel
@@ -17,13 +19,11 @@ class MainSettingsModel extends Observable implements MainSettingsContract.Model
         this.music = music;
     }
 
-    @Override
-    public void setSound(boolean on) {
+    void setSound(boolean on) {
         sound = on;
     }
 
-    @Override
-    public void setMusic(boolean on) {
+    void setMusic(boolean on) {
         music = on;
     }
 
@@ -31,13 +31,11 @@ class MainSettingsModel extends Observable implements MainSettingsContract.Model
         return sound;
     }
 
-    @Override
     public boolean getMusic() {
         return music;
     }
 
-    @Override
-    public void restoreState(SharedPreferences settings) {
+    void restoreState(SharedPreferences settings) {
         sound = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND,true);
         music = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC,false);
     }

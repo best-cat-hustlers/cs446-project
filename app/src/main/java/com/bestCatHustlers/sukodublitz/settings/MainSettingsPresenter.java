@@ -1,9 +1,9 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.settings;
 
 class MainSettingsPresenter implements MainSettingsContract.Presenter {
     private MainSettingsContract.View v;
-    private MainSettingsContract.Model m;
-    MainSettingsPresenter(MainSettingsContract.View view, MainSettingsContract.Model model) {
+    private MainSettingsModel m;
+    MainSettingsPresenter(MainSettingsContract.View view, MainSettingsModel model) {
         v = view;
         m = model;
     }

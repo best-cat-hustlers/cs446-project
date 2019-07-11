@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainSettingsActivity"></activity>
+        <activity android:name=".settings.MainSettingsActivity"></activity>
         <activity android:name=".GameSetupActivity" />
         <activity android:name=".results.ResultsActivity"></activity>
         <activity android:name=".game.GameActivity" />

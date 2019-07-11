@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_red_blue"
-    tools:context=".MainSettingsActivity">
+    tools:context=".settings.MainSettingsActivity">
 
     <TextView
         android:id="@+id/title_main_setting"

@@ -1,4 +1,4 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Switch;
 
+import com.bestCatHustlers.sukodublitz.R;
+
 public class MainSettingsActivity extends AppCompatActivity implements MainSettingsContract.View {
     MainSettingsContract.Presenter presenter;
-    MainSettingsContract.Model mModel;
+    MainSettingsModel mModel;
     SharedPreferences settings;
     static final String SHARE_PREF_KEY_SOUND = "sound";
     static final String SHARE_PREF_KEY_MUSIC = "music";
