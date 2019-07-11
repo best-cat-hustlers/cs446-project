@@ -3,9 +3,11 @@ package com.bestCatHustlers.sukodublitz.game;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+
+import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Chronometer;
@@ -219,6 +221,19 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             }
         });
 
+    }
+
+    @Override
+    public void playSound(int soundID) {
+        final MediaPlayer soundPlayer = MediaPlayer.create(this, soundID);
+
+        soundPlayer.start();
+        soundPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                soundPlayer.release();
+            }
+        });
     }
 
     @Override

@@ -16,6 +16,8 @@ public class GameContract {
 
         void alertEndOfGame(String message);
 
+        void playSound(int soundID);
+
         void showPoints(boolean shouldShowPoints);
 
         void showTimer(boolean shouldShowTimer);

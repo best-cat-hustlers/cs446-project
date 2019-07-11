@@ -8,6 +8,7 @@ import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
+import com.bestCatHustlers.sukodublitz.R;
 
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
@@ -95,6 +96,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
             selectedRow = -1;
             selectedColumn = -1;
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectCell(selectedRow, selectedColumn);
@@ -116,6 +119,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
             selectedColumn = -1;
 
             view.selectCell(selectedRow, selectedColumn);
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectNumber(selectedNumber);
@@ -140,6 +145,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void gameAiDidEnterSolution() {
+        view.playSound(R.raw.pop_high);
         handleSolutionEntered();
     }
 
@@ -164,6 +170,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+
+        view.playSound(R.raw.pop_middle);
 
         handleSolutionEntered();
     }
