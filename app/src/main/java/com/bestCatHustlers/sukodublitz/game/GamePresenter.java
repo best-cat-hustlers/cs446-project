@@ -44,6 +44,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         // TODO: Remove this test model once it can be passed in properly via intent.
         BoardGame testModel = new BoardGame();
+        testModel.addPlayer("1", Player.Team.BLUE);
+        testModel.addPlayer("2", Player.Team.RED);
         testModel.generateNewBoard();
         this.model = testModel;
     }
@@ -54,11 +56,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleViewCreated() {
-        // TODO: Get player ID properly.
-        Player player1 = model.getPlayer("1");
-        Player player2 = model.getPlayer("2");
+        Player bluePlayer = model.getTeamPlayers(Player.Team.BLUE).get(0);
+        Player redPlayer = model.getTeamPlayers(Player.Team.RED).get(0);
 
-        view.printScores(player1.getScore(), player2.getScore());
+        view.printScores(bluePlayer.getScore(), redPlayer.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         startTime = SystemClock.elapsedRealtime();
@@ -170,10 +171,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     private void handleSolutionEntered() {
-        Player player1 = model.getPlayer("1");
-        Player player2 = model.getPlayer("2");
+        Player bluePlayer = model.getTeamPlayers(Player.Team.BLUE).get(0);
+        Player redPlayer = model.getTeamPlayers(Player.Team.RED).get(0);
 
-        view.printScores(player1.getScore(), player2.getScore());
+        view.printScores(bluePlayer.getScore(), redPlayer.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         // If another player has entered a solution in the cell currently selected, force deselection.
