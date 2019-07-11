@@ -8,8 +8,7 @@ class MainSettingsModel implements GlobalSettingsInterface {
     private boolean musicEnabled;
     // Create static instance of this mModel
     private static final MainSettingsModel ourInstance = new MainSettingsModel(true,false);
-    static MainSettingsModel getInstance()
-    {
+    public static GlobalSettingsInterface getInstance() {
         return ourInstance;
     }
     private MainSettingsModel(boolean soundEnabled, boolean musicEnabled) {

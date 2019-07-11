@@ -19,7 +19,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_settings);
-        mModel = MainSettingsModel.getInstance();
+        mModel = (MainSettingsModel) MainSettingsModel.getInstance();
         settings = getSharedPreferences("globalSettings",MODE_PRIVATE);
         mModel.restoreState(settings);
         System.out.println("restore state.");
