@@ -27,16 +27,16 @@ class MainSettingsModel extends Observable implements GlobalSettingsInterface {
         musicEnabled = newValue;
     }
 
-    public boolean getSoundEnabled(){
+    public boolean isSoundEnabled(){
         return soundEnabled;
     }
 
-    public boolean getMusicEnabled() {
+    public boolean isMusicEnabled() {
         return musicEnabled;
     }
 
     void restoreState(SharedPreferences settings) {
-        soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND,true);
-        musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC,false);
+        soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND_ENABLED,true);
+        musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC_ENABLED,false);
     }
 }

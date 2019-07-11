@@ -8,24 +8,24 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
         m = model;
     }
     @Override
-    public void turnSound(boolean newValue) {
+    public void setSoundEnabled(boolean newValue) {
         m.setSoundEnabled(newValue);
 
     }
 
     @Override
-    public boolean getSound() {
-        return m.getSoundEnabled();
+    public boolean isSoundEnabled() {
+        return m.isSoundEnabled();
     }
 
     @Override
-    public void turnMusic(boolean newValue) {
+    public void setMusicEnabled(boolean newValue) {
         m.setMusicEnabled(newValue);
     }
 
     @Override
-    public boolean getMusic() {
-        return m.getMusicEnabled();
+    public boolean isMusicEnabled() {
+        return m.isMusicEnabled();
     }
 
     @Override

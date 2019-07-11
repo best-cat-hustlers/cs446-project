@@ -12,8 +12,8 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
     MainSettingsContract.Presenter presenter;
     MainSettingsModel mModel;
     SharedPreferences settings;
-    static final String SHARE_PREF_KEY_SOUND = "sound";
-    static final String SHARE_PREF_KEY_MUSIC = "music";
+    static final String SHARE_PREF_KEY_SOUND_ENABLED = "sound";
+    static final String SHARE_PREF_KEY_MUSIC_ENABLED = "music";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,10 +24,10 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         mModel.restoreState(settings);
         System.out.println("restore state.");
         presenter = new MainSettingsPresenter(this, mModel);
-        Switch soundSwitch = findViewById(R.id.sound);
-        soundSwitch.setChecked(presenter.getSound());
+        Switch soundSwitch = findViewById(R.id.soundEnabled);
+        soundSwitch.setChecked(presenter.isSoundEnabled());
         Switch musicSwitch = findViewById(R.id.Music);
-        musicSwitch.setChecked(presenter.getMusic());
+        musicSwitch.setChecked(presenter.isMusicEnabled());
 
     }
 
@@ -37,8 +37,8 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         presenter.viewDestroy();
         // Save global settings
         SharedPreferences.Editor edit = settings.edit();
-        edit.putBoolean(SHARE_PREF_KEY_SOUND,presenter.getSound());
-        edit.putBoolean(SHARE_PREF_KEY_MUSIC,presenter.getMusic());
+        edit.putBoolean(SHARE_PREF_KEY_SOUND_ENABLED,presenter.isSoundEnabled());
+        edit.putBoolean(SHARE_PREF_KEY_MUSIC_ENABLED,presenter.isMusicEnabled());
         edit.apply();
         System.out.println("Main Settings is destroyed");
         super.onDestroy();
@@ -46,11 +46,11 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
 
     public void onSoundCheck(View view) {
         Switch soundSwitch = (Switch) view;
-        presenter.turnSound(soundSwitch.isChecked());
+        presenter.setSoundEnabled(soundSwitch.isChecked());
     }
     public void onMusicCheck(View view) {
         Switch musicSwitch = (Switch) view;
-        presenter.turnMusic(musicSwitch.isChecked());
+        presenter.setMusicEnabled(musicSwitch.isChecked());
     }
     public void onBackPressed(View view){
         super.onBackPressed();

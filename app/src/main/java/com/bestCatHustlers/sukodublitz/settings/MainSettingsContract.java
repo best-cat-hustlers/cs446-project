@@ -5,10 +5,10 @@ public interface MainSettingsContract {
 
     }
     interface Presenter{
-        void turnSound(boolean newValue);
-        boolean getSound();
-        void turnMusic(boolean newValue);
-        boolean getMusic();
+        void setSoundEnabled(boolean newValue);
+        boolean isSoundEnabled();
+        void setMusicEnabled(boolean newValue);
+        boolean isMusicEnabled();
         void viewDestroy();
     }
 }
