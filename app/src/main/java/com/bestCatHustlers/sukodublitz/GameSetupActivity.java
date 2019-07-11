@@ -17,7 +17,7 @@ public class GameSetupActivity extends AppCompatActivity {
     public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
     public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
-    public static final int topToBottomMarginRatio = 4;
+    private static final int topToBottomMarginRatio = 4;
     RadioButton aiDifficulty1Button;
     RadioButton aiDifficulty2Button;
     RadioButton aiDifficulty3Button;
