@@ -17,6 +17,7 @@ public class GameSetupActivity extends AppCompatActivity {
     public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
     public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
+    public static final int topToBottomMarginRatio = 4;
     RadioButton button1;
     RadioButton button2;
     RadioButton button3;
@@ -45,7 +46,7 @@ public class GameSetupActivity extends AppCompatActivity {
             aiGroupView.setVisibility(View.GONE);
             aiTitle.setVisibility(View.GONE);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomView.getLayoutParams();
-            params.bottomMargin = params.topMargin * 4;
+            params.bottomMargin = params.topMargin * topToBottomMarginRatio;
         } else {
             // Single player mode
             button1 = findViewById(R.id.difficulty1);
