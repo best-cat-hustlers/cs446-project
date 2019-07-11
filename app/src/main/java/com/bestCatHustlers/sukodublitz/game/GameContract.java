@@ -15,6 +15,12 @@ public class GameContract {
         void alertBackToMenu();
 
         void alertEndOfGame(String message);
+
+        void playSound(int soundID);
+
+        void showPoints(boolean shouldShowPoints);
+
+        void showTimer(boolean shouldShowTimer);
     }
 
     interface Presenter {

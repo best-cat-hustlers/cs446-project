@@ -8,6 +8,7 @@ import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
+import com.bestCatHustlers.sukodublitz.R;
 
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
@@ -25,8 +26,20 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private int selectedColumn = -1;
     private int selectedNumber = 0;
 
+    private boolean isPointsShown = true;
+    private boolean isTimerShown = true;
+    private boolean isPenaltyOn= true;
+    private int aiDifficulty = 5;
+
     private long startTime = 0;
     private long endTime = 0;
+
+    private Constants constants;
+
+    private class Constants {
+        final int penaltyDelta = -10;
+        final int aiBaseDelay = 5000;
+    }
 
     //endregion
 
@@ -34,20 +47,18 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     public GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
-        // TODO: Need to deal with these values
-        if (extras != null) {
-            boolean showPoints = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
-            boolean showTimer = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
-            boolean penaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
-            int aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
-        }
+
+        constants = new Constants();
 
         // TODO: Remove this test model once it can be passed in properly via intent.
         BoardGame testModel = new BoardGame();
         testModel.addPlayer("1", Player.Team.BLUE);
         testModel.addPlayer("2", Player.Team.RED);
         testModel.generateNewBoard();
-        this.model = testModel;
+
+        model = testModel;
+
+        configureGameWithSettings(extras);
     }
 
     //endregion
@@ -58,13 +69,15 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     public void handleViewCreated() {
         Player bluePlayer = model.getTeamPlayers(Player.Team.BLUE).get(0);
         Player redPlayer = model.getTeamPlayers(Player.Team.RED).get(0);
-
+      
+        view.showPoints(isPointsShown);
+        view.showTimer(isTimerShown);
         view.printScores(bluePlayer.getScore(), redPlayer.getScore());
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         startTime = SystemClock.elapsedRealtime();
 
-        startAI(1000);
+        if (aiDifficulty > 0) startAI();
     }
 
     @Override
@@ -84,6 +97,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
             selectedRow = -1;
             selectedColumn = -1;
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectCell(selectedRow, selectedColumn);
@@ -105,6 +120,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
             selectedColumn = -1;
 
             view.selectCell(selectedRow, selectedColumn);
+        } else {
+            view.playSound(R.raw.pop_low);
         }
 
         view.selectNumber(selectedNumber);
@@ -129,6 +146,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void gameAiDidEnterSolution() {
+        view.playSound(R.raw.pop_high);
         handleSolutionEntered();
     }
 
@@ -136,8 +154,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     //region Private
 
-    private void startAI(int delay) {
-        ai = new GameAI(model, delay, "2");
+    private void startAI() {
+        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, "2");
         ai.delegate = this;
         aiThread = new Thread(ai);
 
@@ -153,6 +171,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         // TODO: Get player ID properly.
         model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+
+        view.playSound(R.raw.pop_middle);
 
         handleSolutionEntered();
     }
@@ -191,6 +211,17 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
             // TODO: Create message strings.
             view.alertEndOfGame("Congratulations! You solved the puzzle. :)");
         }
+    }
+
+    private void configureGameWithSettings(Bundle extras) {
+        if (extras == null || model == null) return;
+
+        isPointsShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
+        isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
+        isPenaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
+        aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
+
+        model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);
     }
 
     //endregion
