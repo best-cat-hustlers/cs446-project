@@ -9,23 +9,23 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
     }
     @Override
     public void turnSound(boolean on) {
-        m.setSound(on);
+        m.setSoundEnabled(on);
 
     }
 
     @Override
     public boolean getSound() {
-        return m.getSound();
+        return m.getSoundEnabled();
     }
 
     @Override
     public void turnMusic(boolean on) {
-        m.setMusic(on);
+        m.setMusicEnabled(on);
     }
 
     @Override
     public boolean getMusic() {
-        return m.getMusic();
+        return m.getMusicEnabled();
     }
 
     @Override
