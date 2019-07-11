@@ -3,9 +3,7 @@ import android.content.SharedPreferences;
 
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 
-import java.util.Observable;
-
-class MainSettingsModel extends Observable implements GlobalSettingsInterface {
+class MainSettingsModel implements GlobalSettingsInterface {
     private boolean soundEnabled;
     private boolean musicEnabled;
     // Create static instance of this mModel
