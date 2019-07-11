@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
 
+    private CardView scoreCardView;
     private TextView playerScore1TextView;
     private TextView playerScore2TextView;
     private Chronometer chronometer;
@@ -46,6 +48,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         setContentView(R.layout.activity_game);
 
+        scoreCardView = findViewById(R.id.scoreCardView);
         playerScore1TextView = findViewById(R.id.playerScore1TextView);
         playerScore2TextView = findViewById(R.id.playerScore2TextView);
 
@@ -231,6 +234,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 soundPlayer.release();
             }
         });
+    }
+
+    @Override
+    public void showPoints(boolean shouldShowPoints) {
+        scoreCardView.setVisibility(shouldShowPoints ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
+    public void showTimer(boolean shouldShowTimer) {
+        chronometer.setVisibility(shouldShowTimer ? View.VISIBLE : View.INVISIBLE);
     }
 
     //endregion
