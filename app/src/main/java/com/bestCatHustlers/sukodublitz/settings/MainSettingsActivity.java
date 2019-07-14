@@ -10,7 +10,6 @@ import com.bestCatHustlers.sukodublitz.R;
 
 public class MainSettingsActivity extends AppCompatActivity implements MainSettingsContract.View {
     MainSettingsContract.Presenter presenter;
-    MainSettingsModel mModel;
     SharedPreferences settings;
     static final String SHARE_PREF_KEY_SOUND_ENABLED = "sound";
     static final String SHARE_PREF_KEY_MUSIC_ENABLED = "music";
@@ -19,7 +18,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_settings);
-        mModel = (MainSettingsModel) MainSettingsModel.getInstance();
+        MainSettingsModel mModel = (MainSettingsModel) MainSettingsModel.getInstance();
         settings = getSharedPreferences("globalSettings",MODE_PRIVATE);
         mModel.restoreState(settings);
         System.out.println("restore state.");
