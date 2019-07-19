@@ -33,7 +33,7 @@ class MainSettingsModel implements GlobalSettingsInterface {
         return musicEnabled;
     }
 
-    void restoreState(SharedPreferences settings) {
+    void restoreLastState(SharedPreferences settings) {
         soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND_ENABLED,true);
         musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC_ENABLED,false);
         userName = settings.getString(MainSettingsActivity.SHARE_PREF_KEY_USER_NAME,"");

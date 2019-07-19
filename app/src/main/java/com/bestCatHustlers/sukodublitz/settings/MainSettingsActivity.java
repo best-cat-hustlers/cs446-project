@@ -22,7 +22,7 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
         setContentView(R.layout.activity_main_settings);
         MainSettingsModel mModel = (MainSettingsModel) MainSettingsModel.getInstance();
         settings = getSharedPreferences("globalSettings",MODE_PRIVATE);
-        mModel.restoreState(settings);
+        mModel.restoreLastState(settings);
         System.out.println("restore state.");
         presenter = new MainSettingsPresenter(this, mModel);
         Switch soundSwitch = findViewById(R.id.soundEnabled);
