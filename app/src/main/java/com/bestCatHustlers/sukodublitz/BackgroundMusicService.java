@@ -24,8 +24,8 @@ public class BackgroundMusicService extends Service {
         super.onCreate();
         Log.d("BackgroundMusicService", "onCreate");
         globalSettingsInterface = MainSettingsModel.getInstance();
-        // TODO: need to replace this in after previous PR get merged
-        //((MainSettingsModel)globalSettingsInterface).restoreLastState(this);
+        // Pass this service to MainSettingsModel
+        ((MainSettingsModel)globalSettingsInterface).restoreLastState(this);
         try {
             String path = this.getFilesDir().getAbsolutePath();
             mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.nocturne_in_e_flat_major_op_9_no_2);
@@ -40,7 +40,9 @@ public class BackgroundMusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mediaPlayer.start();
+        if (globalSettingsInterface.isMusicEnabled()) {
+            mediaPlayer.start();
+        }
         return super.onStartCommand(intent,flags,startId);
     }
 
