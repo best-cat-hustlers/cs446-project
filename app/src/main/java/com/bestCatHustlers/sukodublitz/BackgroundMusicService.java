@@ -48,7 +48,7 @@ public class BackgroundMusicService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
+        // Generated: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -62,5 +62,4 @@ public class BackgroundMusicService extends Service {
     public void onResume(){
         mediaPlayer.start();
     }
-
 }
