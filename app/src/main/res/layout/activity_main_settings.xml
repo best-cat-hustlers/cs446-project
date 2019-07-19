@@ -94,19 +94,20 @@
             <EditText
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
-                android:minWidth="70dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
+                android:autofillHints="@string/user_name"
+                android:cursorVisible="false"
                 android:hint="@string/user_name"
                 android:inputType="text"
+                android:minWidth="70dp"
+                android:onClick="onClickEdit"
                 android:saveEnabled="true"
                 app:layout_constraintEnd_toStartOf="@id/userNameUpdateButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:autofillHints="@string/user_name"
-                tools:ignore="UnusedAttribute"
-               />
+                tools:ignore="UnusedAttribute" />
 
             <Switch
                 android:id="@+id/soundEnabled"

@@ -62,5 +62,9 @@ public class MainSettingsActivity extends AppCompatActivity implements MainSetti
     public void onUpdateUserName(View view) {
         EditText editText = findViewById(R.id.userName);
         presenter.setUserName(editText.getText().toString());
+        editText.setCursorVisible(false);
+    }
+    public void onClickEdit(View view) {
+        ((EditText)view).setCursorVisible(true);
     }
 }
