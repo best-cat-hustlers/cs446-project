@@ -27,5 +27,7 @@
     <string name="team_name"><u>Best Cat Hustlers</u></string>
     <string name="titles">Lead Android Dev\nAlso Lead Android Dev\nLead Android.\nBest Android Dev</string>
     <string name="team_people_names">Xavier Chong\nSteven Yang\nAlexander Kim\nJiaxi Zhang</string>
+    <string name="user_name">User Name</string>
+    <string name="update_user_name">Update User Name</string>
 
 </resources>

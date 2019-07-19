@@ -76,7 +76,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="350dp"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="30dp"
@@ -91,19 +91,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <EditText
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:minWidth="70dp"
+                android:layout_height="38dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:hint="@string/user_name"
+                android:inputType="text"
+                android:saveEnabled="true"
+                app:layout_constraintEnd_toStartOf="@id/userNameUpdateButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="@string/user_name"
+                tools:ignore="UnusedAttribute"
+               />
+
             <Switch
                 android:id="@+id/soundEnabled"
                 android:layout_width="135dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:onClick="onSoundCheck"
                 android:text="@string/SoundSwitch"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/userName" />
 
             <Switch
                 android:id="@+id/Music"
@@ -118,6 +135,22 @@
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/soundEnabled" />
+
+            <Button
+                android:id="@+id/userNameUpdateButton"
+                android:layout_width="130dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:color="@color/buttonPrimaryColor"
+                android:onClick="onUpdateUserName"
+                android:radius="8dp"
+                android:text="@string/update_user_name"
+                app:layout_constraintBottom_toTopOf="@+id/soundEnabled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/userName"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 

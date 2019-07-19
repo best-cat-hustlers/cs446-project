@@ -6,6 +6,7 @@ import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 class MainSettingsModel implements GlobalSettingsInterface {
     private boolean soundEnabled;
     private boolean musicEnabled;
+    private String userName;
     // Create static instance of this mModel
     private static final MainSettingsModel ourInstance = new MainSettingsModel(true,false);
     public static GlobalSettingsInterface getInstance() {
@@ -35,5 +36,14 @@ class MainSettingsModel implements GlobalSettingsInterface {
     void restoreState(SharedPreferences settings) {
         soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND_ENABLED,true);
         musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC_ENABLED,false);
+        userName = settings.getString(MainSettingsActivity.SHARE_PREF_KEY_USER_NAME,"");
+    }
+
+    void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }
