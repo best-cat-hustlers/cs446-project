@@ -22,6 +22,7 @@ public class MainSettingsModel implements GlobalSettingsInterface {
 
     void setMusicEnabled(boolean newValue) {
         musicEnabled = newValue;
+
     }
 
     public boolean isSoundEnabled(){
@@ -32,7 +33,7 @@ public class MainSettingsModel implements GlobalSettingsInterface {
         return musicEnabled;
     }
 
-    void restoreState(SharedPreferences settings) {
+    public void restoreState(SharedPreferences settings) {
         soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND_ENABLED,true);
         musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC_ENABLED,false);
     }

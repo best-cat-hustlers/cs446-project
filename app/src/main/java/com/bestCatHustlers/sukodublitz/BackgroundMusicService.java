@@ -24,19 +24,24 @@ public class BackgroundMusicService extends Service {
         super.onCreate();
         Log.d("BackgroundMusicService", "onCreate");
         globalSettingsInterface = MainSettingsModel.getInstance();
+        // TODO: need to replace this in after previous PR get merged
+        //((MainSettingsModel)globalSettingsInterface).restoreLastState(this);
         try {
             String path = this.getFilesDir().getAbsolutePath();
             mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.nocturne_in_e_flat_major_op_9_no_2);
             Log.d("BackgroundMusicService","Song is set as Data Source");
+            mediaPlayer.setLooping(true);
+            mediaPlayer.setVolume(100,100);
+            mediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        mediaPlayer.start();
+        return super.onStartCommand(intent,flags,startId);
     }
 
     @Override
@@ -49,4 +54,11 @@ public class BackgroundMusicService extends Service {
     public void onDestroy() {
         super.onDestroy();
     }
+    public void onPause(){
+        mediaPlayer.pause();
+    }
+    public void onResume(){
+        mediaPlayer.start();
+    }
+
 }
