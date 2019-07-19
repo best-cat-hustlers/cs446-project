@@ -9,10 +9,14 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
+
+import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
 public class GameSetupActivity extends AppCompatActivity {
 
+    public static final String EXTRAS_KEY_IS_HOST = "isHost";
     public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
     public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
@@ -28,6 +32,7 @@ public class GameSetupActivity extends AppCompatActivity {
     private boolean showPoints = true;
     private boolean showTimer = true;
     private boolean penaltyOn = true;
+    private boolean isMultiplayer;
     private int aiDifficulty = 1;
 
     @Override
@@ -36,7 +41,7 @@ public class GameSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_setup);
 
         // Determine if it's in multiplayer mode
-        boolean isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuActivity.EXTRAS_KEY_IS_MULTI, false);
+        isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuActivity.EXTRAS_KEY_IS_MULTI, false);
 
         if (isMultiplayer) {
             // Hide AI difficulty options
@@ -63,12 +68,18 @@ public class GameSetupActivity extends AppCompatActivity {
     }
 
     public void clickGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
-        this.startActivity(intent);
+        if (isMultiplayer) {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra(EXTRAS_KEY_IS_HOST, true);
+            this.startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
+            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
+            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
+            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            this.startActivity(intent);
+        }
     }
 
     public void onCheckShowPoints(View view){
