@@ -11,9 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".settings.MainSettingsActivity"></activity>
+        <service
+            android:name=".BackgroundMusicService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <activity android:name=".settings.MainSettingsActivity" />
         <activity android:name=".GameSetupActivity" />
-        <activity android:name=".results.ResultsActivity"></activity>
+        <activity android:name=".results.ResultsActivity" />
         <activity android:name=".game.GameActivity" />
         <activity
             android:name=".multiplayer.MultiplayerMenuActivity"
