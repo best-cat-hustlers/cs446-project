@@ -32,4 +32,15 @@ class MainSettingsPresenter implements MainSettingsContract.Presenter {
     public void viewDestroy() {
         view = null;
     }
+
+    @Override
+    public void setUserName(String text) {
+        model.setUserName(text);
+    }
+
+    @Override
+    public String getUserName() {
+        return model.getUserName();
+    }
+
 }

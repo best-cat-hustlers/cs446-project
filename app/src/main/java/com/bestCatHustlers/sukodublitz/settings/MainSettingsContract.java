@@ -1,5 +1,7 @@
 package com.bestCatHustlers.sukodublitz.settings;
 
+import android.text.Editable;
+
 public interface MainSettingsContract {
     interface View {
 
@@ -10,5 +12,7 @@ public interface MainSettingsContract {
         void setMusicEnabled(boolean newValue);
         boolean isMusicEnabled();
         void viewDestroy();
+        void setUserName(String text);
+        String getUserName();
     }
 }
