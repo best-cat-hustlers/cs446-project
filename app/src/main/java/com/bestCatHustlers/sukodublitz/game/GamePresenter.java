@@ -82,7 +82,9 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleViewDestroyed() {
-        aiThread.interrupt();
+        if (aiThread != null) {
+            aiThread.interrupt();
+        }
     }
 
     @Override
