@@ -22,14 +22,12 @@ public class BackgroundMusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("BackgroundMusicService", "onCreate");
         globalSettingsInterface = MainSettingsModel.getInstance();
         // Pass this service to MainSettingsModel
         ((MainSettingsModel)globalSettingsInterface).restoreLastState(this);
         try {
             String path = this.getFilesDir().getAbsolutePath();
             mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.nocturne_in_e_flat_major_op_9_no_2);
-            Log.d("BackgroundMusicService","Song is set as Data Source");
             mediaPlayer.setLooping(true);
             mediaPlayer.setVolume(100,100);
             mediaPlayer.prepare();
