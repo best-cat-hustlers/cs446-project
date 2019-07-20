@@ -166,6 +166,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             unbindService(mConnection);
             mBounded = false;
         }
+      
+        presenter.handleViewStopped();
     };
 
     @Override

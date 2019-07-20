@@ -27,8 +27,10 @@ public class GameContract {
 
     interface Presenter {
         void handleViewCreated();
-
+      
         void handleViewStarted();
+
+        void handleViewStopped();
 
         void handleViewDestroyed();
 

@@ -96,6 +96,13 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
+    public void handleViewStopped() {
+        if (aiThread != null) {
+            aiThread.interrupt();
+        }
+    }
+
+    @Override
     public void handleViewDestroyed() {
         aiThread.interrupt();
     }
