@@ -5,14 +5,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
+import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
+
+import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
 public class GameSetupActivity extends AppCompatActivity {
 
+    public static final String EXTRAS_KEY_IS_HOST = "isHost";
     public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
     public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
@@ -24,10 +30,13 @@ public class GameSetupActivity extends AppCompatActivity {
     RadioButton aiDifficulty4Button;
     RadioButton aiDifficulty5Button;
 
+    Button nextPageButton;
+
     // Default settings
     private boolean showPoints = true;
     private boolean showTimer = true;
     private boolean penaltyOn = true;
+    private boolean isMultiplayer;
     private int aiDifficulty = 1;
 
     @Override
@@ -36,7 +45,9 @@ public class GameSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_setup);
 
         // Determine if it's in multiplayer mode
-        boolean isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuActivity.EXTRAS_KEY_IS_MULTI, false);
+        isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI, false);
+
+        nextPageButton = findViewById(R.id.button_start_game);
 
         if (isMultiplayer) {
             // Hide AI difficulty options
@@ -47,6 +58,8 @@ public class GameSetupActivity extends AppCompatActivity {
             aiTitle.setVisibility(View.GONE);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomView.getLayoutParams();
             params.bottomMargin = params.topMargin * topToBottomMarginRatio;
+
+            nextPageButton.setText("Go to Lobby");
         } else {
             // Single player mode
             aiDifficulty1Button = findViewById(R.id.difficulty1);
@@ -63,12 +76,22 @@ public class GameSetupActivity extends AppCompatActivity {
     }
 
     public void clickGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
-        this.startActivity(intent);
+        if (isMultiplayer) {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra(EXTRAS_KEY_IS_HOST, true);
+            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
+            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
+            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
+            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            this.startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
+            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
+            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
+            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            this.startActivity(intent);
+        }
     }
 
     public void onCheckShowPoints(View view){

@@ -23,12 +23,21 @@
         android:text="@string/multiplayer_menu_join"
         android:layout_gravity="center"/>
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--style="@style/secondary_text_font"-->
+        <!--android:text="@string/join_searching"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="120dp" />-->
+
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/secondary_text_font"
-        android:text="@string/join_searching"
+        android:onClick="onFindDevicePressed"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp" />
+        android:layout_marginTop="120dp"
+        android:text="Find device to connect" />
 
 </LinearLayout>
