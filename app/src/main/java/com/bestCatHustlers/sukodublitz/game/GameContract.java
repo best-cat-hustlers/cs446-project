@@ -26,6 +26,8 @@ public class GameContract {
     interface Presenter {
         void handleViewCreated();
 
+        void handleViewStopped();
+
         void handleViewDestroyed();
 
         void handleCellClick(int row, int column);

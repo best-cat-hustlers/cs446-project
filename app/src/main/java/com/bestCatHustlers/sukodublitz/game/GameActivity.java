@@ -77,6 +77,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        presenter.handleViewStopped();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
