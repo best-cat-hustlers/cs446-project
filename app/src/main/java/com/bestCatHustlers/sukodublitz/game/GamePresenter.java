@@ -67,12 +67,9 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleViewCreated() {
-        Player bluePlayer = model.getTeamPlayers(Player.Team.BLUE).get(0);
-        Player redPlayer = model.getTeamPlayers(Player.Team.RED).get(0);
-      
         view.showPoints(isPointsShown);
         view.showTimer(isTimerShown);
-        view.printScores(bluePlayer.getScore(), redPlayer.getScore());
+        view.printScores(model.getTeamScore(Player.Team.BLUE), model.getTeamScore(Player.Team.RED));
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         startTime = SystemClock.elapsedRealtime();
@@ -196,10 +193,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     private void handleSolutionEntered() {
-        Player bluePlayer = model.getTeamPlayers(Player.Team.BLUE).get(0);
-        Player redPlayer = model.getTeamPlayers(Player.Team.RED).get(0);
-
-        view.printScores(bluePlayer.getScore(), redPlayer.getScore());
+        view.printScores(model.getTeamScore(Player.Team.BLUE), model.getTeamScore(Player.Team.RED));
         view.printBoard(model.getBoard(), model.getCellOwners());
 
         // If another player has entered a solution in the cell currently selected, force deselection.

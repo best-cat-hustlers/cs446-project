@@ -27,16 +27,12 @@ public class ResultsPresenter implements ResultsContract.Presenter
         // Tell the view to show the board and player scores
         view.printTimeElapsed(generateTimeElapsedString(timeElapsed));
         view.printBoard(model.getBoard(), model.getCellOwners());
-        ArrayList<Player> redTeam = model.getTeamPlayers(Player.Team.RED);
-        ArrayList<Player> blueTeam = model.getTeamPlayers(Player.Team.BLUE);
-        // TODO: Handle multiple players on the same team
-        view.printScores(redTeam.get(0).getScore(), blueTeam.get(0).getScore());
+        view.printScores(model.getTeamScore(Player.Team.RED), model.getTeamScore(Player.Team.BLUE));
         String colour = model.getWinner() == Player.Team.RED ? "Red" : "Blue";
         view.printWinner(colour);
     }
 
     //region Private
-
     private String generateTimeElapsedString(int milliseconds) {
         int totalSeconds = (int) Math.floor(milliseconds / 1000);
 
@@ -45,6 +41,5 @@ public class ResultsPresenter implements ResultsContract.Presenter
 
         return String.format("%02d:%02d", m, seconds);
     }
-
     //endregion
 }
