@@ -107,7 +107,8 @@
                 app:layout_constraintEnd_toStartOf="@id/userNameUpdateButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute"
+                android:imeOptions="actionDone"/>
 
             <Switch
                 android:id="@+id/soundEnabled"
