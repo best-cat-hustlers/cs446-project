@@ -173,27 +173,21 @@ public class BoardGame implements Parcelable
         }
     }
 
+    public int getTeamScore(Player.Team team)
+    {
+        ArrayList<Player> players = getTeamPlayers(team);
+        int score = 0;
+        for (Player player : players)
+        {
+            score += player.getScore();
+        }
+        return score;
+    }
+
     public Player.Team getWinner()
     {
-        // TODO: Temporarily disable as long as you can move to the results screen without finishing
-        // the board
-//        if (getEmptyCells() != 0) return null;
-
-        ArrayList<Player> redTeamPlayers = getTeamPlayers(Player.Team.RED);
-        ArrayList<Player> blueTeamPlayers = getTeamPlayers(Player.Team.BLUE);
-
-        int totalRedScore = 0;
-        int totalBlueScore = 0;
-
-        for (Player player : redTeamPlayers)
-        {
-            totalRedScore += player.getScore();
-        }
-
-        for (Player player : blueTeamPlayers)
-        {
-            totalBlueScore += player.getScore();
-        }
+        int totalRedScore = getTeamScore(Player.Team.RED);
+        int totalBlueScore = getTeamScore(Player.Team.BLUE);
 
         // TODO: What if score is tied?
         if (totalRedScore > totalBlueScore) return Player.Team.RED;

@@ -1,13 +1,19 @@
 package com.bestCatHustlers.sukodublitz.settings;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.bestCatHustlers.sukodublitz.BackgroundMusicService;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 
-class MainSettingsModel implements GlobalSettingsInterface {
+import static android.content.Context.MODE_PRIVATE;
+
+public class MainSettingsModel implements GlobalSettingsInterface {
     private boolean soundEnabled;
     private boolean musicEnabled;
     // Create static instance of this mModel
     private static final MainSettingsModel ourInstance = new MainSettingsModel(true,false);
+    private static BackgroundMusicService backgroundMusicService;
     public static GlobalSettingsInterface getInstance() {
         return ourInstance;
     }
@@ -22,6 +28,11 @@ class MainSettingsModel implements GlobalSettingsInterface {
 
     void setMusicEnabled(boolean newValue) {
         musicEnabled = newValue;
+        if (newValue) {
+            backgroundMusicService.onResume();
+        } else {
+            backgroundMusicService.onPause();
+        }
     }
 
     public boolean isSoundEnabled(){
@@ -32,7 +43,17 @@ class MainSettingsModel implements GlobalSettingsInterface {
         return musicEnabled;
     }
 
-    void restoreState(SharedPreferences settings) {
+    public void restoreLastState(Context context) {
+        if (backgroundMusicService == null) {
+            if (context instanceof BackgroundMusicService) {
+                backgroundMusicService = (BackgroundMusicService) context;
+            } else {
+                Log.e("BackgroundMusicService", "Does not run restoreLastState in first place");
+            }
+        } else {
+            context = backgroundMusicService;
+        }
+        SharedPreferences settings = context.getSharedPreferences("globalSettings",MODE_PRIVATE);
         soundEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_SOUND_ENABLED,true);
         musicEnabled = settings.getBoolean(MainSettingsActivity.SHARE_PREF_KEY_MUSIC_ENABLED,false);
     }
