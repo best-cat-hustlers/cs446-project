@@ -64,23 +64,34 @@ public class LobbyActivity extends AppCompatActivity {
                     switch (msg.arg1) {
                         case BluetoothConstants.STATE_CONNECTED:
                             Log.d(TAG, "BluetoothService state is CONNECTED");
-                            textStatus.setText(getString(R.string.lobby_title_connected_to, mConnectedDeviceName));
+                            textStatus.setText(getString(R.string.lobby_title_connected, mConnectedDeviceName));
                             break;
                         case BluetoothConstants.STATE_CONNECTING:
                             Log.d(TAG, "BluetoothService state is CONNECTING");
+                            textStatus.setText(getString(R.string.lobby_title_connecting));
                             break;
                         case BluetoothConstants.STATE_LISTEN:
                             Log.d(TAG, "BluetoothService state is LISTEN");
+                            textStatus.setText(getString(R.string.lobby_title_listen));
                         case BluetoothConstants.STATE_NONE:
                             Log.d(TAG, "BluetoothService state is NONE");
+                            textStatus.setText(getString(R.string.lobby_title_none));
                             break;
+                    }
+                    break;
+                case BluetoothConstants.MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    if (writeMessage.equals(START_GAME)) {
+                        openGameActivity();
                     }
                     break;
                 case BluetoothConstants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if (readMessage == START_GAME) {
+                    if (readMessage.equals(START_GAME)) {
                         openGameActivity();
                     }
                     break;
@@ -139,11 +150,11 @@ public class LobbyActivity extends AppCompatActivity {
             BluetoothService.LocalBinder mLocalBinder = (BluetoothService.LocalBinder)service;
             mBluetoothService = mLocalBinder.getServerInstance();
 
+            mBluetoothService.attachNewHandler(mHandler);
+
             if (isHost) {
                 mBluetoothService.host();
             }
-
-            mBluetoothService.attachNewHandler(mHandler);
         }
     };
 
@@ -161,7 +172,6 @@ public class LobbyActivity extends AppCompatActivity {
     public void onStartGamePressed(View view) {
         if (isHost) {
             sendMessage(START_GAME);
-            openGameActivity();
         }
     }
 
