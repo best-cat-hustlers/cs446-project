@@ -9,14 +9,17 @@ import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 
-public class MultiplayerMenuActivity extends AppCompatActivity {
+public class MultiplayerMenuActivity extends AppCompatActivity implements MultiplayerMenuContract.View {
 
-    public static final String EXTRAS_KEY_IS_MULTI = "isMultiplayer";
+    private MultiplayerMenuContract.Presenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_multiplayer_menu);
+
+        presenter = new MultiplayerMenuPresenter(this);
     }
 
     public void onBackPressed(View view) {
@@ -25,8 +28,7 @@ public class MultiplayerMenuActivity extends AppCompatActivity {
 
     public void openGameSetup(View view) {
         Intent intent = new Intent(this, GameSetupActivity.class);
-//        Intent intent = new Intent(this, LobbyActivity.class); // for testing
-        intent.putExtra(EXTRAS_KEY_IS_MULTI,true);
+        presenter.prepareOpenGameSetup(intent);
         startActivity(intent);
     }
 

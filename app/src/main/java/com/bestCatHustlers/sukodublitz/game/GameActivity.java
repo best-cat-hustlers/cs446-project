@@ -1,24 +1,37 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
+import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
+    public static final String TAG = "GameActivity";
 
     private CardView scoreCardView;
     private TextView playerScore1TextView;
@@ -31,10 +44,74 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     private Constants constants;
 
+    private BluetoothService mBluetoothService = null;
+    private boolean mBounded;
+
     private class Constants {
         final float numberEntrySelectedAlpha = 0.6f;
         final float numberEntryDefaultAlpha = 0.9f;
     }
+
+    //endregion
+
+    //region Bluetooth
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Toast.makeText(GameActivity.this, "Bluetooth Service is disconnected", Toast.LENGTH_SHORT).show();
+            mBounded = false;
+            mBluetoothService = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Toast.makeText(GameActivity.this, "Bluetooth Service is connected", Toast.LENGTH_SHORT).show();
+            mBounded = true;
+            BluetoothService.LocalBinder mLocalBinder = (BluetoothService.LocalBinder)service;
+            mBluetoothService = mLocalBinder.getServerInstance();
+            mBluetoothService.attachNewHandler(mHandler);
+        }
+    };
+
+    // TODO: polish this part
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case BluetoothConstants.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothConstants.STATE_CONNECTED:
+                            Log.d(TAG, "BluetoothService state is CONNECTED");
+                            break;
+                        case BluetoothConstants.STATE_CONNECTING:
+                            Log.d(TAG, "BluetoothService state is CONNECTING");
+                            break;
+                        case BluetoothConstants.STATE_LISTEN:
+                            Log.d(TAG, "BluetoothService state is LISTEN");
+                        case BluetoothConstants.STATE_NONE:
+                            Log.d(TAG, "BluetoothService state is NONE");
+                            break;
+                    }
+                    break;
+                case BluetoothConstants.MESSAGE_WRITE:
+                    Log.d(TAG, "BluetoothService: MESSAGE_WRITE");
+                    break;
+                case BluetoothConstants.MESSAGE_READ:
+                    Log.d(TAG, "BluetoothService: MESSAGE_READ");
+                    byte[] readBuf = (byte[]) msg.obj;
+                    readGame(readBuf);
+                    break;
+                case BluetoothConstants.MESSAGE_DEVICE_NAME:
+                    Log.d(TAG, "BluetoothService: MESSAGE_DEVICE_NAME");
+                    break;
+                case BluetoothConstants.MESSAGE_TOAST:
+                    Log.d(TAG, "BluetoothService: MESSAGE_TOAST");
+                    break;
+            }
+        }
+    };
 
     //endregion
 
@@ -43,8 +120,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle extras = getIntent().getExtras();
 
         setContentView(R.layout.activity_game);
 
@@ -75,6 +150,25 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         presenter.handleViewCreated();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.handleViewStarted();
+    };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(mBounded) {
+            unbindService(mConnection);
+            mBounded = false;
+        }
+      
+        presenter.handleViewStopped();
+    };
 
     @Override
     protected void onDestroy() {
@@ -121,6 +215,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     //endregion
 
     //region Contract
+
+    @Override
+    public void bindBluetoothService() {
+        Intent mIntent = new Intent(this, BluetoothService.class);
+        bindService(mIntent, mConnection, BIND_AUTO_CREATE);
+    }
 
     @Override
     public void selectCell(final int row, final int column) {
@@ -267,4 +367,31 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     //endregion
+
+
+    /**
+     * Example function for send a BoardGame model using BluetoothService
+     */
+    private void sendGame(BoardGame model) {
+        // Check that we're actually connected before trying anything
+        if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
+            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check that there's actually something to send
+        if (model != null) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            byte[] bytes = ParcelableByteUtil.marshall(model);
+            mBluetoothService.write(bytes);
+        }
+    }
+
+    /**
+     * Example function for read a BoardGame model using BluetoothService, called by handler
+     */
+    private void readGame(byte[] readBuf) {
+        BoardGame model = ParcelableByteUtil.unmarshall(readBuf, BoardGame.CREATOR);
+        // TODO: do whatever with read data
+    }
 }
