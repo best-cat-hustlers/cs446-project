@@ -4,6 +4,8 @@ import android.content.Intent;
 
 public class GameContract {
     interface View {
+        void bindBluetoothService();
+
         void selectCell(int row, int column);
 
         void selectNumber(int value);
@@ -25,6 +27,8 @@ public class GameContract {
 
     interface Presenter {
         void handleViewCreated();
+
+        void handleViewStarted();
 
         void handleViewDestroyed();
 

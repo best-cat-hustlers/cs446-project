@@ -25,6 +25,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Holo.Dialog"/>
+        <service android:name=".bluetooth.BluetoothService" />
         <activity
             android:name=".multiplayer.MultiplayerMenuActivity"
             android:label="@string/title_activity_multiplayer_menu"

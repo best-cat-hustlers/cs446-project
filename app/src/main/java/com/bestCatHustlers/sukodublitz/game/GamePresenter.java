@@ -1,14 +1,23 @@
 package com.bestCatHustlers.sukodublitz.game;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
+import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
+
+import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
@@ -33,6 +42,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     private long startTime = 0;
     private long endTime = 0;
+
+    private boolean isMultiplayerMode = false;
 
     private Constants constants;
 
@@ -78,6 +89,13 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         startTime = SystemClock.elapsedRealtime();
 
         if (aiDifficulty > 0) startAI();
+    }
+
+    @Override
+    public void handleViewStarted() {
+        if (isMultiplayerMode) {
+            view.bindBluetoothService();
+        }
     }
 
     @Override
@@ -220,6 +238,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     private void configureGameWithSettings(Bundle extras) {
         if (extras == null || model == null) return;
+
+        isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
 
         isPointsShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
         isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);

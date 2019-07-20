@@ -11,9 +11,9 @@ import com.bestCatHustlers.sukodublitz.results.ResultsContract;
 
 public class MultiplayerMenuPresenter implements MultiplayerMenuContract.Presenter {
 
-    private MultiplayerMenuContract.View view;
-
     public static final String EXTRAS_KEY_IS_MULTI = "isMultiplayer";
+
+    private MultiplayerMenuContract.View view;
 
     public MultiplayerMenuPresenter(MultiplayerMenuContract.View view) {
         this.view = view;
