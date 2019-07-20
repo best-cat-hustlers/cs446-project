@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_main);
         mainPresenter = new MainActivityPresenter(this);
+        Intent backgroundMusicService = new Intent(this, BackgroundMusicService.class);
+        startService(backgroundMusicService);
     }
 
     public void clickSinglePlayer(View view) {
