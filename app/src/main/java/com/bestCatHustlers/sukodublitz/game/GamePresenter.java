@@ -3,12 +3,14 @@ package com.bestCatHustlers.sukodublitz.game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
@@ -158,7 +160,14 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleBluetoothMessageReceived(byte[] message, int messageTag) {
-
+        switch (messageTag) {
+            case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
+                Log.d("GAME_PRESENTER", "message_board_game_write received");
+                break;
+            case BluetoothConstants.MESSAGE_WRITE:
+                Log.d("GAME_PRESENTER", "message_write received");
+                break;
+        }
     }
 
     //endregion
@@ -190,11 +199,25 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void enterSelectedSolution() {
         if (!shouldEnterSolution()) return;
 
-        model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
+        if (isMultiplayerMode) {
+            String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber;
+            view.sendBluetoothMessage(solution.getBytes(), BluetoothConstants.MESSAGE_WRITE);
 
-        view.playSound(R.raw.pop_middle);
+            // TODO: Remove this so that it can be validated before entering.
+            // v
+            model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
 
-        handleSolutionEntered();
+            view.playSound(R.raw.pop_middle);
+
+            handleSolutionEntered();
+            // ^
+        } else {
+            model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
+
+            view.playSound(R.raw.pop_middle);
+
+            handleSolutionEntered();
+        }
     }
 
     // TODO: Use model to determine if puzzle is solved properly.
