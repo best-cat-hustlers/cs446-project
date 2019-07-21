@@ -264,7 +264,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         if (model == null) {
             // TODO: Handle this fatal error.
-            return;
+            model = new BoardGame();
         }
 
         model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);

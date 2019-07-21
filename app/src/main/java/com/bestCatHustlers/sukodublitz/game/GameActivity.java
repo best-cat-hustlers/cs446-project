@@ -80,8 +80,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
-                case BluetoothConstants.MESSAGE_READ:
-                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_READ);
+                case BluetoothConstants.MESSAGE_WRITE:
+                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_WRITE);
                     break;
                 case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
                     presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
@@ -350,6 +350,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             Toast.makeText(this, "There was a problem with the bluetooth connection", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Log.d("GAME_ACTIVITY", new String(message));
 
         mBluetoothService.write(message, messageTag);
     }
