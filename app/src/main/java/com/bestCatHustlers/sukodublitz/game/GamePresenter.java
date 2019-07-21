@@ -26,6 +26,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     public static final String EXTRAS_KEY_BOARD_GAME = "BoardGame";
     public static final String EXTRAS_KEY_TIME_ELAPSED = "time_elapsed";
+    public static final String AI_ID = "2";
 
     private GameContract.View view;
     private BoardGame model;
@@ -62,14 +63,6 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         this.view = view;
 
         constants = new Constants();
-
-        // TODO: Remove this test model once it can be passed in properly via intent.
-        BoardGame testModel = new BoardGame();
-        testModel.addPlayer(MainSettingsModel.getInstance().getUserID(), Player.Team.BLUE);
-        testModel.addPlayer("2", Player.Team.RED);
-        testModel.generateNewBoard();
-
-        model = testModel;
 
         configureGameWithSettings(extras);
     }
@@ -191,7 +184,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Private
 
     private void startAI() {
-        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, "2");
+        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, AI_ID);
         ai.delegate = this;
         aiThread = new Thread(ai);
 
@@ -246,14 +239,18 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     private void configureGameWithSettings(Bundle extras) {
-        if (extras == null || model == null) return;
+        if (extras == null) return;
 
         isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
-
-        isPointsShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
         isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
         isPenaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
         aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
+        model = extras.getParcelable(GameSetupActivity.EXTRAS_KEY_BOARD_GAME);
+
+        if (model == null) {
+            // TODO: Handle this fatal error.
+            return;
+        }
 
         model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);
     }

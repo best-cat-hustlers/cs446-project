@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.game.GamePresenter;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
@@ -155,8 +156,11 @@ public class GameSetupActivity extends AppCompatActivity {
         // This is where any logic for creating the board game with specific parameters should be made.
         BoardGame boardGame = new BoardGame();
 
-        // TODO: Generate player ids properly.
         boardGame.addPlayer(MainSettingsModel.getInstance().getUserID(), Player.Team.BLUE);
+
+        if (!isMultiplayer) {
+            boardGame.addPlayer(GamePresenter.AI_ID, Player.Team.RED);
+        }
 
         return boardGame;
     }
