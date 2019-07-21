@@ -159,15 +159,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
-    public void handleBluetoothMessageReceived(byte[] message, int messageTag) {
-        switch (messageTag) {
-            case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
-                Log.d("GAME_PRESENTER", "message_board_game_write received");
-                break;
-            case BluetoothConstants.MESSAGE_WRITE:
-                Log.d("GAME_PRESENTER", "message_write received");
-                break;
-        }
+    public void handleBluetoothMessageReceived(byte[] message) {
     }
 
     //endregion
@@ -201,7 +193,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         if (isMultiplayerMode) {
             String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber;
-            view.sendBluetoothMessage(solution.getBytes(), BluetoothConstants.MESSAGE_WRITE);
+            view.sendBluetoothMessage(solution.getBytes());
 
             // TODO: Remove this so that it can be validated before entering.
             // v

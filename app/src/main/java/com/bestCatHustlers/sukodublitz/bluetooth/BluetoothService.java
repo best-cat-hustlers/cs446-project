@@ -259,7 +259,7 @@ public class BluetoothService extends Service {
     /**
      * Write to the ConnectedThread in an unsynchronized manner
      */
-    public void write(byte[] out, int messageTag) {
+    public void write(byte[] out) {
         // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
@@ -268,7 +268,7 @@ public class BluetoothService extends Service {
             r = mConnectedThread;
         }
         // Perform the write unsynchronized
-        r.write(out, messageTag);
+        r.write(out);
     }
 
     /**
@@ -505,12 +505,12 @@ public class BluetoothService extends Service {
          *
          * @param buffer The bytes to write
          */
-        public void write(byte[] buffer, int messageTag) {
+        public void write(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(messageTag, -1, -1, buffer)
+                mHandler.obtainMessage(BluetoothConstants.MESSAGE_WRITE, -1, -1, buffer)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

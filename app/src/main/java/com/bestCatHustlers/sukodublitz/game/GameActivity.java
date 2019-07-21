@@ -80,11 +80,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case BluetoothConstants.MESSAGE_WRITE:
-                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj, BluetoothConstants.MESSAGE_WRITE);
-                    break;
-                case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
-                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
+                case BluetoothConstants.MESSAGE_READ:
+                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj);
                     break;
             }
         }
@@ -344,7 +341,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void sendBluetoothMessage(byte[] message, int messageTag) {
+    public void sendBluetoothMessage(byte[] message) {
         if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
             // TODO: Add to strings.
             Toast.makeText(this, "There was a problem with the bluetooth connection", Toast.LENGTH_SHORT).show();
@@ -353,7 +350,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
         Log.d("GAME_ACTIVITY", new String(message));
 
-        mBluetoothService.write(message, messageTag);
+        mBluetoothService.write(message);
     }
 
     //endregion
@@ -373,7 +370,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         if (model != null) {
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] bytes = ParcelableByteUtil.marshall(model);
-            mBluetoothService.write(bytes, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
+            mBluetoothService.write(bytes);
         }
     }
 

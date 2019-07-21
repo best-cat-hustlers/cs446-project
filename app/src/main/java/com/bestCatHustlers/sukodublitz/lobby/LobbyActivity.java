@@ -226,7 +226,7 @@ public class LobbyActivity extends AppCompatActivity {
         if (message.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] send = message.getBytes();
-            mBluetoothService.write(send, BluetoothConstants.MESSAGE_WRITE);
+            mBluetoothService.write(send);
         }
     }
 }
