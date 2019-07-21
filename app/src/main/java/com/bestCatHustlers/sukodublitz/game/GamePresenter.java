@@ -16,6 +16,7 @@ import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
@@ -64,7 +65,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         // TODO: Remove this test model once it can be passed in properly via intent.
         BoardGame testModel = new BoardGame();
-        testModel.addPlayer("1", Player.Team.BLUE);
+        testModel.addPlayer(MainSettingsModel.getInstance().getUserID(), Player.Team.BLUE);
         testModel.addPlayer("2", Player.Team.RED);
         testModel.generateNewBoard();
 
@@ -204,8 +205,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void enterSelectedSolution() {
         if (!shouldEnterSolution()) return;
 
-        // TODO: Get player ID properly.
-        model.fillSquare(selectedRow, selectedColumn, selectedNumber, "1");
+        model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
 
         view.playSound(R.raw.pop_middle);
 
