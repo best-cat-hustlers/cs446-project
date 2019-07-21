@@ -22,11 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
@@ -156,7 +158,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         super.onStart();
 
         presenter.handleViewStarted();
-    };
+    }
 
     @Override
     protected void onStop() {
@@ -168,7 +170,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         }
       
         presenter.handleViewStopped();
-    };
+    }
 
     @Override
     protected void onDestroy() {
@@ -336,6 +338,9 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @Override
     public void playSound(int soundID) {
+        GlobalSettingsInterface globalSettingsInterface = MainSettingsModel.getInstance();
+        // Don't play sound if the sound is not enabled
+        if (!globalSettingsInterface.isSoundEnabled()) return;
         final MediaPlayer soundPlayer = MediaPlayer.create(this, soundID);
 
         soundPlayer.start();
