@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
+import com.bestCatHustlers.sukodublitz.GameSetupPresenter;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
@@ -167,6 +168,11 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         intent.putExtra(EXTRAS_KEY_BOARD_GAME, model);
         intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
+    }
+
+    @Override
+    public void handleBluetoothMessageReceived(byte[] message, int messageTag) {
+
     }
 
     //endregion

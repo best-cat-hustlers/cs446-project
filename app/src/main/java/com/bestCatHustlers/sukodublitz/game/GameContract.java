@@ -23,6 +23,8 @@ public class GameContract {
         void showPoints(boolean shouldShowPoints);
 
         void showTimer(boolean shouldShowTimer);
+
+        void sendBluetoothMessage(byte[] message, int messageTag);
     }
 
     interface Presenter {
@@ -41,5 +43,7 @@ public class GameContract {
         void handleOnBackPressed();
 
         void prepareOpenResultsActivity(Intent intent);
+
+        void handleBluetoothMessageReceived(byte[] message, int messageTag);
     }
 }

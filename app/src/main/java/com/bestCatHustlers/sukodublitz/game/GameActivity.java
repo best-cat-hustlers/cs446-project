@@ -78,36 +78,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothConstants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothConstants.STATE_CONNECTED:
-                            Log.d(TAG, "BluetoothService state is CONNECTED");
-                            break;
-                        case BluetoothConstants.STATE_CONNECTING:
-                            Log.d(TAG, "BluetoothService state is CONNECTING");
-                            break;
-                        case BluetoothConstants.STATE_LISTEN:
-                            Log.d(TAG, "BluetoothService state is LISTEN");
-                        case BluetoothConstants.STATE_NONE:
-                            Log.d(TAG, "BluetoothService state is NONE");
-                            break;
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_WRITE:
-                    Log.d(TAG, "BluetoothService: MESSAGE_WRITE");
-                    break;
+        public void handleMessage(Message message) {
+            switch (message.what) {
                 case BluetoothConstants.MESSAGE_READ:
-                    Log.d(TAG, "BluetoothService: MESSAGE_READ");
-                    byte[] readBuf = (byte[]) msg.obj;
-                    readGame(readBuf);
+                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_READ);
                     break;
-                case BluetoothConstants.MESSAGE_DEVICE_NAME:
-                    Log.d(TAG, "BluetoothService: MESSAGE_DEVICE_NAME");
-                    break;
-                case BluetoothConstants.MESSAGE_TOAST:
-                    Log.d(TAG, "BluetoothService: MESSAGE_TOAST");
+                case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
+                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
                     break;
             }
         }
@@ -366,6 +343,17 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         presenter.handleCellClick(row, column);
     }
 
+    @Override
+    public void sendBluetoothMessage(byte[] message, int messageTag) {
+        if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
+            // TODO: Add to strings.
+            Toast.makeText(this, "There was a problem with the bluetooth connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mBluetoothService.write(message, messageTag);
+    }
+
     //endregion
 
 
@@ -383,7 +371,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         if (model != null) {
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] bytes = ParcelableByteUtil.marshall(model);
-            mBluetoothService.write(bytes);
+            mBluetoothService.write(bytes, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
         }
     }
 
