@@ -76,6 +76,7 @@ public class MainSettingsModel implements GlobalSettingsInterface {
     }
 
     public String getUserID() {
-        return UUID.randomUUID().toString();
+//        return UUID.randomUUID().toString();
+        return "1";
     }
 }

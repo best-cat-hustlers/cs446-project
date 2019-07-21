@@ -78,13 +78,13 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message message) {
-            switch (message.what) {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case BluetoothConstants.MESSAGE_WRITE:
-                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_WRITE);
+                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj, BluetoothConstants.MESSAGE_WRITE);
                     break;
                 case BluetoothConstants.MESSAGE_BOARD_GAME_WRITE:
-                    presenter.handleBluetoothMessageReceived((byte[]) message.obj, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
+                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj, BluetoothConstants.MESSAGE_BOARD_GAME_WRITE);
                     break;
             }
         }
