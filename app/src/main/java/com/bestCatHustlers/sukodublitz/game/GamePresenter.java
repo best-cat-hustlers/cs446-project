@@ -2,6 +2,7 @@ package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -10,7 +11,6 @@ import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
-import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
@@ -156,8 +156,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     @Override
     public void prepareOpenResultsActivity(Intent intent) {
         int timeElapsed = (int) (endTime - startTime);
-
-        intent.putExtra(EXTRAS_KEY_BOARD_GAME, model);
+        intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable) model);
         intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
     }
 
