@@ -3,6 +3,7 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.locks.*;
@@ -12,7 +13,7 @@ import java.util.Iterator;
 // WARNING: When parceling BoardGame to another activity via intents, the programmer is responsible
 // for ensuring that the lock isn't held by any thread. This is because the behaviour of Reentrant
 // locks after deserialization is to set the lock as unlocked, regardless of of previous state.
-public class BoardGame implements Parcelable
+public class BoardGame implements Parcelable, Serializable
 {
     private HashMap<String, Player> players;
     private PuzzleGenerator puzzleGen;

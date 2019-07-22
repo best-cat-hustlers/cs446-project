@@ -28,6 +28,7 @@ import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.bluetooth.DeviceListActivity;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
 import com.bestCatHustlers.sukodublitz.join.JoinActivity;
+import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
 import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_IS_HOST;
@@ -90,7 +91,8 @@ public class LobbyActivity extends AppCompatActivity {
                 case BluetoothConstants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    Object obj = SerializableUtils.deserialize(readBuf);
+                    String readMessage = (String) obj;
                     if (readMessage.equals(START_GAME)) {
                         openGameActivity();
                     }
@@ -221,11 +223,10 @@ public class LobbyActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
         }
-
         // Check that there's actually something to send
         if (message.length() > 0) {
             // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = message.getBytes();
+            byte[] send = SerializableUtils.serialize(message);
             mBluetoothService.write(send);
         }
     }

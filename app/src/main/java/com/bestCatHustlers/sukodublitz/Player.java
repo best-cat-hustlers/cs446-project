@@ -3,7 +3,9 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Player implements Parcelable
+import java.io.Serializable;
+
+public class Player implements Parcelable, Serializable
 {
     public enum Team
     {
@@ -14,7 +16,7 @@ public class Player implements Parcelable
     private Team team;
     private int score;
 
-    Player(String id, Team team)
+    public Player(String id, Team team)
     {
         this.id = id;
         this.team = team;
