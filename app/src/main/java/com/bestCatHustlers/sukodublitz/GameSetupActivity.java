@@ -4,52 +4,94 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
+import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
+import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
+
+import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
 public class GameSetupActivity extends AppCompatActivity {
 
-    RadioButton button1;
-    RadioButton button2;
-    RadioButton button3;
-    RadioButton button4;
-    RadioButton button5;
+    public static final String EXTRAS_KEY_IS_HOST = "isHost";
+    public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
+    public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
+    public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
+    public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
+    private static final int topToBottomMarginRatio = 4;
+    RadioButton aiDifficulty1Button;
+    RadioButton aiDifficulty2Button;
+    RadioButton aiDifficulty3Button;
+    RadioButton aiDifficulty4Button;
+    RadioButton aiDifficulty5Button;
 
-    private boolean showPoints;
-    private boolean showTimer;
-    private boolean penaltyOn;
-    private int aiDifficulty;
+    Button nextPageButton;
+
+    // Default settings
+    private boolean showPoints = true;
+    private boolean showTimer = true;
+    private boolean penaltyOn = true;
+    private boolean isMultiplayer;
+    private int aiDifficulty = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
 
-        button1 = findViewById(R.id.difficulty1);
-        button2 = findViewById(R.id.difficulty2);
-        button3 = findViewById(R.id.difficulty3);
-        button4 = findViewById(R.id.difficulty4);
-        button5 = findViewById(R.id.difficulty5);
+        // Determine if it's in multiplayer mode
+        isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI, false);
 
-        // Default radio button aiDifficulty to 1
-        button1.toggle();
-        onChangeAIDifficulty(button1);
-        // Default settings
-        showPoints = true;
-        showTimer = true;
-        penaltyOn = true;
-        aiDifficulty = 1;
+        nextPageButton = findViewById(R.id.button_start_game);
+
+        if (isMultiplayer) {
+            // Hide AI difficulty options
+            View aiGroupView = findViewById(R.id.AI_difficulty);
+            View aiTitle = findViewById(R.id.textView);
+            View bottomView = findViewById(R.id.penalty_switch);
+            aiGroupView.setVisibility(View.GONE);
+            aiTitle.setVisibility(View.GONE);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomView.getLayoutParams();
+            params.bottomMargin = params.topMargin * topToBottomMarginRatio;
+
+            nextPageButton.setText("Go to Lobby");
+        } else {
+            // Single player mode
+            aiDifficulty1Button = findViewById(R.id.difficulty1);
+            aiDifficulty2Button = findViewById(R.id.difficulty2);
+            aiDifficulty3Button = findViewById(R.id.difficulty3);
+            aiDifficulty4Button = findViewById(R.id.difficulty4);
+            aiDifficulty5Button = findViewById(R.id.difficulty5);
+
+            // Default radio button aiDifficulty to 1
+            aiDifficulty1Button.toggle();
+            onChangeAIDifficulty(aiDifficulty1Button);
+        }
+
     }
 
     public void clickGame(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("showPoints", showPoints);
-        intent.putExtra("showTimer", showTimer);
-        intent.putExtra("penaltyOn", penaltyOn);
-        intent.putExtra("aiDifficulty", aiDifficulty);
-        this.startActivity(intent);
+        if (isMultiplayer) {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra(EXTRAS_KEY_IS_HOST, true);
+            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
+            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
+            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
+            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            this.startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
+            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
+            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
+            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            this.startActivity(intent);
+        }
     }
 
     public void onCheckShowPoints(View view){
@@ -66,11 +108,11 @@ public class GameSetupActivity extends AppCompatActivity {
     }
 
     public void resetRadioButtonTextColor() {
-        button1.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button2.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button3.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button4.setTextColor(getResources().getColor(R.color.secondaryColor));
-        button5.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty1Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty2Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty3Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty4Button.setTextColor(getResources().getColor(R.color.secondaryColor));
+        aiDifficulty5Button.setTextColor(getResources().getColor(R.color.secondaryColor));
     }
 
     public void onChangeAIDifficulty(View view) {

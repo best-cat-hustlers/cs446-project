@@ -3,14 +3,23 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Player implements Parcelable
+import java.io.Serializable;
+
+public class Player implements Parcelable, Serializable
 {
+    public enum Team
+    {
+        RED, BLUE;
+    }
+
     private String id;
+    private Team team;
     private int score;
 
-    Player(String id)
+    public Player(String id, Team team)
     {
         this.id = id;
+        this.team = team;
         this.score = 0;
     }
 
@@ -18,6 +27,10 @@ public class Player implements Parcelable
     {
         return this.id;
     }
+
+    public Team getTeam() { return this.team; }
+
+    public void setTeam(Team team) { this.team = team; }
 
     public int getScore()
     {
@@ -38,6 +51,7 @@ public class Player implements Parcelable
     public void writeToParcel(Parcel dest, int flags)
     {
         dest.writeString(id);
+        dest.writeString(team.name());
         dest.writeInt(score);
     }
 
@@ -55,6 +69,7 @@ public class Player implements Parcelable
 
     private Player(Parcel in) {
         id = in.readString();
+        team = Team.valueOf(in.readString());
         score = in.readInt();
     }
 }

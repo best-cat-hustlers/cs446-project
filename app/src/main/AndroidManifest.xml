@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bestCatHustlers.sukodublitz">
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,10 +16,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainSettingsActivity"></activity>
+        <activity
+            android:name=".settings.MainSettingsActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <service
+            android:name=".BackgroundMusicService"
+            android:enabled="true"
+            android:exported="false"></service>
         <activity android:name=".GameSetupActivity" />
-        <activity android:name=".results.ResultsActivity"></activity>
+        <activity android:name=".results.ResultsActivity" />
         <activity android:name=".game.GameActivity" />
+        <activity
+            android:name=".bluetooth.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Holo.Dialog"/>
+        <service android:name=".bluetooth.BluetoothService" />
         <activity
             android:name=".multiplayer.MultiplayerMenuActivity"
             android:label="@string/title_activity_multiplayer_menu"

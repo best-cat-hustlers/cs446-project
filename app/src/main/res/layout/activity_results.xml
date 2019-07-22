@@ -10,6 +10,7 @@
     <Button
         android:id="@+id/main_menu_button"
         style="@style/button_round_back"
+        android:alpha="0.9"
         android:layout_marginStart="26dp"
         android:layout_marginTop="26dp"
         android:onClick="openMainActivity"
@@ -44,7 +45,7 @@
                 android:layout_marginTop="24dp"
                 android:text="Player wins!"
                 android:textSize="24sp"
-                android:textColor="@color/primaryColor"
+                android:textColor="@color/secondaryColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

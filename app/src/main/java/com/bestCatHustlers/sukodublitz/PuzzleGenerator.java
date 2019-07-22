@@ -3,12 +3,13 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Random;
 
 // A class to generate sudoku puzzles and their solutions
-public class PuzzleGenerator implements Parcelable
+public class PuzzleGenerator implements Parcelable, Serializable
 {
     private Random rand;
     private int[][] seeds;
@@ -16,7 +17,7 @@ public class PuzzleGenerator implements Parcelable
     public static final String STARTER_CELL = "0";
     public static final String EMPTY_CELL = "";
 
-    PuzzleGenerator()
+    public PuzzleGenerator()
     {
         // TODO: Create and store multiple seeds
         seeds = new int[][]{{0, 0, 0, 2, 6, 0, 7, 0, 1},
@@ -243,7 +244,7 @@ public class PuzzleGenerator implements Parcelable
 
 // Struct for pairing puzzles with solutions
 // Elements of puzzle and solution can be accessed with (row, col) indexing
-class Puzzle implements Parcelable
+class Puzzle implements Parcelable, Serializable
 {
     public int[][] puzzle;
     public int[][] solution;

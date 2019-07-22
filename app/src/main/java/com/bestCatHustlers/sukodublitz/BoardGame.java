@@ -3,6 +3,8 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.locks.*;
 import java.util.Iterator;
@@ -11,7 +13,7 @@ import java.util.Iterator;
 // WARNING: When parceling BoardGame to another activity via intents, the programmer is responsible
 // for ensuring that the lock isn't held by any thread. This is because the behaviour of Reentrant
 // locks after deserialization is to set the lock as unlocked, regardless of of previous state.
-public class BoardGame implements Parcelable
+public class BoardGame implements Parcelable, Serializable
 {
     private HashMap<String, Player> players;
     private PuzzleGenerator puzzleGen;
@@ -28,13 +30,6 @@ public class BoardGame implements Parcelable
         wrongAnsDelta = -10;
         lock = new ReentrantLock();
         players = new HashMap<String, Player>();
-        // No idea if we want more than 2 players int the future so I'll add players
-        // like this for now
-        for (int i = 1; i <= 2; i++)
-        {
-            String id = Integer.toString(i);
-            players.put(id, new Player(id));
-        }
         // This would be generateNewBoard() but Reentrant locks do not like to be called in the
         // constructor. This is a non-issue since nothing can manipulate the object until after
         // instantiation so there is no chance for a race condition
@@ -69,9 +64,43 @@ public class BoardGame implements Parcelable
         }
     }
 
+    // Creates a player with the given id and return true. If a player with the id already exists,
+    // then return false.
+    public boolean addPlayer(String id, Player.Team team)
+    {
+        if (players.containsKey(id)) return false;
+        players.put(id, new Player(id, team));
+        return true;
+    }
+
+    // Removes a player from the game with the given id and return true. If a player with the id
+    // doesn't exist, then return false.
+    public boolean removePlayer(String id)
+    {
+        if (!players.containsKey(id)) return false;
+        players.remove(id);
+        return true;
+
+    }
+
+    // Returns the player with the given id. If a player with the id doesn't exist, then return null
     public Player getPlayer(String id)
     {
         return players.get(id);
+    }
+
+    // Returns all players that are on the given team
+    public ArrayList<Player> getTeamPlayers(Player.Team team)
+    {
+        ArrayList<Player> ret = new ArrayList<Player>();
+        Iterator it = players.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry next = (HashMap.Entry)it.next();
+            Player player = (Player)next.getValue();
+            if (player.getTeam() == team) ret.add(player);
+        }
+
+        return ret;
     }
 
     public int[][] getBoard()
@@ -145,28 +174,25 @@ public class BoardGame implements Parcelable
         }
     }
 
-    public Player getWinner()
+    public int getTeamScore(Player.Team team)
     {
-        // TODO: Temporarily disable as long as you can move to the results screen without finishing
-        // the board
-//        if (getEmptyCells() != 0) return null;
-
-        Player ret = null;
-        Iterator it = players.entrySet().iterator();
-        while (it.hasNext()) {
-            HashMap.Entry next = (HashMap.Entry)it.next();
-            Player player = (Player)next.getValue();
-            if (ret == null)
-            {
-                ret = player;
-            }
-            // TODO: What if score is tied?
-            else if (player.getScore() > ret.getScore())
-            {
-                ret = player;
-            }
+        ArrayList<Player> players = getTeamPlayers(team);
+        int score = 0;
+        for (Player player : players)
+        {
+            score += player.getScore();
         }
-        return ret;
+        return score;
+    }
+
+    public Player.Team getWinner()
+    {
+        int totalRedScore = getTeamScore(Player.Team.RED);
+        int totalBlueScore = getTeamScore(Player.Team.BLUE);
+
+        // TODO: What if score is tied?
+        if (totalRedScore > totalBlueScore) return Player.Team.RED;
+        return Player.Team.BLUE;
     }
 
     // Parcelable methods

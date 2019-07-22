@@ -3,7 +3,10 @@ package com.bestCatHustlers.sukodublitz.results;
 import android.os.Bundle;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.game.GamePresenter;
+
+import java.util.ArrayList;
 
 public class ResultsPresenter implements ResultsContract.Presenter
 {
@@ -24,15 +27,12 @@ public class ResultsPresenter implements ResultsContract.Presenter
         // Tell the view to show the board and player scores
         view.printTimeElapsed(generateTimeElapsedString(timeElapsed));
         view.printBoard(model.getBoard(), model.getCellOwners());
-        view.printScores(model.getPlayer("2").getScore(), model.getPlayer("1").getScore());
-
-        // TODO: Figure out how to tie players to colours
-        String colour = model.getWinner().getId().equals("2") ? "Red" : "Blue";
+        view.printScores(model.getTeamScore(Player.Team.RED), model.getTeamScore(Player.Team.BLUE));
+        String colour = model.getWinner() == Player.Team.RED ? "Red" : "Blue";
         view.printWinner(colour);
     }
 
     //region Private
-
     private String generateTimeElapsedString(int milliseconds) {
         int totalSeconds = (int) Math.floor(milliseconds / 1000);
 
@@ -41,6 +41,5 @@ public class ResultsPresenter implements ResultsContract.Presenter
 
         return String.format("%02d:%02d", m, seconds);
     }
-
     //endregion
 }
