@@ -38,10 +38,10 @@ public class PuzzleGenerator implements Parcelable
         // Permute the seed to generate a new board
         // 3,359,232 different boards per seed are possible through this, assuming seeds are not
         // the equivalent to each other
-        shuffle(seeds);
-        rotate(seeds, 1);
-        shuffle(seeds);
-        rotate(seeds, rand.nextInt(4));
+//        shuffle(seeds);
+//        rotate(seeds, 1);
+//        shuffle(seeds);
+//        rotate(seeds, rand.nextInt(4));
         // TODO: Permute band, stack, and cells
 
         int[][] solution = new int[GRID_SIZE][];

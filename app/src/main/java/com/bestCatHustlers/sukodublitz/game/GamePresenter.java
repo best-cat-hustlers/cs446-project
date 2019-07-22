@@ -9,7 +9,9 @@ import android.os.SystemClock;
 import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.FakeAIRed;
 import com.bestCatHustlers.sukodublitz.GameAI;
+import com.bestCatHustlers.sukodublitz.FakeAIBlue;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
@@ -184,11 +186,16 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Private
 
     private void startAI() {
-        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, "2");
-        ai.delegate = this;
-        aiThread = new Thread(ai);
+//        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, "2");
+        Thread testAI = new Thread(new FakeAIBlue(model,"1", this));
+        Thread testAI2 = new Thread(new FakeAIRed(model,"2", this));
+        testAI.start();
+        testAI2.start();
 
-        aiThread.start();
+//        ai.delegate = this;
+//        aiThread = new Thread(ai);
+//
+//        aiThread.start();
     }
 
     private boolean shouldEnterSolution() {
