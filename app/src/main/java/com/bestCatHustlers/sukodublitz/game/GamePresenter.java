@@ -1,23 +1,16 @@
 package com.bestCatHustlers.sukodublitz.game;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.SystemClock;
-import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.FakeAIBlue;
 import com.bestCatHustlers.sukodublitz.FakeAIRed;
 import com.bestCatHustlers.sukodublitz.GameAI;
-import com.bestCatHustlers.sukodublitz.FakeAIBlue;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
-import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
-import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
-import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
@@ -27,7 +20,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     public static final String EXTRAS_KEY_BOARD_GAME = "BoardGame";
     public static final String EXTRAS_KEY_TIME_ELAPSED = "time_elapsed";
 
-    private GameContract.View view;
+    public GameContract.View view;
     private BoardGame model;
 
     private GameAI ai;
