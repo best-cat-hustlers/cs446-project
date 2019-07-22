@@ -40,6 +40,7 @@ public class LobbyActivity extends AppCompatActivity {
     public static final String TAG = "LobbyActivity";
 
     public static final String EXTRAS_KEY_IS_MULTI = "isMultiplayer";
+    public static final String EXTRAS_KEY_IS_HOST = "isHost";
 
     private static final String START_GAME = "Start Game";
 
@@ -177,6 +178,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     public void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(EXTRAS_KEY_IS_HOST, isHost);
         intent.putExtra(EXTRAS_KEY_IS_MULTI,true);
         intent.putExtra(EXTRAS_KEY_SHOW_POINTS, extras.getBoolean(EXTRAS_KEY_SHOW_POINTS));
         intent.putExtra(EXTRAS_KEY_SHOW_TIMER, extras.getBoolean(EXTRAS_KEY_SHOW_TIMER));

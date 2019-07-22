@@ -17,6 +17,7 @@ public class MainSettingsModel implements GlobalSettingsInterface {
     private boolean soundEnabled;
     private boolean musicEnabled;
     private String userName;
+    private String userID;
 
     // Create static instance of this mModel
     private static final MainSettingsModel ourInstance = new MainSettingsModel(true,false);
@@ -28,6 +29,7 @@ public class MainSettingsModel implements GlobalSettingsInterface {
     private MainSettingsModel(boolean soundEnabled, boolean musicEnabled) {
         this.soundEnabled = soundEnabled;
         this.musicEnabled = musicEnabled;
+        this.userID = UUID.randomUUID().toString();
     }
 
     void setSoundEnabled(boolean newValue) {
@@ -76,7 +78,6 @@ public class MainSettingsModel implements GlobalSettingsInterface {
     }
 
     public String getUserID() {
-//        return UUID.randomUUID().toString();
-        return "1";
+        return userID;
     }
 }

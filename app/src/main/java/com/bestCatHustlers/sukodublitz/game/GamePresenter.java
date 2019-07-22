@@ -11,7 +11,9 @@ import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
+import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
+import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
@@ -41,6 +43,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private long endTime = 0;
 
     private boolean isMultiplayerMode = false;
+    private boolean isHost = false;
 
     private Constants constants;
 
@@ -160,6 +163,27 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleBluetoothMessageReceived(byte[] message) {
+        // TODO: Find a much better way to detect what the message type is.
+        String solution = new String(message);
+        boolean isSolution = solution.length() < 10;
+
+        if (isSolution && isHost) {
+            Log.d("GAME_PRESENTER", "received a solution: " + solution);
+            return;
+        } else if (isSolution && !isHost) {
+            Log.d("GAME_PRESENTER", "received a solution but isn't host");
+            return;
+        }
+
+        BoardGame boardGame = ParcelableByteUtil.unmarshall(message, BoardGame.CREATOR);
+
+        if (boardGame != null) {
+            model = boardGame;
+            handleSolutionEntered();
+            return;
+        }
+
+
     }
 
     //endregion
@@ -192,7 +216,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         if (!shouldEnterSolution()) return;
 
         if (isMultiplayerMode) {
-            String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber;
+            String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber + getOwnTeamTag();
             view.sendBluetoothMessage(solution.getBytes());
 
             // TODO: Remove this so that it can be validated before entering.
@@ -248,6 +272,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void configureGameWithSettings(Bundle extras) {
         if (extras == null) return;
 
+        isHost = extras.getBoolean(LobbyActivity.EXTRAS_KEY_IS_HOST);
         isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
         isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
         isPenaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
@@ -260,6 +285,15 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         }
 
         model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);
+    }
+
+    private int getOwnTeamTag() {
+        String userID = MainSettingsModel.getInstance().getUserID();
+        Player player = model.getPlayer(userID);
+
+        if (player == null) { return 0; }
+
+        return player.getTeam().getValue();
     }
 
     //endregion
