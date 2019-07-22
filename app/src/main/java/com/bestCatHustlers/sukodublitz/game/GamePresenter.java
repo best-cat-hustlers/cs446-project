@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.widget.Toast;
 
@@ -164,8 +165,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     @Override
     public void prepareOpenResultsActivity(Intent intent) {
         int timeElapsed = (int) (endTime - startTime);
-
-        intent.putExtra(EXTRAS_KEY_BOARD_GAME, model);
+        intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable) model);
         intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
     }
 
