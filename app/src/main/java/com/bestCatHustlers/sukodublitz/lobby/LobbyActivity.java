@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
@@ -30,18 +31,9 @@ import com.bestCatHustlers.sukodublitz.game.GameActivity;
 import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_IS_HOST;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_PENALTY_ON;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_POINTS;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_TIMER;
-
-public class LobbyActivity extends AppCompatActivity {
+public class LobbyActivity extends AppCompatActivity implements LobbyContract.View {
 
     public static final String TAG = "LobbyActivity";
-
-    public static final String EXTRAS_KEY_IS_MULTI = "isMultiplayer";
-    public static final String EXTRAS_KEY_IS_HOST = "isHost";
 
     private static final String START_GAME = "Start Game";
 
@@ -107,6 +99,8 @@ public class LobbyActivity extends AppCompatActivity {
         }
     };
 
+    //region LifeCycle
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +108,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         extras = getIntent().getExtras();
 
-        isHost = extras.getBoolean(EXTRAS_KEY_IS_HOST);
+        isHost = extras.getBoolean(ExtrasKeys.IS_HOST);
 
         checkBluetoothSupport();
 
@@ -180,15 +174,19 @@ public class LobbyActivity extends AppCompatActivity {
 
     public void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(EXTRAS_KEY_IS_HOST, isHost);
-        intent.putExtra(EXTRAS_KEY_IS_MULTI,true);
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, extras.getBoolean(EXTRAS_KEY_SHOW_POINTS));
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, extras.getBoolean(EXTRAS_KEY_SHOW_TIMER));
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, extras.getBoolean(EXTRAS_KEY_PENALTY_ON));
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, extras.getInt(EXTRAS_KEY_AI_DIFFICULTY));
+        // TODO: Move extras setup to the presenter.
+        intent.putExtra(ExtrasKeys.IS_HOST, isHost);
+        intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS));
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, ExtrasKeys.SHOULD_SHOW_TIMER);
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY));
+        intent.putExtra(ExtrasKeys.AI_DIFFICULTY, extras.getInt(ExtrasKeys.AI_DIFFICULTY));
+
         // TODO: add other activities
         startActivity(intent);
     }
+
+    //endregion
 
     /**
      * Makes this device discoverable for 300 seconds (5 minutes).
@@ -219,6 +217,18 @@ public class LobbyActivity extends AppCompatActivity {
         }
     }
 
+    //region Contract
+
+    @Override
+    public void sendBluetoothMessage(byte[] message) {
+        mBluetoothService.write(message);
+    }
+
+
+    //endregion
+
+    //region Private
+
     private void sendMessage(String message) {
         // Check that we're actually connected before trying anything
         if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
@@ -232,4 +242,6 @@ public class LobbyActivity extends AppCompatActivity {
             mBluetoothService.write(send);
         }
     }
+
+    //endregion
 }

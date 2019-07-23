@@ -18,13 +18,6 @@ import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 
 public class GameSetupActivity extends AppCompatActivity {
 
-    public static final String EXTRAS_KEY_IS_HOST = "isHost";
-    public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
-    public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
-    public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
-    public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
-    public static final String EXTRAS_KEY_BOARD_GAME = "boardGame";
-
     private static final int topToBottomMarginRatio = 4;
 
     RadioButton aiDifficulty1Button;
@@ -75,7 +68,6 @@ public class GameSetupActivity extends AppCompatActivity {
             aiDifficulty1Button.toggle();
             onChangeAIDifficulty(aiDifficulty1Button);
         }
-
     }
 
     public void clickGame(View view) {
@@ -84,16 +76,16 @@ public class GameSetupActivity extends AppCompatActivity {
 
         if (isMultiplayer) {
             intent = new Intent(this, LobbyActivity.class);
-            intent.putExtra(EXTRAS_KEY_IS_HOST, true);
+            intent.putExtra(ExtrasKeys.IS_HOST, true);
         } else {
             intent = new Intent(this, GameActivity.class);
-            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
+            intent.putExtra(ExtrasKeys.AI_DIFFICULTY, aiDifficulty);
         }
 
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-        intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable)boardGame);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, showPoints);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, showTimer);
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, penaltyOn);
+        intent.putExtra(ExtrasKeys.BOARD_GAME, (Parcelable)boardGame);
         this.startActivity(intent);
     }
 

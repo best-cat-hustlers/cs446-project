@@ -7,11 +7,13 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
+import com.bestCatHustlers.sukodublitz.lobby.LobbyPresenter;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
@@ -20,8 +22,8 @@ import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresent
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
 
-    public static final String EXTRAS_KEY_BOARD_GAME = "BoardGame";
-    public static final String EXTRAS_KEY_TIME_ELAPSED = "time_elapsed";
+    public static final String EXTRAS_KEY_BOARD_GAME = "boardGame";
+    public static final String EXTRAS_KEY_TIME_ELAPSED = "timeElapsed";
     public static final String AI_ID = "2";
 
     private GameContract.View view;
@@ -42,7 +44,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private long startTime = 0;
     private long endTime = 0;
 
-    private boolean isMultiplayerMode = false;
+    private boolean isMultiplayer = false;
     private boolean isHost = false;
 
     private Constants constants;
@@ -82,7 +84,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     @Override
     public void handleViewStarted() {
-        if (isMultiplayerMode) {
+        if (isMultiplayer) {
             view.bindBluetoothService();
         }
     }
@@ -214,7 +216,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void enterSelectedSolution() {
         if (!shouldEnterSolution()) return;
 
-        if (isMultiplayerMode) {
+        if (isMultiplayer) {
             String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber + getOwnTeamTag();
             view.sendBluetoothMessage(solution.getBytes());
 
@@ -271,12 +273,12 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void configureGameWithSettings(Bundle extras) {
         if (extras == null) return;
 
-        isHost = extras.getBoolean(LobbyActivity.EXTRAS_KEY_IS_HOST);
-        isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
-        isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
-        isPenaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
-        aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
-        model = extras.getParcelable(GameSetupActivity.EXTRAS_KEY_BOARD_GAME);
+        isHost = extras.getBoolean(ExtrasKeys.IS_HOST);
+        isMultiplayer = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
+        isTimerShown = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
+        isPenaltyOn = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
+        aiDifficulty = extras.getInt(ExtrasKeys.AI_DIFFICULTY);
+        model = extras.getParcelable(ExtrasKeys.BOARD_GAME);
 
         if (model == null) {
             // TODO: Handle this fatal error.
