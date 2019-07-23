@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.BoardGameSerializedObject;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.GameSettings;
 import com.bestCatHustlers.sukodublitz.Player;
@@ -45,7 +46,6 @@ public class LobbyPresenter implements LobbyContract.Presenter {
     public LobbyPresenter(LobbyContract.View view, Bundle extras) {
         this.view = view;
 
-        // TODO: Setup the model from the extras sent in from the previous activity.
         model = new BoardGame();
 
         configureWithSettings(extras);
@@ -188,9 +188,9 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                     }
                     break;
                 case Constants.BluetoothTags.propagateBoardGame:
-                    BoardGame updatedModel = (BoardGame) message.payload;
+                    BoardGameSerializedObject serializedBoardGame = (BoardGameSerializedObject) message.payload;
 
-                    model = updatedModel;
+                    model.syncWithSerializedObject(serializedBoardGame);
                     break;
             }
         }
@@ -231,7 +231,8 @@ public class LobbyPresenter implements LobbyContract.Presenter {
     private void propagateBoardGame() {
         if (!isHost) return;
 
-        BluetoothMessage propagateBoardGameMessage = new BluetoothMessage(Constants.BluetoothTags.propagateBoardGame, model);
+        BoardGameSerializedObject serializedBoardGame = model.getSerializedObject();
+        BluetoothMessage propagateBoardGameMessage = new BluetoothMessage(Constants.BluetoothTags.propagateBoardGame, serializedBoardGame);
 
         view.sendBluetoothMessage(propagateBoardGameMessage.serialized());
     }
