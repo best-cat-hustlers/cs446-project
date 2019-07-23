@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 public class SerializableUtils
 {
@@ -21,12 +23,12 @@ public class SerializableUtils
         }
         catch (IOException e)
         {}
-        return out.toByteArray();
+        return compress(out.toByteArray());
     }
 
     public static Object deserialize(byte[] bytes)
     {
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream in = new ByteArrayInputStream(decompress(bytes));
         Object ret = null;
         try
         {
@@ -36,5 +38,40 @@ public class SerializableUtils
         catch (Exception e)
         {}
         return ret;
+    }
+
+    private static byte[] compress(byte[] bytes)
+    {
+        Deflater deflate = new Deflater();
+        deflate.setLevel(Deflater.BEST_COMPRESSION);
+        deflate.setInput(bytes);
+        deflate.finish();
+        ByteArrayOutputStream out = new ByteArrayOutputStream(bytes.length);
+        byte[] buffer = new byte[1024];
+        while (!deflate.finished())
+        {
+            int count = deflate.deflate(buffer);
+            out.write(buffer, 0, count);
+        }
+        return out.toByteArray();
+    }
+
+    private static byte[] decompress(byte[] bytes)
+    {
+        Inflater inflate = new Inflater();
+        inflate.setInput(bytes);
+        ByteArrayOutputStream out = new ByteArrayOutputStream(bytes.length);
+        byte[] buffer = new byte[1024];
+        try
+        {
+            while (!inflate.finished())
+            {
+                int count = inflate.inflate(buffer);
+                out.write(buffer, 0, count);
+            }
+        }
+        catch (Exception e)
+        {}
+        return out.toByteArray();
     }
 }
