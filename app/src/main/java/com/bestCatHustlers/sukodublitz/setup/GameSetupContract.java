@@ -1,4 +1,4 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.setup;
 
 interface GameSetupContract {
     interface View {

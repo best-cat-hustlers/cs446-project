@@ -2,7 +2,6 @@ package com.bestCatHustlers.sukodublitz.lobby;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -10,31 +9,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
-import com.bestCatHustlers.sukodublitz.bluetooth.DeviceListActivity;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
-import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_IS_HOST;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_PENALTY_ON;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_POINTS;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_TIMER;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_IS_HOST;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_PENALTY_ON;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_SHOW_POINTS;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_SHOW_TIMER;
 
 public class LobbyActivity extends AppCompatActivity {
 

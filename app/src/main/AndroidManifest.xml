@@ -23,7 +23,7 @@
             android:name=".BackgroundMusicService"
             android:enabled="true"
             android:exported="false"></service>
-        <activity android:name=".GameSetupActivity" />
+        <activity android:name=".setup.GameSetupActivity" />
         <activity android:name=".results.ResultsActivity" />
         <activity android:name=".game.GameActivity" />
         <activity

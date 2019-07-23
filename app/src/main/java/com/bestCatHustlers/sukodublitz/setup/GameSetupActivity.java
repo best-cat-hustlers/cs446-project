@@ -1,4 +1,4 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.setup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +9,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Switch;
 
+import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
-import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
-
-import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
 public class GameSetupActivity extends AppCompatActivity {
 

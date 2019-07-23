@@ -1,4 +1,4 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.setup;
 
 import android.support.v7.app.AppCompatActivity;
 
