@@ -7,7 +7,7 @@ import android.os.SystemClock;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GameAI;
-import com.bestCatHustlers.sukodublitz.setup.GameSetupActivity;
+import com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 
@@ -50,7 +50,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     //region LifeCycle
 
-    public GamePresenter(GameContract.View view, Bundle extras) {
+    GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
 
         constants = new Constants();
@@ -237,10 +237,10 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
         isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
 
-        isPointsShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_POINTS);
-        isTimerShown = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_SHOW_TIMER);
-        isPenaltyOn = extras.getBoolean(GameSetupActivity.EXTRAS_KEY_PENALTY_ON);
-        aiDifficulty = extras.getInt(GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY);
+        isPointsShown = extras.getBoolean(GameSetupPresenter.EXTRAS_KEY_SHOW_POINTS);
+        isTimerShown = extras.getBoolean(GameSetupPresenter.EXTRAS_KEY_SHOW_TIMER);
+        isPenaltyOn = extras.getBoolean(GameSetupPresenter.EXTRAS_KEY_PENALTY_ON);
+        aiDifficulty = extras.getInt(GameSetupPresenter.EXTRAS_KEY_AI_DIFFICULTY);
 
         model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);
     }

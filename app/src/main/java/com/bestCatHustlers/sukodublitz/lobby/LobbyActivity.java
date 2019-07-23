@@ -22,11 +22,11 @@ import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
-import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
-import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_IS_HOST;
-import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_PENALTY_ON;
-import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_SHOW_POINTS;
-import static com.bestCatHustlers.sukodublitz.setup.GameSetupActivity.EXTRAS_KEY_SHOW_TIMER;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter.EXTRAS_KEY_AI_DIFFICULTY;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter.EXTRAS_KEY_IS_HOST;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter.EXTRAS_KEY_PENALTY_ON;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter.EXTRAS_KEY_SHOW_POINTS;
+import static com.bestCatHustlers.sukodublitz.setup.GameSetupPresenter.EXTRAS_KEY_SHOW_TIMER;
 
 public class LobbyActivity extends AppCompatActivity {
 
