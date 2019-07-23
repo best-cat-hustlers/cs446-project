@@ -15,7 +15,7 @@ class MainActivityPresenter implements MainActivityContract.Presenter {
 
     MainActivityPresenter(AppCompatActivity activity) {
         mainActivity = activity;
-        model = new MainActivityModel(this);
+        model = new MainActivityModel();
     }
 
     public void goToSinglePlayer(View view) {
