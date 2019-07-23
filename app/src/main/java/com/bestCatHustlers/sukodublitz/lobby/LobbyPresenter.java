@@ -3,11 +3,14 @@ package com.bestCatHustlers.sukodublitz.lobby;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
+import com.bestCatHustlers.sukodublitz.GameSettings;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothMessage;
@@ -19,15 +22,19 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
     private LobbyContract.View view;
     private BoardGame model;
-    private String connectedDeviceName;
+    private GameSettings gameSettings;
 
+    private String connectedDeviceName;
     private boolean isHost;
-    private boolean shouldShowPoints;
-    private boolean shouldShowTimer;
-    private boolean shouldUsePenalty;
 
     private class Constants {
-        static final String startGameMessage = "startGame";
+        private class BluetoothTags {
+            static final String addRequest = "pleaseAddMeIAmLonely";
+            static final String propagateBoardGame = "propagateBoardGame";
+            static final String gameSettings = "gameSettings";
+            static final String gameStart = "gameStart";
+        }
+
         static final int discoveryDuration = 300;
     }
 
@@ -99,18 +106,27 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
     @Override
     public void handleStartGamePressed() {
-        BluetoothMessage startGameMessage = new BluetoothMessage(MainSettingsModel.getInstance().getUserID(), Constants.startGameMessage);
+        if (isHost) {
+            BluetoothMessage startGameMessage = new BluetoothMessage(Constants.BluetoothTags.gameStart, true);
 
-        view.sendBluetoothMessage(startGameMessage.serialized());
+            view.sendBluetoothMessage(startGameMessage.serialized());
+        }
     }
 
     @Override
     public void prepareOpenGameActivity(Intent intent) {
         intent.putExtra(ExtrasKeys.IS_HOST, isHost);
         intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, shouldShowPoints);
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, ExtrasKeys.SHOULD_SHOW_TIMER);
-        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, shouldUsePenalty);
+
+        if (gameSettings != null)  {
+            intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, gameSettings.shouldShowPoints);
+            intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, gameSettings.shouldShowTimer);
+            intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, gameSettings.shouldUsePenalty);
+        }
+
+        if (model != null) {
+            intent.putExtra(ExtrasKeys.BOARD_GAME, (Parcelable) model);
+        }
     }
 
     @Override
@@ -129,15 +145,19 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
         if (isHost) {
             model = extras.getParcelable(ExtrasKeys.BOARD_GAME);
-            shouldShowPoints = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS);
-            shouldShowTimer = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
-            shouldUsePenalty = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
+
+            gameSettings = new GameSettings();
+            gameSettings.shouldShowPoints = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS);
+            gameSettings.shouldShowTimer = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
+            gameSettings.shouldUsePenalty = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
         }
     }
 
     private void handleBluetoothStateChangeMessage(int state) {
         if (state == BluetoothConstants.STATE_CONNECTED) {
             view.setStatusText("Connected to" + connectedDeviceName);
+
+            handleDeviceConnected();
         }
     }
 
@@ -149,6 +169,30 @@ public class LobbyPresenter implements LobbyContract.Presenter {
             BluetoothMessage message = (BluetoothMessage) object;
 
             Log.d("BT_READ", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
+
+            switch (message.tag) {
+                case Constants.BluetoothTags.gameSettings:
+                    gameSettings = (GameSettings) message.payload;
+
+                    requestToBeAddedToGame(Player.Team.BLUE);
+                    break;
+                case Constants.BluetoothTags.gameStart:
+                    view.openGameActivity();
+                    break;
+                case Constants.BluetoothTags.addRequest:
+                    if (isHost) {
+                        Player playerToAdd = (Player) message.payload;
+                        model.addPlayer(playerToAdd.getId(), playerToAdd.getTeam());
+
+                        propagateBoardGame();
+                    }
+                    break;
+                case Constants.BluetoothTags.propagateBoardGame:
+                    BoardGame updatedModel = (BoardGame) message.payload;
+
+                    model = updatedModel;
+                    break;
+            }
         }
 
     }
@@ -161,7 +205,35 @@ public class LobbyPresenter implements LobbyContract.Presenter {
             BluetoothMessage message = (BluetoothMessage) object;
 
             Log.d("BT_SENT", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
+
+            if (message.tag.equals(Constants.BluetoothTags.gameStart)) {
+                view.openGameActivity();
+            }
+
         }
+    }
+
+    private void handleDeviceConnected() {
+        if (isHost) {
+            BluetoothMessage settingsMessage = new BluetoothMessage(Constants.BluetoothTags.gameSettings, gameSettings);
+
+            view.sendBluetoothMessage(settingsMessage.serialized());
+        }
+    }
+
+    private void requestToBeAddedToGame(Player.Team team) {
+        Player player = new Player(MainSettingsModel.getInstance().getUserID(), team);
+        BluetoothMessage addRequestMessage = new BluetoothMessage(Constants.BluetoothTags.addRequest, player);
+
+        view.sendBluetoothMessage(addRequestMessage.serialized());
+    }
+
+    private void propagateBoardGame() {
+        if (!isHost) return;
+
+        BluetoothMessage propagateBoardGameMessage = new BluetoothMessage(Constants.BluetoothTags.propagateBoardGame, model);
+
+        view.sendBluetoothMessage(propagateBoardGameMessage.serialized());
     }
 
     //endregion
