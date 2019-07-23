@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
+import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
@@ -32,10 +33,7 @@ import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 public class LobbyActivity extends AppCompatActivity implements LobbyContract.View {
-
-    public static final String TAG = "LobbyActivity";
-
-    private static final String START_GAME = "Start Game";
+    private LobbyContract.Presenter presenter;
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothService mBluetoothService = null;
@@ -43,8 +41,8 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
     private TextView textStatus;
     private Button buttonStartGame;
 
-    private boolean isHost = false;
     boolean mBounded;
+
     private Bundle extras;
 
     @SuppressLint("HandlerLeak")
@@ -53,49 +51,46 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothConstants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothConstants.STATE_CONNECTED:
-                            Log.d(TAG, "BluetoothService state is CONNECTED");
-                            textStatus.setText(getString(R.string.lobby_title_connected, mConnectedDeviceName));
-                            break;
-                        case BluetoothConstants.STATE_CONNECTING:
-                            Log.d(TAG, "BluetoothService state is CONNECTING");
-                            textStatus.setText(getString(R.string.lobby_title_connecting));
-                            break;
-                        case BluetoothConstants.STATE_LISTEN:
-                            Log.d(TAG, "BluetoothService state is LISTEN");
-                            textStatus.setText(getString(R.string.lobby_title_listen));
-                        case BluetoothConstants.STATE_NONE:
-                            Log.d(TAG, "BluetoothService state is NONE");
-                            textStatus.setText(getString(R.string.lobby_title_none));
-                            break;
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    if (writeMessage.equals(START_GAME)) {
-                        openGameActivity();
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    Object obj = SerializableUtils.deserialize(readBuf);
-                    String readMessage = (String) obj;
-                    if (readMessage.equals(START_GAME)) {
-                        openGameActivity();
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_DEVICE_NAME:
-                    mConnectedDeviceName = msg.getData()
-                            .getString(BluetoothConstants.DEVICE_NAME);
-                    Log.d(TAG, "Connected to " + mConnectedDeviceName);
-                    break;
-            }
+            presenter.handleBluetoothMessageReceived(msg);
+//            switch (msg.what) {
+//                case BluetoothConstants.MESSAGE_STATE_CHANGE:
+//                    switch (msg.arg1) {
+//                        case BluetoothConstants.STATE_CONNECTED:
+//                            textStatus.setText(getString(R.string.lobby_title_connected, mConnectedDeviceName));
+//                            break;
+//                        case BluetoothConstants.STATE_CONNECTING:
+//                            textStatus.setText(getString(R.string.lobby_title_connecting));
+//                            break;
+//                        case BluetoothConstants.STATE_LISTEN:
+//                            textStatus.setText(getString(R.string.lobby_title_listen));
+//                        case BluetoothConstants.STATE_NONE:
+//                            textStatus.setText(getString(R.string.lobby_title_none));
+//                            break;
+//                    }
+//                    break;
+//                case BluetoothConstants.MESSAGE_WRITE:
+//                    byte[] writeBuf = (byte[]) msg.obj;
+//                    // construct a string from the buffer
+//                    String writeMessage = new String(writeBuf);
+//                    if (writeMessage.equals(START_GAME)) {
+//                        openGameActivity();
+//                    }
+//                    break;
+//                case BluetoothConstants.MESSAGE_READ:
+//                    byte[] readBuf = (byte[]) msg.obj;
+//                    // construct a string from the valid bytes in the buffer
+//                    Object obj = SerializableUtils.deserialize(readBuf);
+//                    String readMessage = (String) obj;
+//                    if (readMessage.equals(START_GAME)) {
+//                        openGameActivity();
+//                    }
+//                    break;
+//                case BluetoothConstants.MESSAGE_DEVICE_NAME:
+//                    mConnectedDeviceName = msg.getData()
+//                            .getString(BluetoothConstants.DEVICE_NAME);
+//                    Log.d(TAG, "Connected to " + mConnectedDeviceName);
+//                    break;
+//            }
         }
     };
 
@@ -106,20 +101,16 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        extras = getIntent().getExtras();
 
-        isHost = extras.getBoolean(ExtrasKeys.IS_HOST);
+        extras = getIntent().getExtras();
+        presenter = new LobbyPresenter(this, extras);
 
         checkBluetoothSupport();
 
         textStatus = findViewById(R.id.text_show_lobby_status);
         buttonStartGame = findViewById(R.id.button_lobby_start_game);
 
-        if (isHost) {
-            ensureDiscoverable();
-        } else {
-            buttonStartGame.setVisibility(View.INVISIBLE);
-        }
+        presenter.handleViewCreated();
     }
 
     @Override
@@ -149,9 +140,7 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
 
             mBluetoothService.attachNewHandler(mHandler);
 
-            if (isHost) {
-                mBluetoothService.host();
-            }
+            presenter.handleOnBluetoothServiceConnected();
         }
     };
 
@@ -167,37 +156,7 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
     }
 
     public void onStartGamePressed(View view) {
-        if (isHost) {
-            sendMessage(START_GAME);
-        }
-    }
-
-    public void openGameActivity() {
-        Intent intent = new Intent(this, GameActivity.class);
-        // TODO: Move extras setup to the presenter.
-        intent.putExtra(ExtrasKeys.IS_HOST, isHost);
-        intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS));
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, ExtrasKeys.SHOULD_SHOW_TIMER);
-        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY));
-        intent.putExtra(ExtrasKeys.AI_DIFFICULTY, extras.getInt(ExtrasKeys.AI_DIFFICULTY));
-
-        // TODO: add other activities
-        startActivity(intent);
-    }
-
-    //endregion
-
-    /**
-     * Makes this device discoverable for 300 seconds (5 minutes).
-     */
-    private void ensureDiscoverable() {
-        if (mBluetoothAdapter.getScanMode() !=
-                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-        }
+        presenter.handleStartGamePressed();
     }
 
     public void checkBluetoothSupport() {
@@ -217,6 +176,8 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         }
     }
 
+    //endregion
+
     //region Contract
 
     @Override
@@ -224,6 +185,39 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         mBluetoothService.write(message);
     }
 
+    @Override
+    public void setStatusText(String text) {
+        textStatus.setText(text);
+    }
+
+    @Override
+    public void openGameActivity() {
+        Intent intent = new Intent(this, GameActivity.class);
+
+        presenter.prepareOpenGameActivity(intent);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void hostBluetoothService() {
+        mBluetoothService.host();
+    }
+
+    @Override
+    public void setStartGameVisibility(int visibility) {
+        buttonStartGame.setVisibility(visibility);
+    }
+
+    @Override
+    public void openDiscoverableAlert(int durationSeconds) {
+        if (mBluetoothAdapter.getScanMode() !=
+                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
+        }
+    }
 
     //endregion
 

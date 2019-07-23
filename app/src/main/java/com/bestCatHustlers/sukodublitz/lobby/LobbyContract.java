@@ -1,8 +1,21 @@
 package com.bestCatHustlers.sukodublitz.lobby;
 
+import android.content.Intent;
+import android.os.Message;
+
 public class LobbyContract {
     interface View {
         void sendBluetoothMessage(byte[] message);
+
+        void setStatusText(String text);
+
+        void openGameActivity();
+
+        void hostBluetoothService();
+
+        void openDiscoverableAlert(int durationSeconds);
+
+        void setStartGameVisibility(int visibility);
     }
 
     interface Presenter {
@@ -14,8 +27,12 @@ public class LobbyContract {
 
         void handleViewDestroyed();
 
-        void handleBluetoothMessageReceived(byte[] message);
+        void handleBluetoothMessageReceived(Message message);
 
         void handleStartGamePressed();
+
+        void prepareOpenGameActivity(Intent intent);
+
+        void handleOnBluetoothServiceConnected();
     }
 }

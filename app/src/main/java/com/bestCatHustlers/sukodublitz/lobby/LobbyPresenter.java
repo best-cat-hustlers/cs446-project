@@ -1,26 +1,31 @@
 package com.bestCatHustlers.sukodublitz.lobby;
 
-import android.graphics.Paint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.view.View;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
-import com.bestCatHustlers.sukodublitz.GameSetupPresenter;
+import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
+import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 public class LobbyPresenter implements LobbyContract.Presenter {
     //region Properties
 
     private LobbyContract.View view;
     private BoardGame model;
+    private String connectedDeviceName;
 
     private boolean isHost;
-    private boolean isMultiplayer;
-
-    private Constants constants;
+    private boolean shouldShowPoints;
+    private boolean shouldShowTimer;
+    private boolean shouldUsePenalty;
 
     private class Constants {
-
+        static final String startGameMessage = "startGame";
+        static final int discoveryDuration = 300;
     }
 
     //endregion
@@ -33,8 +38,6 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         // TODO: Setup the model from the extras sent in from the previous activity.
         model = new BoardGame();
 
-        constants = new Constants();
-
         configureWithSettings(extras);
     }
 
@@ -44,7 +47,11 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
     @Override
     public void handleViewCreated() {
-
+        if (isHost) {
+            view.openDiscoverableAlert(Constants.discoveryDuration);
+        } else {
+            view.setStartGameVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -63,13 +70,46 @@ public class LobbyPresenter implements LobbyContract.Presenter {
     }
 
     @Override
-    public void handleBluetoothMessageReceived(byte[] message) {
+    public void handleBluetoothMessageReceived(Message message) {
+        switch (message.what) {
+            case BluetoothConstants
+                    .MESSAGE_STATE_CHANGE:
+                handleBluetoothStateChangeMessage(message.arg1);
+                break;
+            case BluetoothConstants.MESSAGE_DEVICE_NAME:
+                connectedDeviceName = message.getData().getString(BluetoothConstants.DEVICE_NAME);
+            case BluetoothConstants.MESSAGE_READ:
+            case BluetoothConstants.MESSAGE_WRITE:
+                Object object = SerializableUtils.deserialize((byte[]) message.obj);
 
+                if (object instanceof String) {
+                    handleStringMessage((String) object);
+                } else if (object instanceof  BoardGame) {
+                    handleBoardGameMessage((BoardGame) object);
+                }
+                break;
+        }
     }
 
     @Override
     public void handleStartGamePressed() {
+        view.sendBluetoothMessage(Constants.startGameMessage.getBytes());
+    }
 
+    @Override
+    public void prepareOpenGameActivity(Intent intent) {
+        intent.putExtra(ExtrasKeys.IS_HOST, isHost);
+        intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, shouldShowPoints);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, ExtrasKeys.SHOULD_SHOW_TIMER);
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, shouldUsePenalty);
+    }
+
+    @Override
+    public void handleOnBluetoothServiceConnected() {
+        if (isHost) {
+            view.hostBluetoothService();
+        }
     }
 
     //endregion
@@ -81,6 +121,27 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
         if (isHost) {
             model = extras.getParcelable(ExtrasKeys.BOARD_GAME);
+            shouldShowPoints = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS);
+            shouldShowTimer = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
+            shouldUsePenalty = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
+        }
+    }
+
+    private void handleBluetoothStateChangeMessage(int state) {
+        if (state == BluetoothConstants.STATE_CONNECTED) {
+            view.setStatusText("Connected to" + connectedDeviceName);
+        }
+    }
+
+    private void handleStringMessage(String string) {
+        if (string.equals(Constants.startGameMessage)) {
+            view.openGameActivity();
+        }
+    }
+
+    private void handleBoardGameMessage(BoardGame boardGame) {
+        if (!isHost) {
+            model = boardGame;
         }
     }
 
