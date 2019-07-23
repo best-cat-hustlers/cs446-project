@@ -2,6 +2,7 @@ package com.bestCatHustlers.sukodublitz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,7 @@ public class GameSetupActivity extends AppCompatActivity {
         intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
         intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
         intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-        intent.putExtra(EXTRAS_KEY_BOARD_GAME, boardGame);
+        intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable)boardGame);
         this.startActivity(intent);
     }
 
