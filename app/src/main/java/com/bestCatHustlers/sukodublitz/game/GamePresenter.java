@@ -2,20 +2,25 @@ package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.Log;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
+import com.bestCatHustlers.sukodublitz.BoardGameSerializedObject;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.GameAI;
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothMessage;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyPresenter;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
+import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
 
@@ -50,8 +55,13 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private Constants constants;
 
     private class Constants {
-        final int penaltyDelta = -10;
-        final int aiBaseDelay = 5000;
+        private class BluetoothTags {
+            static final String solutionRequest = "solutionRequest";
+            static final String updateBoardGame = "updateBoardGame";
+        }
+
+        static final int penaltyDelta = -10;
+        static final int aiBaseDelay = 5000;
     }
 
     //endregion
@@ -60,8 +70,6 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     public GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
-
-        constants = new Constants();
 
         configureGameWithSettings(extras);
     }
@@ -163,28 +171,15 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
-    public void handleBluetoothMessageReceived(byte[] message) {
-        // TODO: Find a much better way to detect what the message type is.
-        String solution = new String(message);
-        boolean isSolution = solution.length() < 10;
-
-        if (isSolution && isHost) {
-            Log.d("GAME_PRESENTER", "received a solution: " + solution);
-            return;
-        } else if (isSolution && !isHost) {
-            Log.d("GAME_PRESENTER", "received a solution but isn't host");
-            return;
+    public void handleBluetoothMessageReceived(Message message) {
+        switch (message.what) {
+            case BluetoothConstants.MESSAGE_READ:
+                handleBluetoothMessageRead(message);
+                break;
+            case BluetoothConstants.MESSAGE_WRITE:
+                handleBluetoothMessageSent(message);
+                break;
         }
-
-        BoardGame boardGame = ParcelableByteUtil.unmarshall(message, BoardGame.CREATOR);
-
-        if (boardGame != null) {
-            model = boardGame;
-            handleSolutionEntered();
-            return;
-        }
-
-
     }
 
     //endregion
@@ -202,7 +197,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Private
 
     private void startAI() {
-        ai = new GameAI(model, constants.aiBaseDelay / aiDifficulty, AI_ID);
+        ai = new GameAI(model, Constants.aiBaseDelay / aiDifficulty, AI_ID);
         ai.delegate = this;
         aiThread = new Thread(ai);
 
@@ -216,23 +211,24 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     private void enterSelectedSolution() {
         if (!shouldEnterSolution()) return;
 
+        String playerID = MainSettingsModel.getInstance().getUserID();
+
+        view.playSound(R.raw.pop_middle);
+
         if (isMultiplayer) {
-            String solution = selectedRow + "-" + selectedColumn + "-" + selectedNumber + getOwnTeamTag();
-            view.sendBluetoothMessage(solution.getBytes());
+            if (isHost) {
+                model.fillSquare(selectedRow, selectedColumn, selectedNumber, playerID);
+                handleSolutionEntered();
 
-            // TODO: Remove this so that it can be validated before entering.
-            // v
-            model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
+                propagateBoardGame();
+            } else {
+                SolutionRequest solution = new SolutionRequest(selectedRow, selectedColumn, selectedNumber, playerID);
+                BluetoothMessage solutionRequestMessage = new BluetoothMessage(Constants.BluetoothTags.solutionRequest, solution);
 
-            view.playSound(R.raw.pop_middle);
-
-            handleSolutionEntered();
-            // ^
+                view.sendBluetoothMessage(solutionRequestMessage.serialized());
+            }
         } else {
-            model.fillSquare(selectedRow, selectedColumn, selectedNumber, MainSettingsModel.getInstance().getUserID());
-
-            view.playSound(R.raw.pop_middle);
-
+            model.fillSquare(selectedRow, selectedColumn, selectedNumber, playerID);
             handleSolutionEntered();
         }
     }
@@ -285,16 +281,60 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
             model = new BoardGame();
         }
 
-        model.setWrongAnsDelta(isPenaltyOn ? constants.penaltyDelta : 0);
+        model.setWrongAnsDelta(isPenaltyOn ? Constants.penaltyDelta : 0);
     }
 
-    private int getOwnTeamTag() {
-        String userID = MainSettingsModel.getInstance().getUserID();
-        Player player = model.getPlayer(userID);
+    private void handleBluetoothMessageRead(Message rawMessage) {
+        byte[] buffer = (byte[]) rawMessage.obj;
+        Object object = SerializableUtils.deserialize(buffer);
 
-        if (player == null) { return 0; }
+        if (object instanceof BluetoothMessage) {
+            BluetoothMessage message = (BluetoothMessage) object;
 
-        return player.getTeam().getValue();
+            Log.d("GAME_BT_READ", "tag: " + message.tag + " payload: " + message.payload.getClass().getName());
+
+            switch (message.tag) {
+                case Constants.BluetoothTags.solutionRequest:
+                    if (isHost) {
+                        SolutionRequest solution = (SolutionRequest) message.payload;
+
+                        model.fillSquare(solution);
+                        handleSolutionEntered();
+
+                        propagateBoardGame();
+                    }
+                    break;
+                case Constants.BluetoothTags.updateBoardGame:
+                    if (!isHost) {
+                        BoardGameSerializedObject serializedBoardGame = (BoardGameSerializedObject) message.payload;
+
+                        model.syncWithSerializedObject(serializedBoardGame);
+
+                        handleSolutionEntered();
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void handleBluetoothMessageSent(Message rawMessage) {
+        byte[] buffer = (byte[]) rawMessage.obj;
+        Object object= SerializableUtils.deserialize(buffer);
+
+        if (object instanceof BluetoothMessage) {
+            BluetoothMessage message = (BluetoothMessage) object;
+
+            Log.d("GAME_BT_SENT", "tag: " + message.tag + " payload: " + message.payload.getClass().getName());
+        }
+    }
+
+    private void propagateBoardGame() {
+        if (!isHost) { return; }
+
+        BoardGameSerializedObject serializedBoardGame = model.getSerializedObject();
+        BluetoothMessage updateBoardGameMessage = new BluetoothMessage(Constants.BluetoothTags.updateBoardGame, serializedBoardGame);
+
+        view.sendBluetoothMessage(updateBoardGameMessage.serialized());
     }
 
     //endregion

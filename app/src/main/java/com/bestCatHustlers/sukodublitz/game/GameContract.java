@@ -1,6 +1,7 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
+import android.os.Message;
 
 public class GameContract {
     interface View {
@@ -44,6 +45,6 @@ public class GameContract {
 
         void prepareOpenResultsActivity(Intent intent);
 
-        void handleBluetoothMessageReceived(byte[] message);
+        void handleBluetoothMessageReceived(Message message);
     }
 }

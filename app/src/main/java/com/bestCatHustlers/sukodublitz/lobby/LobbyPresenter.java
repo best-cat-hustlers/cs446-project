@@ -84,21 +84,16 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         Log.d("LOBBY_P_BT_HANDLER", "what:" + message.what);
 
         switch (message.what) {
-            case BluetoothConstants
-                    .MESSAGE_STATE_CHANGE:
-                Log.d("LOBBY_P_BT_HANDLER", "state");
+            case BluetoothConstants.MESSAGE_STATE_CHANGE:
                 handleBluetoothStateChangeMessage(message.arg1);
                 break;
             case BluetoothConstants.MESSAGE_DEVICE_NAME:
-                Log.d("LOBBY_P_BT_HANDLER", "name");
                 connectedDeviceName = message.getData().getString(BluetoothConstants.DEVICE_NAME);
                 break;
             case BluetoothConstants.MESSAGE_READ:
-                Log.d("LOBBY_P_BT_HANDLER", "read");
                 handleBluetoothMessageRead(message);
                 break;
             case BluetoothConstants.MESSAGE_WRITE:
-                Log.d("LOBBY_P_BT_HANDLER", "write");
                 handleBluetoothMessageSent(message);
                 break;
         }
@@ -168,7 +163,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         if (object instanceof BluetoothMessage) {
             BluetoothMessage message = (BluetoothMessage) object;
 
-            Log.d("BT_READ", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
+            Log.d("LOBBY_BT_READ", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
 
             switch (message.tag) {
                 case Constants.BluetoothTags.gameSettings:
@@ -204,7 +199,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         if (object instanceof  BluetoothMessage) {
             BluetoothMessage message = (BluetoothMessage) object;
 
-            Log.d("BT_SENT", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
+            Log.d("LOBBY_BT_SENT", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
 
             if (message.tag.equals(Constants.BluetoothTags.gameStart)) {
                 view.openGameActivity();

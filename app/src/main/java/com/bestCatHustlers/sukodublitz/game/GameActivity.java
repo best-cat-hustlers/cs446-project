@@ -81,11 +81,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothConstants.MESSAGE_READ:
-                    presenter.handleBluetoothMessageReceived((byte[]) msg.obj);
-                    break;
-            }
+            presenter.handleBluetoothMessageReceived(msg);
         }
     };
 
@@ -352,8 +348,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             Toast.makeText(this, "There was a problem with the bluetooth connection", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Log.d("GAME_ACTIVITY", new String(message));
 
         mBluetoothService.write(message);
     }
