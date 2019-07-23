@@ -3,6 +3,7 @@ package com.bestCatHustlers.sukodublitz.lobby;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
@@ -71,16 +72,24 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
     @Override
     public void handleBluetoothMessageReceived(Message message) {
+        Log.d("LOBBY_P_BT_HANDLER", "what:" + message.what);
+
         switch (message.what) {
             case BluetoothConstants
                     .MESSAGE_STATE_CHANGE:
+                Log.d("LOBBY_P_BT_HANDLER", "state");
                 handleBluetoothStateChangeMessage(message.arg1);
                 break;
             case BluetoothConstants.MESSAGE_DEVICE_NAME:
+                Log.d("LOBBY_P_BT_HANDLER", "name");
                 connectedDeviceName = message.getData().getString(BluetoothConstants.DEVICE_NAME);
+                break;
             case BluetoothConstants.MESSAGE_READ:
+                Log.d("LOBBY_P_BT_HANDLER", "read");
             case BluetoothConstants.MESSAGE_WRITE:
-                Object object = SerializableUtils.deserialize((byte[]) message.obj);
+                Log.d("LOBBY_P_BT_HANDLER", "write");
+                byte[] buffer = (byte[]) message.obj;
+                Object object = SerializableUtils.deserialize(buffer);
 
                 if (object instanceof String) {
                     handleStringMessage((String) object);

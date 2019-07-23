@@ -173,6 +173,12 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
 
     @Override
     public void sendBluetoothMessage(byte[] message) {
+        // Check that we're actually connected before trying anything
+        if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
+            Toast.makeText(this, "Not connected to a device", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mBluetoothService.write(message);
     }
 
