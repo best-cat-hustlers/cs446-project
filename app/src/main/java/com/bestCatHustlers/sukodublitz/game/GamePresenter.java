@@ -299,8 +299,9 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
                         SolutionRequest solution = (SolutionRequest) message.payload;
 
                         model.fillSquare(solution);
-                        handleSolutionEntered();
+                        view.playSound(R.raw.pop_high);
 
+                        handleSolutionEntered();
                         propagateBoardGame();
                     }
                     break;
@@ -309,6 +310,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
                         BoardGameSerializedObject serializedBoardGame = (BoardGameSerializedObject) message.payload;
 
                         model.syncWithSerializedObject(serializedBoardGame);
+                        view.playSound(R.raw.pop_high);
 
                         handleSolutionEntered();
                     }
