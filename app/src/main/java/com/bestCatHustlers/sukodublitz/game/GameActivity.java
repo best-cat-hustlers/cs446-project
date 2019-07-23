@@ -359,31 +359,4 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     //endregion
-
-
-    /**
-     * Example function for send a BoardGame model using BluetoothService
-     */
-    private void sendGame(BoardGame model) {
-        // Check that we're actually connected before trying anything
-        if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Check that there's actually something to send
-        if (model != null) {
-            // Get the message bytes and tell the BluetoothChatService to write
-            byte[] bytes = ParcelableByteUtil.marshall(model);
-            mBluetoothService.write(bytes);
-        }
-    }
-
-    /**
-     * Example function for read a BoardGame model using BluetoothService, called by handler
-     */
-    private void readGame(byte[] readBuf) {
-        BoardGame model = ParcelableByteUtil.unmarshall(readBuf, BoardGame.CREATOR);
-        // TODO: do whatever with read data
-    }
 }

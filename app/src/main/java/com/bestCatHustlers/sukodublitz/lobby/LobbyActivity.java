@@ -43,45 +43,6 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         @Override
         public void handleMessage(Message msg) {
             presenter.handleBluetoothMessageReceived(msg);
-//            switch (msg.what) {
-//                case BluetoothConstants.MESSAGE_STATE_CHANGE:
-//                    switch (msg.arg1) {
-//                        case BluetoothConstants.STATE_CONNECTED:
-//                            textStatus.setText(getString(R.string.lobby_title_connected, mConnectedDeviceName));
-//                            break;
-//                        case BluetoothConstants.STATE_CONNECTING:
-//                            textStatus.setText(getString(R.string.lobby_title_connecting));
-//                            break;
-//                        case BluetoothConstants.STATE_LISTEN:
-//                            textStatus.setText(getString(R.string.lobby_title_listen));
-//                        case BluetoothConstants.STATE_NONE:
-//                            textStatus.setText(getString(R.string.lobby_title_none));
-//                            break;
-//                    }
-//                    break;
-//                case BluetoothConstants.MESSAGE_WRITE:
-//                    byte[] writeBuf = (byte[]) msg.obj;
-//                    // construct a string from the buffer
-//                    String writeMessage = new String(writeBuf);
-//                    if (writeMessage.equals(START_GAME)) {
-//                        openGameActivity();
-//                    }
-//                    break;
-//                case BluetoothConstants.MESSAGE_READ:
-//                    byte[] readBuf = (byte[]) msg.obj;
-//                    // construct a string from the valid bytes in the buffer
-//                    Object obj = SerializableUtils.deserialize(readBuf);
-//                    String readMessage = (String) obj;
-//                    if (readMessage.equals(START_GAME)) {
-//                        openGameActivity();
-//                    }
-//                    break;
-//                case BluetoothConstants.MESSAGE_DEVICE_NAME:
-//                    mConnectedDeviceName = msg.getData()
-//                            .getString(BluetoothConstants.DEVICE_NAME);
-//                    Log.d(TAG, "Connected to " + mConnectedDeviceName);
-//                    break;
-//            }
         }
     };
 
