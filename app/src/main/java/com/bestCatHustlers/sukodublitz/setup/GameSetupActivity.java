@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Switch;
@@ -14,14 +13,13 @@ import com.bestCatHustlers.sukodublitz.game.GameActivity;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
 
-public class GameSetupActivity extends AppCompatActivity {
+public class GameSetupActivity extends AppCompatActivity implements GameSetupContract.View{
 
     public static final String EXTRAS_KEY_IS_HOST = "isHost";
     public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
     public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
     public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
     public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
-    private static final int topToBottomMarginRatio = 4;
     RadioButton aiDifficulty1Button;
     RadioButton aiDifficulty2Button;
     RadioButton aiDifficulty3Button;
@@ -36,27 +34,20 @@ public class GameSetupActivity extends AppCompatActivity {
     private boolean penaltyOn = true;
     private boolean isMultiplayer;
     private int aiDifficulty = 1;
+    GameSetupContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_setup);
-
+        presenter = new GameSetupPresenter(this);
         // Determine if it's in multiplayer mode
         isMultiplayer = getIntent().getBooleanExtra(MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI, false);
 
         nextPageButton = findViewById(R.id.button_start_game);
 
         if (isMultiplayer) {
-            // Hide AI difficulty options
-            View aiGroupView = findViewById(R.id.AI_difficulty);
-            View aiTitle = findViewById(R.id.textView);
-            View bottomView = findViewById(R.id.penalty_switch);
-            aiGroupView.setVisibility(View.GONE);
-            aiTitle.setVisibility(View.GONE);
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) bottomView.getLayoutParams();
-            params.bottomMargin = params.topMargin * topToBottomMarginRatio;
-
+            presenter.hideAIDifficultyOptions();
             nextPageButton.setText("Go to Lobby");
         } else {
             // Single player mode
@@ -148,4 +139,5 @@ public class GameSetupActivity extends AppCompatActivity {
     public void onBackPressed(View view){
         super.onBackPressed();
     }
+
 }
