@@ -10,6 +10,8 @@ import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothMessage;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 public class LobbyPresenter implements LobbyContract.Presenter {
@@ -86,23 +88,20 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                 break;
             case BluetoothConstants.MESSAGE_READ:
                 Log.d("LOBBY_P_BT_HANDLER", "read");
+                handleBluetoothMessageRead(message);
+                break;
             case BluetoothConstants.MESSAGE_WRITE:
                 Log.d("LOBBY_P_BT_HANDLER", "write");
-                byte[] buffer = (byte[]) message.obj;
-                Object object = SerializableUtils.deserialize(buffer);
-
-                if (object instanceof String) {
-                    handleStringMessage((String) object);
-                } else if (object instanceof  BoardGame) {
-                    handleBoardGameMessage((BoardGame) object);
-                }
+                handleBluetoothMessageSent(message);
                 break;
         }
     }
 
     @Override
     public void handleStartGamePressed() {
-        view.sendBluetoothMessage(Constants.startGameMessage.getBytes());
+        BluetoothMessage startGameMessage = new BluetoothMessage(MainSettingsModel.getInstance().getUserID(), Constants.startGameMessage);
+
+        view.sendBluetoothMessage(startGameMessage.serialized());
     }
 
     @Override
@@ -142,15 +141,26 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         }
     }
 
-    private void handleStringMessage(String string) {
-        if (string.equals(Constants.startGameMessage)) {
-            view.openGameActivity();
+    private void handleBluetoothMessageRead(Message rawMessage) {
+        byte[] buffer = (byte[]) rawMessage.obj;
+        Object object = SerializableUtils.deserialize(buffer);
+
+        if (object instanceof BluetoothMessage) {
+            BluetoothMessage message = (BluetoothMessage) object;
+
+            Log.d("BT_READ", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
         }
+
     }
 
-    private void handleBoardGameMessage(BoardGame boardGame) {
-        if (!isHost) {
-            model = boardGame;
+    private void handleBluetoothMessageSent(Message rawMessage) {
+        byte[] buffer = (byte[]) rawMessage.obj;
+        Object object = SerializableUtils.deserialize(buffer);
+
+        if (object instanceof  BluetoothMessage) {
+            BluetoothMessage message = (BluetoothMessage) object;
+
+            Log.d("BT_SENT", "tag: " + message.tag + " payload class name: " + message.payload.getClass().getName());
         }
     }
 
