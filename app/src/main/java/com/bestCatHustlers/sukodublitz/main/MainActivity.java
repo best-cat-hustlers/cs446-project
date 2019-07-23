@@ -1,14 +1,16 @@
-package com.bestCatHustlers.sukodublitz;
+package com.bestCatHustlers.sukodublitz.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.bestCatHustlers.sukodublitz.BackgroundMusicService;
+import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsActivity;
 
-public class MainActivity extends AppCompatActivity{
-    MainActivityPresenter mainPresenter;
+public class MainActivity extends AppCompatActivity implements MainActivityContract.View{
+    MainActivityContract.Presenter mainPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

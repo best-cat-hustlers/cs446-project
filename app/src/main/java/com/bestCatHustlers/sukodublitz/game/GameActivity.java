@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
-import com.bestCatHustlers.sukodublitz.MainActivity;
+import com.bestCatHustlers.sukodublitz.main.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;

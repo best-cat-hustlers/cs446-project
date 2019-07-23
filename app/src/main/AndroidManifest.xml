@@ -35,7 +35,7 @@
         <activity
             android:name=".multiplayer.MultiplayerMenuActivity"
             android:label="@string/title_activity_multiplayer_menu"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".join.JoinActivity"
             android:label="@string/title_activity_join"
@@ -44,7 +44,7 @@
             android:name=".lobby.LobbyActivity"
             android:label="@string/title_activity_lobby"
             android:parentActivityName=".multiplayer.MultiplayerMenuActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
