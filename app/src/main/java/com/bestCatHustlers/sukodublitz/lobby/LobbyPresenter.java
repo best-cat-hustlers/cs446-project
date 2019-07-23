@@ -169,7 +169,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                 case Constants.BluetoothTags.gameSettings:
                     gameSettings = (GameSettings) message.payload;
 
-                    requestToBeAddedToGame(Player.Team.BLUE);
+                    requestToBeAddedToGame(Player.Team.RED);
                     break;
                 case Constants.BluetoothTags.gameStart:
                     view.openGameActivity();
