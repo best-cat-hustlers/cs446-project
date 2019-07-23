@@ -195,6 +195,34 @@ public class BoardGame implements Parcelable, Serializable
         return Player.Team.BLUE;
     }
 
+    public BoardGameSerializedObject getSerializedObject()
+    {
+        try
+        {
+            lock.lock();
+            return new BoardGameSerializedObject(players, puzzle);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+
+    public void syncWithSerializedObject(BoardGameSerializedObject obj)
+    {
+        try
+        {
+            lock.lock();
+            this.players = obj.players;
+            this.puzzle = obj.puzzle;
+            this.emptyCells = getEmptyCells();
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+
     // Parcelable methods
     @Override
     public int describeContents()
