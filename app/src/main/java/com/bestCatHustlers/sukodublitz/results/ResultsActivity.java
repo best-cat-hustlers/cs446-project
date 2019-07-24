@@ -8,8 +8,11 @@ import android.widget.TextView;
 
 import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.MainActivity;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.game.GameBoardView;
+
+import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity implements ResultsContract.View{
     private ResultsContract.Presenter presenter;
@@ -56,9 +59,9 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printBoard(int[][] board, String[][] cellOwners)
+    public void printBoard(int[][] board, String[][] cellOwners, ArrayList<Player> bluePlayers, ArrayList<Player> redPlayers)
     {
-        boardView.printBoard(board, cellOwners);
+        boardView.printBoard(board, cellOwners, bluePlayers, redPlayers);
     }
 
     @Override

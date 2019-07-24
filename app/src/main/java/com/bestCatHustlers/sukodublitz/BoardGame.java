@@ -3,6 +3,8 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bestCatHustlers.sukodublitz.game.SolutionRequest;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,6 +152,10 @@ public class BoardGame implements Parcelable, Serializable
     public void setCorrectAnsDelta(int delta) { correctAnsDelta = delta; }
 
     public void setWrongAnsDelta(int delta) { wrongAnsDelta = delta; }
+
+    public void fillSquare(SolutionRequest solution) {
+        fillSquare(solution.row, solution.column, solution.number, solution.playerID);
+    }
 
     public void fillSquare(int row, int col, int val, String id)
     {
