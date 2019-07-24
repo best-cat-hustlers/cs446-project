@@ -268,6 +268,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         isHost = extras.getBoolean(ExtrasKeys.IS_HOST);
         isMultiplayer = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
         isTimerShown = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
+        isPointsShown = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS);
         isPenaltyOn = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
         aiDifficulty = extras.getInt(ExtrasKeys.AI_DIFFICULTY);
         model = extras.getParcelable(ExtrasKeys.BOARD_GAME);

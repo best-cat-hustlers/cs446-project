@@ -230,8 +230,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             @Override
             public void run() {
                 // TODO: Set to strings file.
-                playerScore1TextView.setText("Player Blue: " + playerScore1);
-                playerScore2TextView.setText("Player Red: " + playerScore2);
+                playerScore1TextView.setText("Team Blue: " + playerScore1);
+                playerScore2TextView.setText("Team Red: " + playerScore2);
             }
         });
     }

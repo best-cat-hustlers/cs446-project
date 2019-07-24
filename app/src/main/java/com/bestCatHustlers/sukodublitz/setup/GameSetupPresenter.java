@@ -1,10 +1,15 @@
 package com.bestCatHustlers.sukodublitz.setup;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.widget.RadioButton;
 
+import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.game.GamePresenter;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 
 public class GameSetupPresenter implements GameSetupContract.Presenter {
     private GameSetupActivity gameSetupActivity;
@@ -125,19 +130,42 @@ public class GameSetupPresenter implements GameSetupContract.Presenter {
 
     @Override
     public void prepareLobbyExtras(Intent intent) {
+        prepareSettingsExtras(intent);
         intent.putExtra(ExtrasKeys.IS_HOST, true);
         intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, isShowPoints());
-        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, isShowTimer());
-        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, isPenaltyOn());
     }
 
     @Override
     public void prepareGameExtras(Intent intent) {
+        prepareSettingsExtras(intent);
+
         intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, false);
+        intent.putExtra(ExtrasKeys.AI_DIFFICULTY, getAiDifficulty());
+    }
+
+    //region private
+
+    private void prepareSettingsExtras(Intent intent) {
+        BoardGame boardGame = generateBoardGame();
+
         intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, isShowPoints());
         intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, isShowTimer());
         intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, isPenaltyOn());
-        intent.putExtra(ExtrasKeys.AI_DIFFICULTY, getAiDifficulty());
+        intent.putExtra(ExtrasKeys.BOARD_GAME, (Parcelable) boardGame);
     }
+
+    private BoardGame generateBoardGame() {
+        // This is where any logic for creating the board game with specific parameters should be made.
+        BoardGame boardGame = new BoardGame();
+
+        boardGame.addPlayer(MainSettingsModel.getInstance().getUserID(), Player.Team.BLUE);
+
+        if (!isMultiplayerMode()) {
+            boardGame.addPlayer(GamePresenter.AI_ID, Player.Team.RED);
+        }
+
+        return boardGame;
+    }
+
+    //endregion
 }
