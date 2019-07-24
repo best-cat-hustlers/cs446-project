@@ -37,6 +37,8 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         }
 
         static final int discoveryDuration = 300;
+        static final String teamBlueString = "Team Blue";
+        static final String teamRedString = "Team Red";
     }
 
     //endregion
@@ -156,6 +158,27 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         }
     }
 
+    @Override
+    public void handleToggleTeamPressed() {
+        String playerID = MainSettingsModel.getInstance().getUserID();
+        Player player = model.getPlayer(playerID);
+
+        if (player == null) { return; }
+
+        Player.Team oldTeam = player.getTeam();
+        Player.Team newTeam = oldTeam == Player.Team.RED ? Player.Team.BLUE : Player.Team.RED;
+
+        if (isHost) {
+            model.removePlayer(playerID);
+            model.addPlayer(playerID, newTeam);
+
+            propagateBoardGame();
+            updateToggleTeamButton();
+        } else {
+            requestToBeAddedToGame(newTeam);
+        }
+    }
+
     private void handleBluetoothMessageRead(Message rawMessage) {
         byte[] buffer = (byte[]) rawMessage.obj;
         Object object = SerializableUtils.deserialize(buffer);
@@ -169,7 +192,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                 case Constants.BluetoothTags.gameSettings:
                     gameSettings = (GameSettings) message.payload;
 
-                    requestToBeAddedToGame(Player.Team.RED);
+                    requestToBeAddedToGame(Player.Team.BLUE);
                     break;
                 case Constants.BluetoothTags.gameStart:
                     view.openGameActivity();
@@ -177,6 +200,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                 case Constants.BluetoothTags.addRequest:
                     if (isHost) {
                         Player playerToAdd = (Player) message.payload;
+                        model.removePlayer(playerToAdd.getId());
                         model.addPlayer(playerToAdd.getId(), playerToAdd.getTeam());
 
                         propagateBoardGame();
@@ -186,6 +210,8 @@ public class LobbyPresenter implements LobbyContract.Presenter {
                     BoardGameSerializedObject serializedBoardGame = (BoardGameSerializedObject) message.payload;
 
                     model.syncWithSerializedObject(serializedBoardGame);
+                    updateToggleTeamButton();
+
                     break;
             }
         }
@@ -230,6 +256,18 @@ public class LobbyPresenter implements LobbyContract.Presenter {
         BluetoothMessage propagateBoardGameMessage = new BluetoothMessage(Constants.BluetoothTags.propagateBoardGame, serializedBoardGame);
 
         view.sendBluetoothMessage(propagateBoardGameMessage.serialized());
+    }
+
+    private void updateToggleTeamButton() {
+        String playerID = MainSettingsModel.getInstance().getUserID();
+        Player self = model.getPlayer(playerID);
+        Player.Team team = self.getTeam();
+        boolean isRed = team == Player.Team.RED;
+
+        int buttonBackgroundColor = isRed ? R.color.secondaryDarkColor : R.color.primaryDarkColor;
+        String buttonText = isRed ? Constants.teamRedString : Constants.teamBlueString;
+
+        view.setToggleTeamButton(buttonBackgroundColor, buttonText);
     }
 
     //endregion

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
@@ -29,6 +30,7 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
     private BluetoothService mBluetoothService = null;
 
     private TextView textStatus;
+    private Button buttonToggleTeam;
     private Button buttonStartGame;
 
     boolean mBounded;
@@ -59,6 +61,7 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         checkBluetoothSupport();
 
         textStatus = findViewById(R.id.text_show_lobby_status);
+        buttonToggleTeam = findViewById(R.id.button_lobby_toggle_team);
         buttonStartGame = findViewById(R.id.button_lobby_start_game);
 
         presenter.handleViewCreated();
@@ -108,6 +111,10 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
 
     public void onStartGamePressed(View view) {
         presenter.handleStartGamePressed();
+    }
+
+    public void onToggleTeamPressed(View view) {
+        presenter.handleToggleTeamPressed();
     }
 
     public void checkBluetoothSupport() {
@@ -176,22 +183,10 @@ public class LobbyActivity extends AppCompatActivity implements LobbyContract.Vi
         }
     }
 
-    //endregion
-
-    //region Private
-
-    private void sendMessage(String message) {
-        // Check that we're actually connected before trying anything
-        if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
-            Toast.makeText(this, "Not connected to a device", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // Check that there's actually something to send
-        if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = SerializableUtils.serialize(message);
-            mBluetoothService.write(send);
-        }
+    @Override
+    public void setToggleTeamButton(int color, String text) {
+        buttonToggleTeam.setBackgroundTintList(ContextCompat.getColorStateList(this, color));
+        buttonToggleTeam.setText(text);
     }
 
     //endregion
