@@ -75,9 +75,10 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printWinner(String title, String id)
+    public void printWinner(String title, String id, int color)
     {
         winner.setText(String.format("%s %s Wins!", title, id));
+        winner.setTextColor(getResources().getColor(color));
     }
 
     @Override

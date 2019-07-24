@@ -30,6 +30,8 @@ public class GameContract {
         void showTimer(boolean shouldShowTimer);
 
         void sendBluetoothMessage(byte[] message);
+
+        void setTeamColor(int color);
     }
 
     interface Presenter {
