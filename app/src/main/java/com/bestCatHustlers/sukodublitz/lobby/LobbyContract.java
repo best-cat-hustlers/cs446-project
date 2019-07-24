@@ -16,6 +16,8 @@ public class LobbyContract {
         void openDiscoverableAlert(int durationSeconds);
 
         void setStartGameVisibility(int visibility);
+
+        void setToggleTeamButton(int color, String text);
     }
 
     interface Presenter {
@@ -30,6 +32,8 @@ public class LobbyContract {
         void handleBluetoothMessageReceived(Message message);
 
         void handleStartGamePressed();
+
+        void handleToggleTeamPressed();
 
         void prepareOpenGameActivity(Intent intent);
 

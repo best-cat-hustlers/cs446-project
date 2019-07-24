@@ -14,7 +14,7 @@ public class ResultsContract
 
         void printScores(int playerRedScore, int playerBlueScore);
 
-        void printWinner(String title, String id);
+        void printWinner(String title, String id, int color);
 
         void printTie();
 

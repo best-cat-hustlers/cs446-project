@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.Player;
+import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.game.GamePresenter;
 
 import java.util.ArrayList;
@@ -41,9 +42,10 @@ public class ResultsPresenter implements ResultsContract.Presenter
         if (winner == null) {
             view.printTie();
         } else {
-            String colour = winner == Player.Team.RED ? "Red" : "Blue";
+            String side = winner == Player.Team.RED ? "Red" : "Blue";
             String title = isMultiplayerMode ? "Team" : "Player";
-            view.printWinner(title, colour);
+            int color = winner == Player.Team.RED ? R.color.secondaryColor : R.color.primaryColor;
+            view.printWinner(title, side, color);
         }
     }
 

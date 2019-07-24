@@ -283,6 +283,13 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         }
 
         model.setWrongAnsDelta(isPenaltyOn ? Constants.penaltyDelta : 0);
+
+        Player self = model.getPlayer(MainSettingsModel.getInstance().getUserID());
+
+        if (self != null) {
+            int teamColor = self.getTeam() == Player.Team.RED ? R.color.secondaryDarkColor : R.color.primaryDarkColor;
+            view.setTeamColor(teamColor);
+        }
     }
 
     private void handleBluetoothMessageRead(Message rawMessage) {

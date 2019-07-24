@@ -361,5 +361,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         mBluetoothService.write(message);
     }
 
+    @Override
+    public void setTeamColor(int color) {
+        for (TextView button : numberEntryButtons) {
+            button.setTextColor(getResources().getColor(color));
+        }
+    }
+
     //endregion
 }

@@ -1,7 +1,5 @@
 package com.bestCatHustlers.sukodublitz;
 
-import com.bestCatHustlers.sukodublitz.game.GamePresenter;
-
 import java.util.Random;
 
 /*
@@ -46,7 +44,7 @@ public class GameAI implements Runnable
         {
             try
             {
-                Thread.sleep(delayMs);
+                Thread.sleep(delayMs + (rand.nextInt(delayMs) * 2));
                 board = game.getBoard();
                 solver.setPuzzle(board);
                 ThreeTuple single = solver.findNakedSingle();

@@ -32,13 +32,24 @@
         android:layout_marginTop="120dp" />
 
     <Button
+        android:id="@+id/button_lobby_toggle_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onToggleTeamPressed"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="120dp"
+        android:backgroundTint="@color/primaryDarkColor"
+        android:textColor="@color/white"
+        android:text="Team Blue" />
+
+    <Button
         android:id="@+id/button_lobby_start_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/button_long_special"
         android:onClick="onStartGamePressed"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="12dp"
         android:text="@string/lobby_start_game" />
 
 </LinearLayout>
