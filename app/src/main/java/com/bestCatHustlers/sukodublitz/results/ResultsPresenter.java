@@ -8,17 +8,26 @@ import com.bestCatHustlers.sukodublitz.game.GamePresenter;
 
 import java.util.ArrayList;
 
+import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
+
 public class ResultsPresenter implements ResultsContract.Presenter
 {
     private ResultsContract.View view;
     private BoardGame model;
     private int timeElapsed;
+    private boolean isMultiplayerMode = false;
 
     public ResultsPresenter(ResultsContract.View view, Bundle extras)
     {
         this.view = view;
-        this.model = extras.getParcelable(GamePresenter.EXTRAS_KEY_BOARD_GAME);
-        this.timeElapsed = extras.getInt(GamePresenter.EXTRAS_KEY_TIME_ELAPSED);
+        if (extras != null) {
+            this.model = extras.getParcelable(GamePresenter.EXTRAS_KEY_BOARD_GAME);
+            this.timeElapsed = extras.getInt(GamePresenter.EXTRAS_KEY_TIME_ELAPSED);
+            this.isMultiplayerMode = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
+        }
+        if (isMultiplayerMode) {
+            view.setMultiplayerScoreTitles();
+        }
     }
 
     @Override
@@ -28,8 +37,14 @@ public class ResultsPresenter implements ResultsContract.Presenter
         view.printTimeElapsed(generateTimeElapsedString(timeElapsed));
         view.printBoard(model.getBoard(), model.getCellOwners());
         view.printScores(model.getTeamScore(Player.Team.RED), model.getTeamScore(Player.Team.BLUE));
-        String colour = model.getWinner() == Player.Team.RED ? "Red" : "Blue";
-        view.printWinner(colour);
+        Player.Team winner = model.getWinner();
+        if (winner == Player.Team.TIE) {
+            view.printTie();
+        } else {
+            String colour = winner == Player.Team.RED ? "Red" : "Blue";
+            String title = isMultiplayerMode ? "Team" : "Player";
+            view.printWinner(title, colour);
+        }
     }
 
     //region Private

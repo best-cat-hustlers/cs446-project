@@ -9,7 +9,7 @@ public class Player implements Parcelable, Serializable
 {
     public enum Team
     {
-        RED, BLUE;
+        RED, BLUE, TIE;
     }
 
     private String id;
