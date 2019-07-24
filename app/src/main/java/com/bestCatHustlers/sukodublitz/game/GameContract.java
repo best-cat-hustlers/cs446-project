@@ -30,8 +30,6 @@ public class GameContract {
       
         void handleViewStarted();
 
-        void handleViewStopped();
-
         void handleViewDestroyed();
 
         void handleCellClick(int row, int column);
@@ -39,6 +37,8 @@ public class GameContract {
         void handleNumberClick(int number);
 
         void handleOnBackPressed();
+
+        void handleLeaveGame();
 
         void prepareOpenResultsActivity(Intent intent);
     }

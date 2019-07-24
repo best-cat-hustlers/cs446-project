@@ -28,6 +28,7 @@ import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
@@ -168,8 +169,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             unbindService(mConnection);
             mBounded = false;
         }
-      
-        presenter.handleViewStopped();
     }
 
     @Override
@@ -197,7 +196,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         presenter.handleOnBackPressed();
     }
 
-    public void openResultsActivity(View view) {
+    public void openResultsActivity() {
         Intent intent = new Intent(this, ResultsActivity.class);
 
         presenter.prepareOpenResultsActivity(intent);
@@ -212,6 +211,12 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         if (value < 0 || value > 9) return;
 
         presenter.handleNumberClick(value);
+    }
+
+    public void onSettingsPressed(View view) {
+        Intent intent = new Intent(this, MainSettingsActivity.class);
+
+        startActivity(intent);
     }
 
     //endregion
@@ -292,6 +297,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        presenter.handleLeaveGame();
                         dialogInterface.dismiss();
 
                         Context baseContext = getBaseContext();
@@ -323,7 +329,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
-                                openResultsActivity(null);
+                                openResultsActivity();
 
                                 finish();
                             }
