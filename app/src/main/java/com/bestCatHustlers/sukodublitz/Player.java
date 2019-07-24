@@ -9,7 +9,17 @@ public class Player implements Parcelable, Serializable
 {
     public enum Team
     {
-        RED, BLUE;
+        RED(1), BLUE(2);
+
+        private int value;
+
+        Team (int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     private String id;
