@@ -150,7 +150,7 @@ public class LobbyPresenter implements LobbyContract.Presenter {
 
     private void handleBluetoothStateChangeMessage(int state) {
         if (state == BluetoothConstants.STATE_CONNECTED) {
-            view.setStatusText("Connected to" + connectedDeviceName);
+            view.setStatusText("Connected to " + connectedDeviceName);
 
             handleDeviceConnected();
         }

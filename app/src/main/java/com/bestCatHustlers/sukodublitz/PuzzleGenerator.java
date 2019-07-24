@@ -43,6 +43,7 @@ public class PuzzleGenerator implements Parcelable, Serializable
         rotate(seeds, 1);
         shuffle(seeds);
         rotate(seeds, rand.nextInt(4));
+        shift(seeds, rand.nextInt(9));
         // TODO: Permute band, stack, and cells
 
         int[][] solution = new int[GRID_SIZE][];
@@ -52,6 +53,16 @@ public class PuzzleGenerator implements Parcelable, Serializable
         }
         backtrack(solution);
         return new Puzzle(seeds, solution);
+    }
+
+    private void shift(int [][] board, int delta) {
+        for (int row = 0; row < GRID_SIZE; ++row) {
+            for (int column = 0; column < GRID_SIZE; ++column) {
+                if (board[row][column] == 0) { continue; }
+
+                board[row][column] = ((board[row][column] + delta) % GRID_SIZE) + 1;
+            }
+        }
     }
 
     // Rotate matrix 90 degrees clockwise n times
