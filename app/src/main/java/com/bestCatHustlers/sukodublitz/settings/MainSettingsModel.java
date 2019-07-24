@@ -1,10 +1,15 @@
 package com.bestCatHustlers.sukodublitz.settings;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.bestCatHustlers.sukodublitz.BackgroundMusicService;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
+
+import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -12,15 +17,19 @@ public class MainSettingsModel implements GlobalSettingsInterface {
     private boolean soundEnabled;
     private boolean musicEnabled;
     private String userName;
+    private String userID;
+
     // Create static instance of this mModel
     private static final MainSettingsModel ourInstance = new MainSettingsModel(true,false);
     private static BackgroundMusicService backgroundMusicService;
+
     public static GlobalSettingsInterface getInstance() {
         return ourInstance;
     }
     private MainSettingsModel(boolean soundEnabled, boolean musicEnabled) {
         this.soundEnabled = soundEnabled;
         this.musicEnabled = musicEnabled;
+        this.userID = UUID.randomUUID().toString();
     }
 
     void setSoundEnabled(boolean newValue) {
@@ -66,5 +75,9 @@ public class MainSettingsModel implements GlobalSettingsInterface {
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }

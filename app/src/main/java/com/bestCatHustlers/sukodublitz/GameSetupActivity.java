@@ -2,6 +2,7 @@ package com.bestCatHustlers.sukodublitz;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,20 +11,15 @@ import android.widget.RadioButton;
 import android.widget.Switch;
 
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
+import com.bestCatHustlers.sukodublitz.game.GamePresenter;
 import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
-import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuActivity;
 import com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter;
-
-import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
+import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 
 public class GameSetupActivity extends AppCompatActivity {
 
-    public static final String EXTRAS_KEY_IS_HOST = "isHost";
-    public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
-    public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
-    public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
-    public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
     private static final int topToBottomMarginRatio = 4;
+
     RadioButton aiDifficulty1Button;
     RadioButton aiDifficulty2Button;
     RadioButton aiDifficulty3Button;
@@ -72,26 +68,25 @@ public class GameSetupActivity extends AppCompatActivity {
             aiDifficulty1Button.toggle();
             onChangeAIDifficulty(aiDifficulty1Button);
         }
-
     }
 
     public void clickGame(View view) {
+        Intent intent;
+        BoardGame boardGame = generateBoardGame();
+
         if (isMultiplayer) {
-            Intent intent = new Intent(this, LobbyActivity.class);
-            intent.putExtra(EXTRAS_KEY_IS_HOST, true);
-            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
-            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
-            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
-            this.startActivity(intent);
+            intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra(ExtrasKeys.IS_HOST, true);
         } else {
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(EXTRAS_KEY_SHOW_POINTS, showPoints);
-            intent.putExtra(EXTRAS_KEY_SHOW_TIMER, showTimer);
-            intent.putExtra(EXTRAS_KEY_PENALTY_ON, penaltyOn);
-            intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, aiDifficulty);
-            this.startActivity(intent);
+            intent = new Intent(this, GameActivity.class);
+            intent.putExtra(ExtrasKeys.AI_DIFFICULTY, aiDifficulty);
         }
+
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, showPoints);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, showTimer);
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, penaltyOn);
+        intent.putExtra(ExtrasKeys.BOARD_GAME, (Parcelable)boardGame);
+        this.startActivity(intent);
     }
 
     public void onCheckShowPoints(View view){
@@ -122,26 +117,23 @@ public class GameSetupActivity extends AppCompatActivity {
         resetRadioButtonTextColor();
         selectedRadioButton.setTextColor(getResources().getColor(R.color.white));
 
+        if (!checked) { return; }
+
         switch(view.getId()) {
             case R.id.difficulty1:
-                if (checked)
                     // set some global variable, then send to model when start game is clicked
                     aiDifficulty = 1;
                     break;
             case R.id.difficulty2:
-                if (checked)
                     aiDifficulty = 2;
                     break;
             case R.id.difficulty3:
-                if (checked)
                     aiDifficulty = 3;
                     break;
             case R.id.difficulty4:
-                if (checked)
                     aiDifficulty = 4;
                     break;
             case R.id.difficulty5:
-                if (checked)
                     aiDifficulty = 5;
                     break;
         }
@@ -149,5 +141,18 @@ public class GameSetupActivity extends AppCompatActivity {
 
     public void onBackPressed(View view){
         super.onBackPressed();
+    }
+
+    private BoardGame generateBoardGame() {
+        // This is where any logic for creating the board game with specific parameters should be made.
+        BoardGame boardGame = new BoardGame();
+
+        boardGame.addPlayer(MainSettingsModel.getInstance().getUserID(), Player.Team.BLUE);
+
+        if (!isMultiplayer) {
+            boardGame.addPlayer(GamePresenter.AI_ID, Player.Team.RED);
+        }
+
+        return boardGame;
     }
 }
