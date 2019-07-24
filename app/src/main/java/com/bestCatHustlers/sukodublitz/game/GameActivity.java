@@ -25,7 +25,7 @@ import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
-import com.bestCatHustlers.sukodublitz.MainActivity;
+import com.bestCatHustlers.sukodublitz.main.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
@@ -230,8 +230,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             @Override
             public void run() {
                 // TODO: Set to strings file.
-                playerScore1TextView.setText("Player Blue: " + playerScore1);
-                playerScore2TextView.setText("Player Red: " + playerScore2);
+                playerScore1TextView.setText("Team Blue: " + playerScore1);
+                playerScore2TextView.setText("Team Red: " + playerScore2);
             }
         });
     }

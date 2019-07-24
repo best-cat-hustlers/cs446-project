@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
-import com.bestCatHustlers.sukodublitz.MainActivity;
+import com.bestCatHustlers.sukodublitz.setup.GameSetupActivity;
+import com.bestCatHustlers.sukodublitz.main.MainActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.game.GameBoardView;

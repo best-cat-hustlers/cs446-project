@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,9 +19,7 @@ import android.widget.Toast;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
-import com.bestCatHustlers.sukodublitz.bluetooth.DeviceListActivity;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
-import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 public class LobbyActivity extends AppCompatActivity implements LobbyContract.View {

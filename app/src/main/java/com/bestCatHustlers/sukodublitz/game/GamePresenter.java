@@ -2,24 +2,20 @@ package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.os.Message;
 import android.util.Log;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.BoardGameSerializedObject;
 import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.GameAI;
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothMessage;
-import com.bestCatHustlers.sukodublitz.lobby.LobbyActivity;
-import com.bestCatHustlers.sukodublitz.lobby.LobbyPresenter;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
-import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
 import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresenter.EXTRAS_KEY_IS_MULTI;
@@ -68,7 +64,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
 
     //region LifeCycle
 
-    public GamePresenter(GameContract.View view, Bundle extras) {
+    GamePresenter(GameContract.View view, Bundle extras) {
         this.view = view;
 
         configureGameWithSettings(extras);
@@ -272,6 +268,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         isHost = extras.getBoolean(ExtrasKeys.IS_HOST);
         isMultiplayer = extras.getBoolean(EXTRAS_KEY_IS_MULTI);
         isTimerShown = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_TIMER);
+        isPointsShown = extras.getBoolean(ExtrasKeys.SHOULD_SHOW_POINTS);
         isPenaltyOn = extras.getBoolean(ExtrasKeys.SHOULD_USE_PENALTY);
         aiDifficulty = extras.getInt(ExtrasKeys.AI_DIFFICULTY);
         model = extras.getParcelable(ExtrasKeys.BOARD_GAME);
