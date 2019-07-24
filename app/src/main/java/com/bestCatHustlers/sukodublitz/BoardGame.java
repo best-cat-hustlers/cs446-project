@@ -190,13 +190,13 @@ public class BoardGame implements Parcelable, Serializable
         int totalRedScore = getTeamScore(Player.Team.RED);
         int totalBlueScore = getTeamScore(Player.Team.BLUE);
 
-        // TODO: What if score is tied?
         if (totalRedScore > totalBlueScore) {
             return Player.Team.RED;
         } else if (totalRedScore == totalBlueScore) {
-            return Player.Team.TIE;
+            return null;
+        } else {
+            return Player.Team.BLUE;
         }
-        return Player.Team.BLUE;
     }
 
     public BoardGameSerializedObject getSerializedObject()

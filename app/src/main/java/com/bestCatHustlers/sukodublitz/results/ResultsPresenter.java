@@ -38,7 +38,7 @@ public class ResultsPresenter implements ResultsContract.Presenter
         view.printBoard(model.getBoard(), model.getCellOwners());
         view.printScores(model.getTeamScore(Player.Team.RED), model.getTeamScore(Player.Team.BLUE));
         Player.Team winner = model.getWinner();
-        if (winner == Player.Team.TIE) {
+        if (winner == null) {
             view.printTie();
         } else {
             String colour = winner == Player.Team.RED ? "Red" : "Blue";

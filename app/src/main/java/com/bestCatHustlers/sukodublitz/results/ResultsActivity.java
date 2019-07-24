@@ -79,7 +79,7 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
 
     @Override
     public void printTie() {
-        winner.setText("You are tied!");
+        winner.setText("It's a tie!");
         winner.setTextColor(getResources().getColor(R.color.black));
     }
 
