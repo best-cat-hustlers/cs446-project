@@ -3,6 +3,10 @@ package com.bestCatHustlers.sukodublitz.game;
 import android.content.Intent;
 import android.os.Message;
 
+import com.bestCatHustlers.sukodublitz.Player;
+
+import java.util.ArrayList;
+
 public class GameContract {
     interface View {
         void bindBluetoothService();
@@ -13,7 +17,7 @@ public class GameContract {
 
         void printScores(int playerScore1, int playerScore2);
 
-        void printBoard(int[][] board, String[][] cellOwners);
+        void printBoard(int[][] board, String[][] cellOwners, ArrayList<Player> bluePlayers, ArrayList<Player> redPlayers);
 
         void alertBackToMenu();
 

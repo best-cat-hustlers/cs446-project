@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
@@ -30,6 +31,8 @@ import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
 import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
+
+import java.util.ArrayList;
 
 public class GameActivity extends AppCompatActivity implements GameContract.View, GameBoardView.Delegate {
     //region Properties
@@ -234,11 +237,11 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     @Override
-    public void printBoard(final int[][] board, final String[][] cellOwners) {
+    public void printBoard(final int[][] board, final String[][] cellOwners, final ArrayList<Player> bluePlayers, final ArrayList<Player> redPlayers) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               boardView.printBoard(board, cellOwners);
+               boardView.printBoard(board, cellOwners,redPlayers, bluePlayers);
             }
         });
     }
