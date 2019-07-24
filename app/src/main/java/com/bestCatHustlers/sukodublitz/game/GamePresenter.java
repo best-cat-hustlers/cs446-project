@@ -23,6 +23,7 @@ import static com.bestCatHustlers.sukodublitz.multiplayer.MultiplayerMenuPresent
 public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     //region Properties
 
+    public static final String EXTRAS_OPEN_SETTINGS_FROM_GAME = "open_settings_from_game";
     public static final String EXTRAS_KEY_BOARD_GAME = "boardGame";
     public static final String EXTRAS_KEY_TIME_ELAPSED = "timeElapsed";
     public static final String AI_ID = "2";
@@ -94,17 +95,8 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
-    public void handleViewStopped() {
-        if (aiThread != null) {
-            aiThread.interrupt();
-        }
-    }
-
-    @Override
     public void handleViewDestroyed() {
-        if (aiThread != null) {
-            aiThread.interrupt();
-        }
+        stopAI();
     }
 
     @Override
@@ -160,6 +152,11 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
     }
 
     @Override
+    public void handleLeaveGame() {
+        stopAI();
+    }
+
+    @Override
     public void prepareOpenResultsActivity(Intent intent) {
         int timeElapsed = (int) (endTime - startTime);
         intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable) model);
@@ -198,6 +195,12 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         aiThread = new Thread(ai);
 
         aiThread.start();
+    }
+
+    private void stopAI() {
+        if (aiThread != null) {
+            aiThread.interrupt();
+        }
     }
 
     private boolean shouldEnterSolution() {

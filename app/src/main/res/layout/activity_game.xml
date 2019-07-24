@@ -33,7 +33,7 @@
             style="@style/button_round_settings"
             android:alpha="0.9"
             android:layout_alignParentRight="true"
-            android:onClick="openResultsActivity" />
+            android:onClick="onSettingsPressed" />
 
     </RelativeLayout>
 
