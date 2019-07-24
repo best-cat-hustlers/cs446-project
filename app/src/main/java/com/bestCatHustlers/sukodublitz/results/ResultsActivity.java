@@ -17,6 +17,9 @@ import java.util.ArrayList;
 public class ResultsActivity extends AppCompatActivity implements ResultsContract.View{
     private ResultsContract.Presenter presenter;
     private GameBoardView boardView;
+    private TextView redScoreTitle;
+    private TextView blueScoreTitle;
+    private TextView winner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,10 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         setContentView(R.layout.activity_results);
         
         boardView = findViewById(R.id.result_boardLayout);
+        winner = findViewById(R.id.textWinner);
+
+        redScoreTitle = findViewById(R.id.textPlayerRed);
+        blueScoreTitle = findViewById(R.id.textPlayerBlue);
 
         presenter = new ResultsPresenter(this, getIntent().getExtras());
         presenter.handleViewCreated();
@@ -68,10 +75,21 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printWinner(String id)
+    public void printWinner(String title, String id)
     {
-        TextView winner = findViewById(R.id.textWinner);
-        winner.setText(String.format("Player %s Wins!", id));
+        winner.setText(String.format("%s %s Wins!", title, id));
+    }
+
+    @Override
+    public void printTie() {
+        winner.setText("It's a tie!");
+        winner.setTextColor(getResources().getColor(R.color.black));
+    }
+
+    @Override
+    public void setMultiplayerScoreTitles() {
+        redScoreTitle.setText("Team Red");
+        blueScoreTitle.setText("Team Blue");
     }
 
     //endregion

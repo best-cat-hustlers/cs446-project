@@ -161,6 +161,7 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         int timeElapsed = (int) (endTime - startTime);
         intent.putExtra(EXTRAS_KEY_BOARD_GAME, (Parcelable) model);
         intent.putExtra(EXTRAS_KEY_TIME_ELAPSED, timeElapsed);
+        intent.putExtra(EXTRAS_KEY_IS_MULTI, isMultiplayer);
     }
 
     @Override
