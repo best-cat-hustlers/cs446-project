@@ -10,8 +10,11 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.PuzzleGenerator;
 import com.bestCatHustlers.sukodublitz.R;
+
+import java.util.ArrayList;
 
 public class GameBoardView extends CardView {
     //region Properties
@@ -31,6 +34,8 @@ public class GameBoardView extends CardView {
 
     private int[][] board = new int[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
     private String[][] cellOwners = new String[PuzzleGenerator.GRID_SIZE][PuzzleGenerator.GRID_SIZE];
+    private ArrayList<Player> bluePlayers;
+    private ArrayList<Player> redPlayers;
 
     private class Constants {
         final Paint.Style thickLineStyle = Paint.Style.STROKE;
@@ -131,9 +136,11 @@ public class GameBoardView extends CardView {
         invalidate();
     }
 
-    public void printBoard(int[][] board, String[][] cellOwners) {
+    public void printBoard(int[][] board, String[][] cellOwners, ArrayList<Player> bluePlayers, ArrayList<Player> redPlayers) {
         this.board = board;
         this.cellOwners = cellOwners;
+        this.bluePlayers = bluePlayers;
+        this.redPlayers = redPlayers;
 
         invalidate();
     }
@@ -240,15 +247,17 @@ public class GameBoardView extends CardView {
 
     // TODO: Get cell owner strings get something like an enum (presenter can decide on the enum).
     private int getTextColor(String cellOwner) {
-        switch (cellOwner) {
-            case "1":
-                return constants.player1TextColor;
-
-            case "2":
-                return constants.player2TextColor;
+        if (cellOwner.equals(PuzzleGenerator.STARTER_CELL) || cellOwner.equals(PuzzleGenerator.EMPTY_CELL)) {
+            return constants.defaultTextColor;
         }
 
-        return constants.defaultTextColor;
+        for (Player redPlayer : redPlayers) {
+            if (redPlayer.getId().equals(cellOwner)) {
+                return constants.player1TextColor;
+            }
+        }
+
+        return constants.player2TextColor;
     }
 
     //endregion

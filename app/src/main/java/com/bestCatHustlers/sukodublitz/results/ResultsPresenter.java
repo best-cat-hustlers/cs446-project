@@ -26,7 +26,7 @@ public class ResultsPresenter implements ResultsContract.Presenter
     {
         // Tell the view to show the board and player scores
         view.printTimeElapsed(generateTimeElapsedString(timeElapsed));
-        view.printBoard(model.getBoard(), model.getCellOwners());
+        view.printBoard(model.getBoard(), model.getCellOwners(), model.getTeamPlayers(Player.Team.BLUE), model.getTeamPlayers(Player.Team.RED));
         view.printScores(model.getTeamScore(Player.Team.RED), model.getTeamScore(Player.Team.BLUE));
         String colour = model.getWinner() == Player.Team.RED ? "Red" : "Blue";
         view.printWinner(colour);

@@ -3,6 +3,7 @@ package com.bestCatHustlers.sukodublitz.setup;
 import android.content.Intent;
 import android.widget.RadioButton;
 
+import com.bestCatHustlers.sukodublitz.ExtrasKeys;
 import com.bestCatHustlers.sukodublitz.R;
 
 public class GameSetupPresenter implements GameSetupContract.Presenter {
@@ -15,12 +16,6 @@ public class GameSetupPresenter implements GameSetupContract.Presenter {
     private RadioButton aiDifficulty3Button;
     private RadioButton aiDifficulty4Button;
     private RadioButton aiDifficulty5Button;
-
-    public static final String EXTRAS_KEY_IS_HOST = "isHost";
-    public static final String EXTRAS_KEY_SHOW_POINTS = "showPoints";
-    public static final String EXTRAS_KEY_SHOW_TIMER = "showTimer";
-    public static final String EXTRAS_KEY_PENALTY_ON = "penaltyOn";
-    public static final String EXTRAS_KEY_AI_DIFFICULTY = "aiDifficulty";
 
     GameSetupPresenter(GameSetupActivity gameSetupActivity) {
         this.gameSetupActivity = gameSetupActivity;
@@ -130,18 +125,19 @@ public class GameSetupPresenter implements GameSetupContract.Presenter {
 
     @Override
     public void prepareLobbyExtras(Intent intent) {
-        intent.putExtra(EXTRAS_KEY_IS_HOST, true);
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, isShowPoints());
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, isShowTimer());
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, isPenaltyOn());
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, getAiDifficulty());
+        intent.putExtra(ExtrasKeys.IS_HOST, true);
+        intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, true);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, isShowPoints());
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, isShowTimer());
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, isPenaltyOn());
     }
 
     @Override
     public void prepareGameExtras(Intent intent) {
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, isShowPoints());
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, isShowTimer());
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, isPenaltyOn());
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, getAiDifficulty());
+        intent.putExtra(ExtrasKeys.IS_MULTIPLAYER, false);
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_POINTS, isShowPoints());
+        intent.putExtra(ExtrasKeys.SHOULD_SHOW_TIMER, isShowTimer());
+        intent.putExtra(ExtrasKeys.SHOULD_USE_PENALTY, isPenaltyOn());
+        intent.putExtra(ExtrasKeys.AI_DIFFICULTY, getAiDifficulty());
     }
 }
