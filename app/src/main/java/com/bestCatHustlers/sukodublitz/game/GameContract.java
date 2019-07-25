@@ -53,6 +53,6 @@ public class GameContract {
 
         void handleBluetoothMessageReceived(Message message);
 
-        abstract void handlePauseAI(boolean isPause);
+        void handleOpenSettings(boolean isPause);
     }
 }

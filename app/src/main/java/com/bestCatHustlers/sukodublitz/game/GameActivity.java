@@ -183,7 +183,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     public void onSettingsPressed(View view) {
-        presenter.handlePauseAI(true);
+        presenter.handleOpenSettings(true);
         Intent intent = new Intent(this, MainSettingsActivity.class);
         startActivity(intent);
     }
@@ -191,7 +191,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.handlePauseAI(false);
+        presenter.handleOpenSettings(false);
     }
     //endregion
 
