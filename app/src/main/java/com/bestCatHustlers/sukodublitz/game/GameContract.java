@@ -1,6 +1,11 @@
 package com.bestCatHustlers.sukodublitz.game;
 
 import android.content.Intent;
+import android.os.Message;
+
+import com.bestCatHustlers.sukodublitz.Player;
+
+import java.util.ArrayList;
 
 public class GameContract {
     interface View {
@@ -12,7 +17,7 @@ public class GameContract {
 
         void printScores(int playerScore1, int playerScore2);
 
-        void printBoard(int[][] board, String[][] cellOwners);
+        void printBoard(int[][] board, String[][] cellOwners, ArrayList<Player> bluePlayers, ArrayList<Player> redPlayers);
 
         void alertBackToMenu();
 
@@ -23,14 +28,16 @@ public class GameContract {
         void showPoints(boolean shouldShowPoints);
 
         void showTimer(boolean shouldShowTimer);
+
+        void sendBluetoothMessage(byte[] message);
+
+        void setTeamColor(int color);
     }
 
     interface Presenter {
         void handleViewCreated();
       
         void handleViewStarted();
-
-        void handleViewStopped();
 
         void handleViewDestroyed();
 
@@ -40,6 +47,10 @@ public class GameContract {
 
         void handleOnBackPressed();
 
+        void handleLeaveGame();
+
         void prepareOpenResultsActivity(Intent intent);
+
+        void handleBluetoothMessageReceived(Message message);
     }
 }

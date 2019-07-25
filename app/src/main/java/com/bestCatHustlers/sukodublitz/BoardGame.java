@@ -3,6 +3,8 @@ package com.bestCatHustlers.sukodublitz;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.bestCatHustlers.sukodublitz.game.SolutionRequest;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +153,10 @@ public class BoardGame implements Parcelable, Serializable
 
     public void setWrongAnsDelta(int delta) { wrongAnsDelta = delta; }
 
+    public void fillSquare(SolutionRequest solution) {
+        fillSquare(solution.row, solution.column, solution.number, solution.playerID);
+    }
+
     public void fillSquare(int row, int col, int val, String id)
     {
         try
@@ -190,9 +196,41 @@ public class BoardGame implements Parcelable, Serializable
         int totalRedScore = getTeamScore(Player.Team.RED);
         int totalBlueScore = getTeamScore(Player.Team.BLUE);
 
-        // TODO: What if score is tied?
-        if (totalRedScore > totalBlueScore) return Player.Team.RED;
-        return Player.Team.BLUE;
+        if (totalRedScore > totalBlueScore) {
+            return Player.Team.RED;
+        } else if (totalRedScore == totalBlueScore) {
+            return null;
+        } else {
+            return Player.Team.BLUE;
+        }
+    }
+
+    public BoardGameSerializedObject getSerializedObject()
+    {
+        try
+        {
+            lock.lock();
+            return new BoardGameSerializedObject(players, puzzle);
+        }
+        finally
+        {
+            lock.unlock();
+        }
+    }
+
+    public void syncWithSerializedObject(BoardGameSerializedObject obj)
+    {
+        try
+        {
+            lock.lock();
+            this.players = obj.players;
+            this.puzzle = obj.puzzle;
+            this.emptyCells = getEmptyCells();
+        }
+        finally
+        {
+            lock.unlock();
+        }
     }
 
     // Parcelable methods

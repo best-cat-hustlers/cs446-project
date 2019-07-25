@@ -6,14 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
-import com.bestCatHustlers.sukodublitz.MainActivity;
+import com.bestCatHustlers.sukodublitz.setup.GameSetupActivity;
+import com.bestCatHustlers.sukodublitz.main.MainActivity;
+import com.bestCatHustlers.sukodublitz.Player;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.game.GameBoardView;
+
+import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity implements ResultsContract.View{
     private ResultsContract.Presenter presenter;
     private GameBoardView boardView;
+    private TextView redScoreTitle;
+    private TextView blueScoreTitle;
+    private TextView winner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +27,10 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
         setContentView(R.layout.activity_results);
         
         boardView = findViewById(R.id.result_boardLayout);
+        winner = findViewById(R.id.textWinner);
+
+        redScoreTitle = findViewById(R.id.textPlayerRed);
+        blueScoreTitle = findViewById(R.id.textPlayerBlue);
 
         presenter = new ResultsPresenter(this, getIntent().getExtras());
         presenter.handleViewCreated();
@@ -49,9 +59,9 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printBoard(int[][] board, String[][] cellOwners)
+    public void printBoard(int[][] board, String[][] cellOwners, ArrayList<Player> bluePlayers, ArrayList<Player> redPlayers)
     {
-        boardView.printBoard(board, cellOwners);
+        boardView.printBoard(board, cellOwners, bluePlayers, redPlayers);
     }
 
     @Override
@@ -65,10 +75,22 @@ public class ResultsActivity extends AppCompatActivity implements ResultsContrac
     }
 
     @Override
-    public void printWinner(String id)
+    public void printWinner(String title, String id, int color)
     {
-        TextView winner = findViewById(R.id.textWinner);
-        winner.setText(String.format("Player %s Wins!", id));
+        winner.setText(String.format("%s %s Wins!", title, id));
+        winner.setTextColor(getResources().getColor(color));
+    }
+
+    @Override
+    public void printTie() {
+        winner.setText("It's a tie!");
+        winner.setTextColor(getResources().getColor(R.color.black));
+    }
+
+    @Override
+    public void setMultiplayerScoreTitles() {
+        redScoreTitle.setText("Team Red");
+        blueScoreTitle.setText("Team Blue");
     }
 
     //endregion

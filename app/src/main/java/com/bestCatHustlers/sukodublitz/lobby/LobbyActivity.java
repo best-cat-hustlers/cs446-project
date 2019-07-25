@@ -2,7 +2,6 @@ package com.bestCatHustlers.sukodublitz.lobby;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -10,48 +9,32 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bestCatHustlers.sukodublitz.GameSetupActivity;
 import com.bestCatHustlers.sukodublitz.R;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
-import com.bestCatHustlers.sukodublitz.bluetooth.DeviceListActivity;
 import com.bestCatHustlers.sukodublitz.game.GameActivity;
-import com.bestCatHustlers.sukodublitz.join.JoinActivity;
 import com.bestCatHustlers.sukodublitz.utils.SerializableUtils;
 
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_AI_DIFFICULTY;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_IS_HOST;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_PENALTY_ON;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_POINTS;
-import static com.bestCatHustlers.sukodublitz.GameSetupActivity.EXTRAS_KEY_SHOW_TIMER;
-
-public class LobbyActivity extends AppCompatActivity {
-
-    public static final String TAG = "LobbyActivity";
-
-    public static final String EXTRAS_KEY_IS_MULTI = "isMultiplayer";
-
-    private static final String START_GAME = "Start Game";
+public class LobbyActivity extends AppCompatActivity implements LobbyContract.View {
+    private LobbyContract.Presenter presenter;
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothService mBluetoothService = null;
 
     private TextView textStatus;
+    private Button buttonToggleTeam;
     private Button buttonStartGame;
 
-    private boolean isHost = false;
     boolean mBounded;
+
     private Bundle extras;
 
     @SuppressLint("HandlerLeak")
@@ -60,71 +43,28 @@ public class LobbyActivity extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case BluetoothConstants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothConstants.STATE_CONNECTED:
-                            Log.d(TAG, "BluetoothService state is CONNECTED");
-                            textStatus.setText(getString(R.string.lobby_title_connected, mConnectedDeviceName));
-                            break;
-                        case BluetoothConstants.STATE_CONNECTING:
-                            Log.d(TAG, "BluetoothService state is CONNECTING");
-                            textStatus.setText(getString(R.string.lobby_title_connecting));
-                            break;
-                        case BluetoothConstants.STATE_LISTEN:
-                            Log.d(TAG, "BluetoothService state is LISTEN");
-                            textStatus.setText(getString(R.string.lobby_title_listen));
-                        case BluetoothConstants.STATE_NONE:
-                            Log.d(TAG, "BluetoothService state is NONE");
-                            textStatus.setText(getString(R.string.lobby_title_none));
-                            break;
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
-                    String writeMessage = new String(writeBuf);
-                    if (writeMessage.equals(START_GAME)) {
-                        openGameActivity();
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
-                    Object obj = SerializableUtils.deserialize(readBuf);
-                    String readMessage = (String) obj;
-                    if (readMessage.equals(START_GAME)) {
-                        openGameActivity();
-                    }
-                    break;
-                case BluetoothConstants.MESSAGE_DEVICE_NAME:
-                    mConnectedDeviceName = msg.getData()
-                            .getString(BluetoothConstants.DEVICE_NAME);
-                    Log.d(TAG, "Connected to " + mConnectedDeviceName);
-                    break;
-            }
+            presenter.handleBluetoothMessageReceived(msg);
         }
     };
+
+    //region LifeCycle
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        extras = getIntent().getExtras();
 
-        isHost = extras.getBoolean(EXTRAS_KEY_IS_HOST);
+        extras = getIntent().getExtras();
+        presenter = new LobbyPresenter(this, extras);
 
         checkBluetoothSupport();
 
         textStatus = findViewById(R.id.text_show_lobby_status);
+        buttonToggleTeam = findViewById(R.id.button_lobby_toggle_team);
         buttonStartGame = findViewById(R.id.button_lobby_start_game);
 
-        if (isHost) {
-            ensureDiscoverable();
-        } else {
-            buttonStartGame.setVisibility(View.INVISIBLE);
-        }
+        presenter.handleViewCreated();
     }
 
     @Override
@@ -154,9 +94,7 @@ public class LobbyActivity extends AppCompatActivity {
 
             mBluetoothService.attachNewHandler(mHandler);
 
-            if (isHost) {
-                mBluetoothService.host();
-            }
+            presenter.handleOnBluetoothServiceConnected();
         }
     };
 
@@ -172,32 +110,11 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     public void onStartGamePressed(View view) {
-        if (isHost) {
-            sendMessage(START_GAME);
-        }
+        presenter.handleStartGamePressed();
     }
 
-    public void openGameActivity() {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(EXTRAS_KEY_IS_MULTI,true);
-        intent.putExtra(EXTRAS_KEY_SHOW_POINTS, extras.getBoolean(EXTRAS_KEY_SHOW_POINTS));
-        intent.putExtra(EXTRAS_KEY_SHOW_TIMER, extras.getBoolean(EXTRAS_KEY_SHOW_TIMER));
-        intent.putExtra(EXTRAS_KEY_PENALTY_ON, extras.getBoolean(EXTRAS_KEY_PENALTY_ON));
-        intent.putExtra(EXTRAS_KEY_AI_DIFFICULTY, extras.getInt(EXTRAS_KEY_AI_DIFFICULTY));
-        // TODO: add other activities
-        startActivity(intent);
-    }
-
-    /**
-     * Makes this device discoverable for 300 seconds (5 minutes).
-     */
-    private void ensureDiscoverable() {
-        if (mBluetoothAdapter.getScanMode() !=
-                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-        }
+    public void onToggleTeamPressed(View view) {
+        presenter.handleToggleTeamPressed();
     }
 
     public void checkBluetoothSupport() {
@@ -217,17 +134,60 @@ public class LobbyActivity extends AppCompatActivity {
         }
     }
 
-    private void sendMessage(String message) {
+    //endregion
+
+    //region Contract
+
+    @Override
+    public void sendBluetoothMessage(byte[] message) {
         // Check that we're actually connected before trying anything
         if (mBluetoothService.getState() != BluetoothConstants.STATE_CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Not connected to a device", Toast.LENGTH_SHORT).show();
             return;
         }
-        // Check that there's actually something to send
-        if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
-            byte[] send = SerializableUtils.serialize(message);
-            mBluetoothService.write(send);
+
+        mBluetoothService.write(message);
+    }
+
+    @Override
+    public void setStatusText(String text) {
+        textStatus.setText(text);
+    }
+
+    @Override
+    public void openGameActivity() {
+        Intent intent = new Intent(this, GameActivity.class);
+
+        presenter.prepareOpenGameActivity(intent);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void hostBluetoothService() {
+        mBluetoothService.host();
+    }
+
+    @Override
+    public void setStartGameVisibility(int visibility) {
+        buttonStartGame.setVisibility(visibility);
+    }
+
+    @Override
+    public void openDiscoverableAlert(int durationSeconds) {
+        if (mBluetoothAdapter.getScanMode() !=
+                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
         }
     }
+
+    @Override
+    public void setToggleTeamButton(int color, String text) {
+        buttonToggleTeam.setBackgroundTintList(ContextCompat.getColorStateList(this, color));
+        buttonToggleTeam.setText(text);
+    }
+
+    //endregion
 }

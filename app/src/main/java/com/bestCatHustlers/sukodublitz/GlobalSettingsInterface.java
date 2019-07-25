@@ -4,4 +4,5 @@ public interface GlobalSettingsInterface {
     boolean isSoundEnabled();
     boolean isMusicEnabled();
     String getUserName();
+    String getUserID();
 }
