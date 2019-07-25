@@ -176,6 +176,15 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         }
     }
 
+    @Override
+    public void handlePauseAI(boolean isPause) {
+        if (isPause) {
+            ai.handlePause();
+        } else {
+            ai.handleResume();
+        }
+    }
+
     //endregion
 
     //region GameAI.Delegate
