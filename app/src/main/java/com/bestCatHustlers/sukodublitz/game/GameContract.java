@@ -52,5 +52,7 @@ public class GameContract {
         void prepareOpenResultsActivity(Intent intent);
 
         void handleBluetoothMessageReceived(Message message);
+
+        void handleOpenSettings(boolean isPause);
     }
 }

@@ -21,6 +21,7 @@ public class GameAI implements Runnable
     private BoardGame game;
     private String id;
     private PuzzleSolver solver;
+    private boolean paused = false;
 
     public interface Delegate {
         void gameAiDidEnterSolution();
@@ -45,6 +46,9 @@ public class GameAI implements Runnable
             try
             {
                 Thread.sleep(delayMs + (rand.nextInt(delayMs) * 2));
+                while (paused) {
+                    Thread.sleep(delayMs);
+                }
                 board = game.getBoard();
                 solver.setPuzzle(board);
                 ThreeTuple single = solver.findNakedSingle();
@@ -80,5 +84,11 @@ public class GameAI implements Runnable
                 break;
             }
         }
+    }
+    public void handlePause(){
+        paused = true;
+    }
+    public void handleResume(){
+        paused = false;
     }
 }

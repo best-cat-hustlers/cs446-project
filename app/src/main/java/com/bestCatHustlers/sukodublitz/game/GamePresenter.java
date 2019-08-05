@@ -176,6 +176,16 @@ public class GamePresenter implements GameContract.Presenter, GameAI.Delegate {
         }
     }
 
+    @Override
+    public void handleOpenSettings(boolean isPause) {
+        if (isMultiplayer) return;
+        if (isPause) {
+            ai.handlePause();
+        } else {
+            ai.handleResume();
+        }
+    }
+
     //endregion
 
     //region GameAI.Delegate

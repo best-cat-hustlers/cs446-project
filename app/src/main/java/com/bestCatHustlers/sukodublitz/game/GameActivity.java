@@ -5,33 +5,29 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bestCatHustlers.sukodublitz.BoardGame;
 import com.bestCatHustlers.sukodublitz.GlobalSettingsInterface;
 import com.bestCatHustlers.sukodublitz.Player;
-import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
-import com.bestCatHustlers.sukodublitz.main.MainActivity;
 import com.bestCatHustlers.sukodublitz.R;
+import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothConstants;
 import com.bestCatHustlers.sukodublitz.bluetooth.BluetoothService;
+import com.bestCatHustlers.sukodublitz.main.MainActivity;
 import com.bestCatHustlers.sukodublitz.results.ResultsActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsActivity;
 import com.bestCatHustlers.sukodublitz.settings.MainSettingsModel;
-import com.bestCatHustlers.sukodublitz.utils.ParcelableByteUtil;
 
 import java.util.ArrayList;
 
@@ -187,11 +183,16 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     }
 
     public void onSettingsPressed(View view) {
+        presenter.handleOpenSettings(true);
         Intent intent = new Intent(this, MainSettingsActivity.class);
-
         startActivity(intent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.handleOpenSettings(false);
+    }
     //endregion
 
     //region Contract
